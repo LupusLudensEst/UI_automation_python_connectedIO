@@ -14,7 +14,7 @@ LOGIN_BTN = (By.CSS_SELECTOR, "button.btn.btn-primary.text-uppercase.w-100.font-
 POP_UP_WNDW_OK_BTN = (By.CSS_SELECTOR, "button.swal2-confirm.btn.btn-outline-primary.btn-sm.btn-custom.swal2-styled")
 USERS = (By.CSS_SELECTOR, "i.fa.fa-users")
 QUICK_ACTIONS = (By.XPATH, "//button[@class='btn btn-default btn-sm dropdown-toggle dropdown-toggle']")
-ADD_MENU =  (By.CSS_SELECTOR, "i.fa.fa-user-plus")
+ADD_MENU = (By.CSS_SELECTOR, "i.fa.fa-user-plus")
 FIRST_NAME = (By.XPATH, "//input[@formcontrolname='firstName']")
 LAST_NAME = (By.XPATH, "//input[@formcontrolname='lastName']")
 EMAIL = (By.XPATH, "//input[@formcontrolname='email']")
