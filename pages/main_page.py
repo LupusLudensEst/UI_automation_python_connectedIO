@@ -122,7 +122,7 @@ class MainPage(Page):
         expected_text = user
         actual_text = wait.until(EC.presence_of_element_located((By.LINK_TEXT, user))).text
         assert expected_text in actual_text
-        print(f'Text is here: "{actual_text}" ')
+        print(f'Expected {user}, and got "{actual_text}" ')
 
         # Sleep to see what we have
         sleep(2)
