@@ -1,9 +1,12 @@
-# Created by rapid at 8/27/2020
-Feature: # App's button Background works and after clicking there is a text "Background"
+# Created by rapid at 9/8/2020
+Feature: # Add New User
 
-  Scenario: # Click on About Us button. See how many there are submenu buttons.
-    # Click on the Background btn.
-    # Verify a text "Background" is here
+  Scenario: # Add New User
     Given Loginpage
-    Then Click on About Us button
-    Then Click on the Background button and verify there is a text Background on the newly open page
+    Then Login with the given credentials
+    Then Click on the Users button
+    Then Click on the Quick actions button
+    Then Select Add in the drop-down menu
+    Then Fill out the required fields
+    And Click on the Add button
+    Then Verify user Roman Ivanov is here

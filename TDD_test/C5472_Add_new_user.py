@@ -18,7 +18,7 @@ POP_UP_WNDW_OK_BTN = (By.CSS_SELECTOR, "button.swal2-confirm.btn.btn-outline-pri
 USERS = (By.CSS_SELECTOR, "i.fa.fa-users")
 QUICK_ACTIONS = (By.XPATH, "//button[@class='btn btn-default btn-sm dropdown-toggle dropdown-toggle']")
 ADD_MENU =  (By.CSS_SELECTOR, "i.fa.fa-user-plus")
-FIRST_NAME = (By.XPATH, "//input[@formcontrolname='firstName']") # (By.CSS_SELECTOR, "input.form-control.ng-pristine.ng-invalid.ng-touched")
+FIRST_NAME = (By.XPATH, "//input[@formcontrolname='firstName']")
 LAST_NAME = (By.XPATH, "//input[@formcontrolname='lastName']")
 EMAIL = (By.XPATH, "//input[@formcontrolname='email']")
 TELEPHONE = (By.XPATH, "//input[@formcontrolname='telephone']")
@@ -27,20 +27,16 @@ ADDRESS_1 = (By.XPATH, "//input[@formcontrolname='address1']")
 ADDRESS_2 = (By.XPATH, "//input[@formcontrolname='address2']")
 CITY = (By.XPATH, "//input[@formcontrolname='city']")
 ZIP_CODE = (By.XPATH, "//input[@formcontrolname='zipCode']")
-COUNTRY = (By.CSS_SELECTOR, "select.form-control.ng-touched.ng-dirty.ng-valid") # (By.XPATH, "//select[@formcontrolname='country']")
+COUNTRY = (By.CSS_SELECTOR, "select.form-control.ng-touched.ng-dirty.ng-valid")
 STATE = (By.XPATH, "//select[@formcontrolname='state']")
 ADD_BTN = (By.CSS_SELECTOR, "button.btn.btn-sm.btn-primary.px-4.py-2.text-uppercase")
-USERS_VERIFY = (By.CSS_SELECTOR, "a.text-primary.ng-star-inserted") # (By.CSS_SELECTOR, "tr.ng-star-inserted")  # (By.CSS_SELECTOR, "a.text-primary.ng-star-inserted")
-THREE_DOTS = (By.CSS_SELECTOR, "i.fas.fa-ellipsis-v")
-DELETE_BTN = (By.XPATH, "(//*[contains(text(),'Delete'])[12]") # (By.CSS_SELECTOR, "a.text-dark") # (By.CSS_SELECTOR, "i.fa.fa-trash")
+USERS_VERIFY = (By.CSS_SELECTOR, "a.text-primary.ng-star-inserted")
 
 # Explicit wait
 wait = WebDriverWait(driver, 15)
 
 # 1. Open the url
 driver.get( 'https://devcloud.connectedio.com' )
-# old_window = driver.current_window_handle
-# print(f'Old window: {old_window}')
 
 # 2. Send Login e-mail
 wait.until(EC.presence_of_element_located(LOGIN_EMAIL)).clear()
@@ -123,12 +119,6 @@ expected_text = 'Roman Ivanov'
 actual_text = wait.until(EC.presence_of_element_located((By.LINK_TEXT, 'Roman Ivanov'))).text
 assert expected_text in actual_text
 print(f'Text is here: "{actual_text}" ')
-
-# # 21. Delete user "Roman Ivanov"
-# # Click on three dots icon
-# wait.until(EC.element_to_be_clickable(THREE_DOTS)).click()
-# # Click on Delete
-# wait.until(EC.element_to_be_clickable(DELETE_BTN)).click()
 
 # Sleep to see what we have
 sleep(2)
