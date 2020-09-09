@@ -27,7 +27,7 @@ ZIP_CODE = (By.XPATH, "//input[@formcontrolname='zipCode']")
 COUNTRY = (By.CSS_SELECTOR, "select.form-control.ng-touched.ng-dirty.ng-valid")
 STATE = (By.XPATH, "//select[@formcontrolname='state']")
 ADD_BTN = (By.CSS_SELECTOR, "button.btn.btn-sm.btn-primary.px-4.py-2.text-uppercase")
-USERS_VERIFY = (By.CSS_SELECTOR, "a.text-primary.ng-star-inserted")
+TEXT_HR = (By.XPATH, "//td[@style='text-align: left;']")
 
 class MainPage(Page):
 
@@ -117,12 +117,12 @@ class MainPage(Page):
         # 19. Click on Add button
         wait.until(EC.element_to_be_clickable(ADD_BTN)).click()
 
-    def vrf_usr_is_hr(self, user):
+    def vrf_usr_is_hr(self, text_hr):
         wait = WebDriverWait(self.driver, 10)
-        expected_text = user
-        actual_text = wait.until(EC.presence_of_element_located((By.LINK_TEXT, user))).text
+        expected_text = text_hr
+        actual_text = wait.until(EC.presence_of_element_located((TEXT_HR))).text
         assert expected_text in actual_text
-        print(f'Expected {user}, and got "{actual_text}" ')
+        print(f'Expected {text_hr}, and got "{actual_text}" ')
 
         # Sleep to see what we have
         sleep(2)

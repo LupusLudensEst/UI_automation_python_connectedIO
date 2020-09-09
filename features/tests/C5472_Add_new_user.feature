@@ -9,4 +9,4 @@ Feature: # Add New User
     Then Select Add in the drop-down menu
     Then Fill out the required fields
     And Click on the Add button
-    Then Verify user Roman Ivanov is here
+    Then Verify the word Verification Pending is here

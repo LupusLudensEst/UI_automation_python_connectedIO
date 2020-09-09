@@ -49,9 +49,9 @@ def clck_n_add_btn(context):
     """
     context.app.main_page.clck_n_add_btn()
 
-@then("Verify user {user} is here")
-def vrf_usr_is_hr(context, user):
+@then("Verify the word {text_hr} is here")
+def vrf_usr_is_hr(context, text_hr):
     """
     Verify user Roman Ivanov is here
     """
-    context.app.main_page.vrf_usr_is_hr(user)
+    context.app.main_page.vrf_usr_is_hr(text_hr)

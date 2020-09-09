@@ -114,11 +114,16 @@ wait.until(EC.presence_of_element_located(STATE)).send_keys('New York')
 # 19. Click on Add button
 wait.until(EC.element_to_be_clickable(ADD_BTN)).click()
 
-# 20. Verify "Roman Ivanov" is here
-expected_text = 'Roman Ivanov'
-actual_text = wait.until(EC.presence_of_element_located((By.LINK_TEXT, 'Roman Ivanov'))).text
+# 20. Verify "Roman Ivanov" is here  "//td[@style='text-align: left;']"
+# expected_text = 'Roman Ivanov'
+# actual_text = wait.until(EC.presence_of_element_located((By.LINK_TEXT, 'Roman Ivanov'))).text
+# assert expected_text in actual_text
+# print(f'Text is here: "{actual_text}" ')
+
+expected_text = 'Verification Pending'
+actual_text = wait.until(EC.presence_of_element_located((By.XPATH, "//td[@style='text-align: left;']"))).text
 assert expected_text in actual_text
-print(f'Text is here: "{actual_text}" ')
+print(f'Expected {expected_text}, but got: "{actual_text}" ')
 
 # Sleep to see what we have
 sleep(2)
