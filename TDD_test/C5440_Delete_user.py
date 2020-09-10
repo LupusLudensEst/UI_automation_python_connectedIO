@@ -19,7 +19,8 @@ USERS = (By.CSS_SELECTOR, "i.fa.fa-users")
 ADMIN = (By.XPATH, "//b[contains(text(), 'admin')]")
 USER = (By.XPATH, "//b[contains(text(), 'user')]")
 THREE_DOTS = (By.ID, "dropdownBasic1")
-DELETE_BTN = (By.XPATH, "//a[@class='text-dark']")
+# DELETE_BTN = (By.XPATH, "//a[@class='text-dark']")
+DELETE_BTN = (By.XPATH, "(//i[@class='fa fa-trash'])")
 DELETE_OK_BTN = (By.CSS_SELECTOR, "button.swal2-confirm.btn.btn-outline-primary.btn-sm.btn-custom.swal2-styled")
 
 # Explicit wait
@@ -74,9 +75,11 @@ print(f'Total admins and users before delete: {total_users_admins_before_delete}
 wait.until(EC.element_to_be_clickable(THREE_DOTS)).click()
 
 # 9. Select "Delete" from the dropdown menu.
-last_index = len(wait.until(EC.presence_of_all_elements_located(DELETE_BTN)))
-print(f'Length of delete tuple: {last_index}')
-wait.until(EC.element_to_be_clickable(DELETE_BTN[last_index-3])).click()
+length_dlt_btn = len(wait.until(EC.presence_of_all_elements_located(DELETE_BTN)))
+tuple_dlt_btn = str(wait.until(EC.presence_of_all_elements_located(DELETE_BTN)))
+print(f'Length of Delete button tuple: {length_dlt_btn}')
+print(f'Tuple of Delete button tuple: {tuple_dlt_btn}')
+wait.until(EC.presence_of_element_located(DELETE_BTN[-1])).click()
 
 # 10. The pop-up dialog window "Delete user" appears after clicking on the "Delete" button.
 wait.until(EC.element_to_be_clickable(DELETE_OK_BTN)).click()
