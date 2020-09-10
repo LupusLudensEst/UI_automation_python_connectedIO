@@ -52,6 +52,6 @@ def clck_n_add_btn(context):
 @then("Verify the word {text_hr} is here")
 def vrf_usr_is_hr(context, text_hr):
     """
-    Verify user Roman Ivanov is here
+    Verify the word Verification Pending is here
     """
     context.app.main_page.vrf_usr_is_hr(text_hr)
