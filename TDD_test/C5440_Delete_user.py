@@ -20,7 +20,10 @@ ADMIN = (By.XPATH, "//b[contains(text(), 'admin')]")
 USER = (By.XPATH, "//b[contains(text(), 'user')]")
 THREE_DOTS = (By.ID, "dropdownBasic1")
 # DELETE_BTN = (By.XPATH, "//a[@class='text-dark']")
-DELETE_BTN = (By.XPATH, "(//i[@class='fa fa-trash'])")
+# DELETE_BTN = (By.XPATH, "(//i[@class='fa fa-trash'])")
+# DELETE_BTN = (By.XPATH, "//a[@class='text-dark']/i[@class='fa fa-trash']")
+# DELETE_BTN = (By.XPATH, "//*[contains(text(), 'Delete')]")
+DELETE_BTN = (By.CSS_SELECTOR, "a.text-dark>i.fa.fa-trash")
 DELETE_OK_BTN = (By.CSS_SELECTOR, "button.swal2-confirm.btn.btn-outline-primary.btn-sm.btn-custom.swal2-styled")
 
 # Explicit wait
@@ -45,6 +48,10 @@ wait.until(EC.element_to_be_clickable(POP_UP_WNDW_OK_BTN)).click()
 
 # 6. Click on Users button
 wait.until(EC.element_to_be_clickable(USERS)).click()
+
+# get the list of iframes present on the web page using tag "iframe"
+seq = driver.find_elements_by_tag_name('iframe')
+print("1. No of frames present in the web page are: ", len(seq))
 
 # 7. Make sure there are at list two Admins and one User role in the list of users
 expected_text = 'ADMIN'
@@ -74,12 +81,14 @@ print(f'Total admins and users before delete: {total_users_admins_before_delete}
 # Click on the "Settings" (three vertical dots) from the rightmost side of the user.
 wait.until(EC.element_to_be_clickable(THREE_DOTS)).click()
 
+# get the list of iframes present on the web page using tag "iframe"
+seq = driver.find_elements_by_tag_name('iframe')
+print("2. No of frames present in the web page are: ", len(seq))
+
 # 9. Select "Delete" from the dropdown menu.
 length_dlt_btn = len(wait.until(EC.presence_of_all_elements_located(DELETE_BTN)))
-tuple_dlt_btn = str(wait.until(EC.presence_of_all_elements_located(DELETE_BTN)))
 print(f'Length of Delete button tuple: {length_dlt_btn}')
-print(f'Tuple of Delete button tuple: {tuple_dlt_btn}')
-wait.until(EC.presence_of_element_located(DELETE_BTN[-1])).click()
+wait.until(EC.visibility_of_element_located(DELETE_BTN)).click()
 
 # 10. The pop-up dialog window "Delete user" appears after clicking on the "Delete" button.
 wait.until(EC.element_to_be_clickable(DELETE_OK_BTN)).click()
