@@ -28,6 +28,11 @@ COUNTRY = (By.CSS_SELECTOR, "select.form-control.ng-touched.ng-dirty.ng-valid")
 STATE = (By.XPATH, "//select[@formcontrolname='state']")
 ADD_BTN = (By.CSS_SELECTOR, "button.btn.btn-sm.btn-primary.px-4.py-2.text-uppercase")
 TEXT_HR = (By.XPATH, "//td[@style='text-align: left;']")
+ADMIN = (By.XPATH, "//b[contains(text(), 'admin')]")
+USER = (By.XPATH, "//b[contains(text(), 'user')]")
+THREE_DOTS = (By.ID, "dropdownBasic1")
+DELETE_BTN = (By.XPATH, "//div[@class='dropdown']//a[contains(text(), 'Delete')]")
+DELETE_OK_BTN = (By.CSS_SELECTOR, "button.swal2-confirm.btn.btn-outline-primary.btn-sm.btn-custom.swal2-styled")
 
 class MainPage(Page):
 
@@ -130,4 +135,69 @@ class MainPage(Page):
         # Driver quit
         self.driver.quit()
 
+    def admns_n_usrs(self):
+        # 7. Make sure there are at list two Admins and one User role in the list of users
+        wait = WebDriverWait(self.driver, 15)
+        expected_text = 'ADMIN'
+        actual_text = wait.until(EC.presence_of_element_located((ADMIN))).text
+        assert expected_text in actual_text
+        print(f'Expected {expected_text}, but got: "{actual_text}" ')
+        len_admins = len(wait.until(EC.presence_of_all_elements_located((ADMIN))))
+        if len_admins >= 2:
+            print(f'ADMINS >=2, OK, there are: {len_admins} admins')
+        else:
+            print(f'ADMINS !>=2, NOT OK, there are: {len_admins}')
+
+        expected_text = 'USER'
+        actual_text = wait.until(EC.presence_of_element_located((USER))).text
+        assert expected_text in actual_text
+        print(f'Expected {expected_text}, but got: "{actual_text}" ')
+        len_users = len(wait.until(EC.presence_of_all_elements_located((USER))))
+        if len_users >= 2:
+            print(f'USERS >=1, OK, there are: {len_users} users')
+        else:
+            print(f'USERS !>=1, NOT OK, there are: {len_users} users')
+
+        total_users_admins_before_delete = len_admins + len_users
+        print(f'Total admins and users before delete: {total_users_admins_before_delete}')
+
+    def take_usr_t_dlt(self):
+        # 8. Choose any username with Admin or User role except yours.
+        # Click on the "Settings" (three vertical dots) from the rightmost side of the user.
+        wait = WebDriverWait(self.driver, 15)
+        wait.until(EC.element_to_be_clickable(THREE_DOTS)).click()
+
+    def dlt_drp_dwn_mn(self):
+        # 9. Select "Delete" from the dropdown menu.
+        wait = WebDriverWait(self.driver, 15)
+        wait.until(EC.visibility_of_element_located(DELETE_BTN)).click()
+
+    def cnfrm_dlt(self):
+        # 10. The pop-up dialog window "Delete user" appears after clicking on the "Delete" button.
+        wait = WebDriverWait(self.driver, 15)
+        wait.until(EC.element_to_be_clickable(DELETE_OK_BTN)).click()
+
+    def vrf_usr_dltd(self):
+        # 11. The "Users" page has opened and user is not in the list of users.
+        wait = WebDriverWait(self.driver, 15)
+        len_admins = len(wait.until(EC.presence_of_all_elements_located((ADMIN))))
+        len_users = len(wait.until(EC.presence_of_all_elements_located((USER))))
+        total_users_admins_before_delete = len_admins + len_users
+        self.driver.refresh()
+        len_admins = len(wait.until(EC.presence_of_all_elements_located((ADMIN))))
+        len_users = len(wait.until(EC.presence_of_all_elements_located((USER))))
+        total_admins_users_after_delete = len_admins + len_users
+        if total_users_admins_before_delete - total_admins_users_after_delete == 1:
+            print(
+                f'Delete is OK: {total_users_admins_before_delete} - {total_admins_users_after_delete} = {total_users_admins_before_delete - total_admins_users_after_delete}')
+        else:
+            print(f'Delete is not OK')
+        print(f'Total admins and users after delete: {total_admins_users_after_delete}')
+
+
+        # Sleep to see what we have
+        sleep(2)
+
+        # Driver quit
+        self.driver.quit()
 
