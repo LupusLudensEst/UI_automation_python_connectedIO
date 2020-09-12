@@ -1,7 +1,7 @@
 # Created by rapid at 9/11/2020
-Feature: # Add New User
+Feature: # Delete User
 
-  Scenario: # Add New User
+  Scenario: # Delete User
     Given Loginpage
     Then Login with the given credentials
     Then Click on the Users button
