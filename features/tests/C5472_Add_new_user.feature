@@ -1,7 +1,7 @@
 # Created by rapid at 9/8/2020
-Feature: # Add New User
+Feature: # C5472 Add New User
 
-  Scenario: # Add New User
+  Scenario: # C5472 Add New User
     Given Loginpage
     Then Login with the given credentials
     Then Click on the Users button
