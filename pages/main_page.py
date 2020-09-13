@@ -5,12 +5,14 @@ from pages.base_page import Page
 from selenium.webdriver.support.wait import WebDriverWait
 from random import randint
 from time import sleep
+from selenium.webdriver.common.action_chains import ActionChains
 
 # Locators
 LOGIN_EMAIL = (By.XPATH, "//input[@placeholder='Email address']")
 LOGIN_PASSWORD = (By.XPATH, "//input[@placeholder='Password']")
 LOGIN_BTN = (By.CSS_SELECTOR, "button.btn.btn-primary.text-uppercase.w-100.font-weight-bold.gradient-btn.shadow-1.border-0")
-POP_UP_WNDW_OK_BTN = (By.CSS_SELECTOR, "button.swal2-confirm.btn.btn-outline-primary.btn-sm.btn-custom.swal2-styled")
+# POP_UP_WNDW_OK_BTN = (By.CSS_SELECTOR, "button.swal2-confirm.btn.btn-outline-primary.btn-sm.btn-custom.swal2-styled")
+POP_UP_WNDW_OK_BTN = (By.XPATH, "//div[@class='swal2-actions']//button[@class='swal2-confirm btn btn-outline-primary btn-sm btn-custom swal2-styled']")
 USERS = (By.CSS_SELECTOR, "i.fa.fa-users")
 # QUICK_ACTIONS = (By.XPATH, "//button[@class='btn btn-default btn-sm dropdown-toggle dropdown-toggle']")
 QUICK_ACTIONS = (By.XPATH, "//div[@class='btn-group action-button dropdown']//span[contains(text(), 'Quick actions')]")
@@ -34,6 +36,9 @@ THREE_DOTS = (By.ID, "dropdownBasic1")
 DELETE_BTN = (By.XPATH, "//div[@class='dropdown']//a[contains(text(), 'Delete')]")
 DELETE_OK_BTN = (By.CSS_SELECTOR, "button.swal2-confirm.btn.btn-outline-primary.btn-sm.btn-custom.swal2-styled")
 INVLD_LGN_PSWRD_HR = (By.XPATH, "//div[contains(text(), 'Invalid Login or Password')]")
+CLCK_TRNGL = (By.CSS_SELECTOR, "i.fas.fa-chevron-right")
+USR_NM = (By.CSS_SELECTOR, "a.dropdown-toggle.user-name")
+LGT_BTN = (By.CSS_SELECTOR, "i.fas.fa-power-off")
 
 class MainPage(Page):
 
@@ -223,6 +228,42 @@ class MainPage(Page):
         print(actual_text)
         assert expected_text in actual_text
         print(f'Expected {expected_text}, but got: "{actual_text}" ')
+
+        # Sleep to see what we have
+        sleep(2)
+
+        # Driver quit
+        self.driver.quit()
+
+    def clck_usr_nm(self):
+        # 6. Click on triangle to enter the user
+        wait = WebDriverWait(self.driver, 15)
+        target = wait.until(EC.element_to_be_clickable(CLCK_TRNGL))
+        actions = ActionChains(self.driver)
+        actions.move_to_element(target)
+        sleep(2)
+        actions.click(target)
+        actions.perform()
+
+        # 7. Click on the User name in the Sidebar menu
+        wait.until(EC.element_to_be_clickable(USR_NM)).click()
+
+    def clck_lgt_btn(self):
+        # 8. Hover over the "Logout" button in the dropdown menu and click on the button "Logout"
+        wait = WebDriverWait(self.driver, 15)
+        wait.until(EC.element_to_be_clickable(LGT_BTN)).click()
+        self.driver.refresh()
+
+    def vrf_lgn_pg_opn(self, url):
+        # 9. Verify https://devcloud.connectedio.com is open
+        wait = WebDriverWait(self.driver, 15)
+        expected_text = url
+        actual_text = self.driver.current_url
+        assert expected_text in actual_text
+        if expected_text == actual_text:
+            print(f'Expected {expected_text}, and got: "{actual_text}" ')
+        else:
+            print(f'Expected {expected_text}, but got: "{actual_text}" ')
 
         # Sleep to see what we have
         sleep(2)

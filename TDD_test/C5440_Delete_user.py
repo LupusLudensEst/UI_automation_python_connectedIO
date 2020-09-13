@@ -6,13 +6,13 @@ from selenium.webdriver.support import expected_conditions as EC
 
 driver = webdriver.Chrome()
 driver.maximize_window()
-driver.implicitly_wait(20)
 
 # Locators
 LOGIN_EMAIL = (By.XPATH, "//input[@placeholder='Email address']")
 LOGIN_PASSWORD = (By.XPATH, "//input[@placeholder='Password']")
 LOGIN_BTN = (By.CSS_SELECTOR, "button.btn.btn-primary.text-uppercase.w-100.font-weight-bold.gradient-btn.shadow-1.border-0")
-POP_UP_WNDW_OK_BTN = (By.CSS_SELECTOR, "button.swal2-confirm.btn.btn-outline-primary.btn-sm.btn-custom.swal2-styled")
+# POP_UP_WNDW_OK_BTN = (By.CSS_SELECTOR, "button.swal2-confirm.btn.btn-outline-primary.btn-sm.btn-custom.swal2-styled")
+POP_UP_WNDW_OK_BTN = (By.XPATH, "//div[@class='swal2-actions']//button[@class='swal2-confirm btn btn-outline-primary btn-sm btn-custom swal2-styled']")
 USERS = (By.CSS_SELECTOR, "i.fa.fa-users")
 ADMIN = (By.XPATH, "//b[contains(text(), 'admin')]")
 USER = (By.XPATH, "//b[contains(text(), 'user')]")
