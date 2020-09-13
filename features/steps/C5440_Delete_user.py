@@ -1,8 +1,5 @@
 from behave import *
 
-use_step_matcher("re")
-
-
 @then("Make sure there are at least two Admins and one User role in the list of users")
 def admns_n_usrs(context):
     """

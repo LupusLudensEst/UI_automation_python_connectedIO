@@ -5,7 +5,6 @@ from pages.base_page import Page
 from selenium.webdriver.support.wait import WebDriverWait
 from random import randint
 from time import sleep
-from selenium.webdriver.common.action_chains import ActionChains
 
 # Locators
 LOGIN_EMAIL = (By.XPATH, "//input[@placeholder='Email address']")
@@ -34,6 +33,7 @@ USER = (By.XPATH, "//b[contains(text(), 'user')]")
 THREE_DOTS = (By.ID, "dropdownBasic1")
 DELETE_BTN = (By.XPATH, "//div[@class='dropdown']//a[contains(text(), 'Delete')]")
 DELETE_OK_BTN = (By.CSS_SELECTOR, "button.swal2-confirm.btn.btn-outline-primary.btn-sm.btn-custom.swal2-styled")
+INVLD_LGN_PSWRD_HR = (By.XPATH, "//div[contains(text(), 'Invalid Login or Password')]")
 
 class MainPage(Page):
 
@@ -195,10 +195,37 @@ class MainPage(Page):
             print(f'Delete is not OK')
         print(f'Total admins and users after delete: {total_admins_users_after_delete}')
 
-
         # Sleep to see what we have
         sleep(2)
 
         # Driver quit
         self.driver.quit()
 
+    def entr_vld_wrng_eml(self, email):
+        # 1. Enter valid, but the incorrect email address in the line "Email address"
+        wait = WebDriverWait(self.driver, 15)
+        # Send Login e-mail
+        wait.until(EC.presence_of_element_located(LOGIN_EMAIL)).clear()
+        wait.until(EC.presence_of_element_located(LOGIN_EMAIL)).send_keys(email)
+
+    def entr_vld_crct_pswd(self, pswd):
+        # 2. Send Correct Password
+        wait = WebDriverWait(self.driver, 15)
+        wait.until(EC.presence_of_element_located(LOGIN_PASSWORD)).clear()
+        wait.until(EC.presence_of_element_located(LOGIN_PASSWORD)).send_keys(pswd)
+        # Click on Login button
+        wait.until(EC.element_to_be_clickable(LOGIN_BTN)).click()
+
+    def vrf_invld_lgn_r_pswd_hr(self, expected_text):
+        # 3. Verify Invalid Login or Password is here
+        wait = WebDriverWait(self.driver, 15)
+        actual_text = wait.until(EC.presence_of_element_located((INVLD_LGN_PSWRD_HR))).text
+        print(actual_text)
+        assert expected_text in actual_text
+        print(f'Expected {expected_text}, but got: "{actual_text}" ')
+
+        # Sleep to see what we have
+        sleep(2)
+
+        # Driver quit
+        self.driver.quit()
