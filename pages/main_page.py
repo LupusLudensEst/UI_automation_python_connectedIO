@@ -39,6 +39,7 @@ INVLD_LGN_PSWRD_HR = (By.XPATH, "//div[contains(text(), 'Invalid Login or Passwo
 CLCK_TRNGL = (By.CSS_SELECTOR, "i.fas.fa-chevron-right")
 USR_NM = (By.CSS_SELECTOR, "a.dropdown-toggle.user-name")
 LGT_BTN = (By.CSS_SELECTOR, "i.fas.fa-power-off")
+CLCK_LGT = (By.CSS_SELECTOR, "a.icon-menu.d-none.d-sm-block")
 
 class MainPage(Page):
 
@@ -256,7 +257,6 @@ class MainPage(Page):
 
     def vrf_lgn_pg_opn(self, url):
         # 9. Verify https://devcloud.connectedio.com is open
-        wait = WebDriverWait(self.driver, 15)
         expected_text = url
         actual_text = self.driver.current_url
         assert expected_text in actual_text
@@ -264,6 +264,21 @@ class MainPage(Page):
             print(f'Expected {expected_text}, and got: "{actual_text}" ')
         else:
             print(f'Expected {expected_text}, but got: "{actual_text}" ')
+
+        # Sleep to see what we have
+        sleep(2)
+
+        # Driver quit
+        self.driver.quit()
+
+    def clck_hdr_lgt_btn(self):
+        # Hover over the "Logout" button at the right corner of the Header and click on the button "Logout"
+        wait = WebDriverWait(self.driver, 15)
+        target = wait.until(EC.element_to_be_clickable(CLCK_LGT))
+        actions = ActionChains(self.driver)
+        actions.move_to_element(target)
+        actions.click(target)
+        actions.perform()
 
         # Sleep to see what we have
         sleep(2)
