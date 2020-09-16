@@ -40,6 +40,11 @@ CLCK_TRNGL = (By.CSS_SELECTOR, "i.fas.fa-chevron-right")
 USR_NM = (By.CSS_SELECTOR, "a.dropdown-toggle.user-name")
 LGT_BTN = (By.CSS_SELECTOR, "i.fas.fa-power-off")
 CLCK_LGT = (By.CSS_SELECTOR, "a.icon-menu.d-none.d-sm-block")
+CHNG_PSWD = (By.XPATH, "//i[@class='fas fa-unlock-alt']")
+NW_VLD_PSWD = (By.XPATH, "//input[@placeholder='New Password']")
+CNFRM_NW_VLD_PSWD = (By. XPATH, "//input[@placeholder='Confirm New Password']")
+SV_BTN = (By.CSS_SELECTOR, "i.fa.fa-save.mr-1")
+SCSS_TXT_HR = (By.CSS_SELECTOR, "span.alert.w-100.alert-warning")
 
 class MainPage(Page):
 
@@ -285,3 +290,47 @@ class MainPage(Page):
 
         # Driver quit
         self.driver.quit()
+
+    def go_to_chng_pswrd_pg(self):
+        # Click on triangle to enter the user
+        wait = WebDriverWait(self.driver, 15)
+        target = wait.until(EC.element_to_be_clickable(CLCK_TRNGL))
+        actions = ActionChains(self.driver)
+        actions.move_to_element(target)
+        sleep(2)
+        actions.click(target)
+        actions.perform()
+
+        # Click on the User name in the Sidebar menu
+        wait.until(EC.element_to_be_clickable(USR_NM)).click()
+
+        # Click on the Change Password button
+        wait.until(EC.element_to_be_clickable(CHNG_PSWD)).click()
+
+    def ntr_old_pswd(self, old_pswd):
+        # Enter the old password in the field "New Password" manicpiano731
+        wait = WebDriverWait(self.driver, 15)
+        wait.until(EC.presence_of_element_located(NW_VLD_PSWD)).clear()
+        wait.until(EC.presence_of_element_located(NW_VLD_PSWD)).send_keys(old_pswd)
+
+    def cfrm_old_pswd(self, old_pswd):
+        # Enter the same old password in the field "Confirm New Password"
+        wait = WebDriverWait(self.driver, 15)
+        wait.until(EC.visibility_of_element_located(CNFRM_NW_VLD_PSWD)).clear()
+        wait.until(EC.visibility_of_element_located(CNFRM_NW_VLD_PSWD)).send_keys(old_pswd)
+
+    def clck_on_btn_save(self):
+        # Click on the button "Save"
+        wait = WebDriverWait(self.driver, 15)
+        wait.until(EC.element_to_be_clickable(SV_BTN)).click()
+
+        # Sleep to see what we have
+        sleep(2)
+
+        # Driver quit
+        self.driver.quit()
+
+
+
+
+

@@ -49,7 +49,7 @@ def clck_n_add_btn(context):
     """
     context.app.main_page.clck_n_add_btn()
 
-@then("Verify the word {text_hr} is here")
+@then("Verify the words {text_hr} is here")
 def vrf_usr_is_hr(context, text_hr):
     """
     Verify the word Verification Pending is here

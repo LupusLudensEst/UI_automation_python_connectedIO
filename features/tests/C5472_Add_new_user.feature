@@ -9,4 +9,4 @@ Feature: # C5472 Add New User
     Then Select Add in the drop-down menu
     Then Fill out the required fields
     And Click on the Add button
-    Then Verify the word Verification Pending is here
+    Then Verify the words Verification Pending is here
