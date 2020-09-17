@@ -119,7 +119,7 @@ wait.until(EC.element_to_be_clickable(ADD_BTN)).click()
 expected_text = 'Verification Pending'
 actual_text = wait.until(EC.presence_of_element_located((By.XPATH, "//td[@style='text-align: left;']"))).text
 assert expected_text in actual_text
-print(f'Expected {expected_text}, but got: "{actual_text}" ')
+print(f'Expected {expected_text}, and got: "{actual_text}" ')
 
 # Sleep to see what we have
 sleep(2)

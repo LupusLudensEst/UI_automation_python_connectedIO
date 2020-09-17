@@ -6,6 +6,7 @@ from selenium.webdriver.support.wait import WebDriverWait
 from random import randint
 from time import sleep
 from selenium.webdriver.common.action_chains import ActionChains
+from selenium import webdriver
 
 # Locators
 LOGIN_EMAIL = (By.XPATH, "//input[@placeholder='Email address']")
@@ -14,7 +15,6 @@ LOGIN_BTN = (By.CSS_SELECTOR, "button.btn.btn-primary.text-uppercase.w-100.font-
 # POP_UP_WNDW_OK_BTN = (By.CSS_SELECTOR, "button.swal2-confirm.btn.btn-outline-primary.btn-sm.btn-custom.swal2-styled")
 POP_UP_WNDW_OK_BTN = (By.XPATH, "//div[@class='swal2-actions']//button[@class='swal2-confirm btn btn-outline-primary btn-sm btn-custom swal2-styled']")
 USERS = (By.CSS_SELECTOR, "i.fa.fa-users")
-# QUICK_ACTIONS = (By.XPATH, "//button[@class='btn btn-default btn-sm dropdown-toggle dropdown-toggle']")
 QUICK_ACTIONS = (By.XPATH, "//div[@class='btn-group action-button dropdown']//span[contains(text(), 'Quick actions')]")
 ADD_MENU = (By.CSS_SELECTOR, "i.fa.fa-user-plus")
 FIRST_NAME = (By.XPATH, "//input[@formcontrolname='firstName']")
@@ -45,6 +45,16 @@ NW_VLD_PSWD = (By.XPATH, "//input[@placeholder='New Password']")
 CNFRM_NW_VLD_PSWD = (By. XPATH, "//input[@placeholder='Confirm New Password']")
 SV_BTN = (By.CSS_SELECTOR, "i.fa.fa-save.mr-1")
 SCSS_TXT_HR = (By.CSS_SELECTOR, "span.alert.w-100.alert-warning")
+DVC_ONLN = (By.XPATH, "(//div[@class='body information-card'])[1]")
+DVC_OFFLN = (By.XPATH, "(//div[@class='body information-card'])[2]")
+INVNTR = (By.XPATH, "(//div[@class='body information-card'])[3]")
+ALRT_NTFCTN = (By.XPATH, "(//div[@class='body information-card'])[4]")
+DT_USG = (By.XPATH, "//h6[@class='tile-title text-uppercase']")
+DT_USG_DTLS = (By.XPATH, "(//h2[@class='ng-tns-c6-0'])[1]")
+NTFCTNS_ALRTS = (By.XPATH, "(//h2[@class='ng-tns-c6-0'])[2]")
+GRPS = (By.XPATH, "(//h2[@class='ng-tns-c6-0'])[3]")
+SGNL_STRNTH = (By.XPATH, "(//h2[@class='ng-tns-c6-0'])[4]")
+DVC_LCTN = (By.XPATH, "//div[@class='col-6']//h2[@class='ng-tns-c6-0']")
 
 class MainPage(Page):
 
@@ -153,7 +163,7 @@ class MainPage(Page):
         expected_text = 'ADMIN'
         actual_text = wait.until(EC.presence_of_element_located((ADMIN))).text
         assert expected_text in actual_text
-        print(f'Expected {expected_text}, but got: "{actual_text}" ')
+        print(f'Expected {expected_text}, and got: "{actual_text}" ')
         len_admins = len(wait.until(EC.presence_of_all_elements_located((ADMIN))))
         if len_admins >= 2:
             print(f'ADMINS >=2, OK, there are: {len_admins} admins')
@@ -163,7 +173,7 @@ class MainPage(Page):
         expected_text = 'USER'
         actual_text = wait.until(EC.presence_of_element_located((USER))).text
         assert expected_text in actual_text
-        print(f'Expected {expected_text}, but got: "{actual_text}" ')
+        print(f'Expected {expected_text}, and got: "{actual_text}" ')
         len_users = len(wait.until(EC.presence_of_all_elements_located((USER))))
         if len_users >= 2:
             print(f'USERS >=1, OK, there are: {len_users} users')
@@ -233,7 +243,7 @@ class MainPage(Page):
         actual_text = wait.until(EC.presence_of_element_located((INVLD_LGN_PSWRD_HR))).text
         print(actual_text)
         assert expected_text in actual_text
-        print(f'Expected {expected_text}, but got: "{actual_text}" ')
+        print(f'Expected {expected_text}, and got: "{actual_text}" ')
 
         # Sleep to see what we have
         sleep(2)
@@ -268,7 +278,7 @@ class MainPage(Page):
         if expected_text == actual_text:
             print(f'Expected {expected_text}, and got: "{actual_text}" ')
         else:
-            print(f'Expected {expected_text}, but got: "{actual_text}" ')
+            print(f'Expected {expected_text}, and got: "{actual_text}" ')
 
         # Sleep to see what we have
         sleep(2)
@@ -329,6 +339,87 @@ class MainPage(Page):
 
         # Driver quit
         self.driver.quit()
+
+    def ll_lmnts_r_prsnt(self):
+        # 6. Check if all elements are present.
+        # 6.1. Cards: "DEVICE ONLINE", 6.2. "DEVICE OFFLINE",
+        # 6.3. "INVENTORY", 6.4. "ALERT/NOTIFICATION", 6.5. "DATA USAGE"
+        wait = WebDriverWait(self.driver, 15)
+        # 1
+        expected_text = 'DEVICE ONLINE'
+        actual_text = wait.until(EC.presence_of_element_located((DVC_ONLN))).text
+        assert expected_text in actual_text
+        print(f'Expected {expected_text}, and got: "{actual_text}" ')
+        # 2
+        expected_text = 'DEVICE OFFLINE'
+        actual_text = wait.until(EC.presence_of_element_located((DVC_OFFLN))).text
+        assert expected_text in actual_text
+        print(f'Expected {expected_text}, and got: "{actual_text}" ')
+        # 3
+        expected_text = 'INVENTORY'
+        actual_text = wait.until(EC.presence_of_element_located((INVNTR))).text
+        assert expected_text in actual_text
+        print(f'Expected {expected_text}, and got: "{actual_text}" ')
+        # 4
+        expected_text = 'ALERT/NOTIFICATION'
+        actual_text = wait.until(EC.presence_of_element_located((ALRT_NTFCTN))).text
+        assert expected_text in actual_text
+        print(f'Expected {expected_text}, and got: "{actual_text}" ')
+        # 5
+        expected_text = 'DATA USAGE'
+        actual_text = wait.until(EC.presence_of_element_located((DT_USG))).text
+        assert expected_text in actual_text
+        print(f'Expected {expected_text}, and got: "{actual_text}" ')
+
+    def ll_sctns_r_prsnt(self):
+        # 7. Check if sections are present.
+        # 7.1 "Data Usage Details", 7.2. "Notifications/Alerts",
+        # 7.3. "Groups", 7.4. "Signal Strength", 7.5. "Device Location".
+        # 1
+        wait = WebDriverWait(self.driver, 15)
+        expected_text = 'Data Usage Details'
+        actual_text = wait.until(EC.presence_of_element_located((DT_USG_DTLS))).text
+        assert expected_text in actual_text
+        print(f'Expected {expected_text}, and got: "{actual_text}" ')
+        # 2
+        expected_text = 'Notifications / Alerts'
+        actual_text = wait.until(EC.presence_of_element_located((NTFCTNS_ALRTS))).text
+        assert expected_text in actual_text
+        print(f'Expected {expected_text}, and got: "{actual_text}" ')
+        # 3
+        expected_text = 'Groups'
+        actual_text = wait.until(EC.presence_of_element_located((GRPS))).text
+        assert expected_text in actual_text
+        print(f'Expected {expected_text}, and got: "{actual_text}" ')
+        # 4
+        expected_text = 'Signal Strength'
+        actual_text = wait.until(EC.presence_of_element_located((SGNL_STRNTH))).text
+        assert expected_text in actual_text
+        print(f'Expected {expected_text}, and got: "{actual_text}" ')
+        # 5
+        expected_text = 'Device   Locations'
+        actual_text = wait.until(EC.presence_of_element_located((DVC_LCTN))).text
+        assert expected_text in actual_text
+        print(f'Expected {expected_text}, and got: "{actual_text}" ')
+
+        # Pictures
+        options = webdriver.ChromeOptions()
+        options.add_argument('--ignore-certificate-errors')
+        options.add_argument("--test-type")
+        options.binary_location = "/usr/bin/chromium"
+        # driver = webdriver.Chrome(chrome_options=options)
+        images = self.driver.find_elements_by_tag_name('img')
+        pics_on_page = len(images)
+        for image in images:
+            print(image.get_attribute('src'))
+        print(f'There are: {pics_on_page} images on the page')
+
+        # Sleep to see what we have
+        sleep(2)
+
+        # Driver quit
+        self.driver.quit()
+
 
 
 

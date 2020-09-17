@@ -37,7 +37,7 @@ expected_text = 'Invalid Login or Password'
 actual_text = wait.until(EC.presence_of_element_located((INVLD_LGN_PSWRD_HR))).text
 print(actual_text)
 assert expected_text in actual_text
-print(f'Expected {expected_text}, but got: "{actual_text}" ')
+print(f'Expected {expected_text}, and got: "{actual_text}" ')
 
 # Sleep to see what we have
 sleep(2)

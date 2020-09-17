@@ -47,7 +47,7 @@ wait.until(EC.element_to_be_clickable(USERS)).click()
 expected_text = 'ADMIN'
 actual_text = wait.until(EC.presence_of_element_located((ADMIN))).text
 assert expected_text in actual_text
-print(f'Expected {expected_text}, but got: "{actual_text}" ')
+print(f'Expected {expected_text}, and got: "{actual_text}" ')
 len_admins = len(wait.until(EC.presence_of_all_elements_located((ADMIN))))
 if len_admins >= 2:
     print(f'ADMINS >=2, OK, there are: {len_admins} admins')
@@ -57,7 +57,7 @@ else:
 expected_text = 'USER'
 actual_text = wait.until(EC.presence_of_element_located((USER))).text
 assert expected_text in actual_text
-print(f'Expected {expected_text}, but got: "{actual_text}" ')
+print(f'Expected {expected_text}, and got: "{actual_text}" ')
 len_users = len(wait.until(EC.presence_of_all_elements_located((USER))))
 if len_users >= 2:
     print(f'USERS >=1, OK, there are: {len_users} users')

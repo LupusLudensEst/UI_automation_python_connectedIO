@@ -7,13 +7,9 @@ $ pip uninstall behave
 $ pip3 install behave
 
 Запустить отчёт/Run report:
-$ behave -f allure_behave.formatter:AllureFormatter -o test_results/ features/tests/hw5.1_color_selection_loop.feature
 $ behave -f allure_behave.formatter:AllureFormatter -o test_results/ features/
 Загрузить отчёт/Upload report to browser:
 $ allure serve test_results/
-
-
-
 
 Если проблема: behave: error: format=allure_behave.formatter:AllureFormatter is unknown.
 $ pip install --upgrade pip
