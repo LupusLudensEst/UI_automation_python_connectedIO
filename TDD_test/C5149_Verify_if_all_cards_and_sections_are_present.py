@@ -12,7 +12,8 @@ LOGIN_EMAIL = (By.XPATH, "//input[@placeholder='Email address']")
 LOGIN_PASSWORD = (By.XPATH, "//input[@placeholder='Password']")
 LOGIN_BTN = (By.CSS_SELECTOR, "button.btn.btn-primary.text-uppercase.w-100.font-weight-bold.gradient-btn.shadow-1.border-0")
 POP_UP_WNDW_OK_BTN = (By.XPATH, "//div[@class='swal2-actions']//button[@class='swal2-confirm btn btn-outline-primary btn-sm btn-custom swal2-styled']")
-DVC_ONLN = (By.XPATH, "(//div[@class='body information-card'])[1]")
+DVC_ONLN = (By.CSS_SELECTOR, "div.number>span")
+DVC_ONLN_TXT = (By.XPATH, "(//div[@class='card overflowhidden number-chart d-flex flex-column'])[1]")
 DVC_OFFLN = (By.XPATH, "(//div[@class='body information-card'])[2]")
 INVNTR = (By.XPATH, "(//div[@class='body information-card'])[3]")
 ALRT_NTFCTN = (By.XPATH, "(//div[@class='body information-card'])[4]")
@@ -48,7 +49,7 @@ wait.until(EC.element_to_be_clickable(POP_UP_WNDW_OK_BTN)).click()
 # 6.3. "INVENTORY", 6.4. "ALERT/NOTIFICATION", 6.5. "DATA USAGE"
 #1
 expected_text = 'DEVICE ONLINE'
-actual_text = wait.until(EC.presence_of_element_located((DVC_ONLN))).text
+actual_text = wait.until(EC.presence_of_element_located((DVC_ONLN_TXT))).text
 assert expected_text in actual_text
 print(f'Expected {expected_text}, and got: "{actual_text}" ')
 #2

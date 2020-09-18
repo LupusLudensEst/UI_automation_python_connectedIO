@@ -12,7 +12,6 @@ from selenium import webdriver
 LOGIN_EMAIL = (By.XPATH, "//input[@placeholder='Email address']")
 LOGIN_PASSWORD = (By.XPATH, "//input[@placeholder='Password']")
 LOGIN_BTN = (By.CSS_SELECTOR, "button.btn.btn-primary.text-uppercase.w-100.font-weight-bold.gradient-btn.shadow-1.border-0")
-# POP_UP_WNDW_OK_BTN = (By.CSS_SELECTOR, "button.swal2-confirm.btn.btn-outline-primary.btn-sm.btn-custom.swal2-styled")
 POP_UP_WNDW_OK_BTN = (By.XPATH, "//div[@class='swal2-actions']//button[@class='swal2-confirm btn btn-outline-primary btn-sm btn-custom swal2-styled']")
 USERS = (By.CSS_SELECTOR, "i.fa.fa-users")
 QUICK_ACTIONS = (By.XPATH, "//div[@class='btn-group action-button dropdown']//span[contains(text(), 'Quick actions')]")
@@ -45,7 +44,8 @@ NW_VLD_PSWD = (By.XPATH, "//input[@placeholder='New Password']")
 CNFRM_NW_VLD_PSWD = (By. XPATH, "//input[@placeholder='Confirm New Password']")
 SV_BTN = (By.CSS_SELECTOR, "i.fa.fa-save.mr-1")
 SCSS_TXT_HR = (By.CSS_SELECTOR, "span.alert.w-100.alert-warning")
-DVC_ONLN = (By.XPATH, "(//div[@class='body information-card'])[1]")
+DVC_ONLN_TXT = (By.XPATH, "(//div[@class='card overflowhidden number-chart d-flex flex-column'])[1]")
+DVC_ONLN = (By.CSS_SELECTOR, "div.number>span")
 DVC_OFFLN = (By.XPATH, "(//div[@class='body information-card'])[2]")
 INVNTR = (By.XPATH, "(//div[@class='body information-card'])[3]")
 ALRT_NTFCTN = (By.XPATH, "(//div[@class='body information-card'])[4]")
@@ -55,6 +55,11 @@ NTFCTNS_ALRTS = (By.XPATH, "(//h2[@class='ng-tns-c6-0'])[2]")
 GRPS = (By.XPATH, "(//h2[@class='ng-tns-c6-0'])[3]")
 SGNL_STRNTH = (By.XPATH, "(//h2[@class='ng-tns-c6-0'])[4]")
 DVC_LCTN = (By.XPATH, "//div[@class='col-6']//h2[@class='ng-tns-c6-0']")
+DVC_MNGMNT_PRTL = (By.XPATH, "//h5[@class='fw-300 m-0 pl-4 text-truncate']")
+ONLN_HERE = (By.CSS_SELECTOR, "span.pr-2")
+# DVCS_TBL = (By.XPATH, "//div[@class='col-lg-12 has-table-controls ng-star-inserted']")
+# DVCS_TBL = (By.XPATH, "//i[@class='fa fa-circle text-success ng-star-inserted']")
+DVCS_TBL = (By.XPATH, "//input[@name='checkbox1']")
 
 class MainPage(Page):
 
@@ -347,7 +352,7 @@ class MainPage(Page):
         wait = WebDriverWait(self.driver, 15)
         # 1
         expected_text = 'DEVICE ONLINE'
-        actual_text = wait.until(EC.presence_of_element_located((DVC_ONLN))).text
+        actual_text = wait.until(EC.presence_of_element_located((DVC_ONLN_TXT))).text
         assert expected_text in actual_text
         print(f'Expected {expected_text}, and got: "{actual_text}" ')
         # 2
@@ -413,6 +418,60 @@ class MainPage(Page):
         for image in images:
             print(image.get_attribute('src'))
         print(f'There are: {pics_on_page} images on the page')
+
+        # Sleep to see what we have
+        sleep(2)
+
+        # Driver quit
+        self.driver.quit()
+
+    def clck_on_dvc_nln(self):
+        # Click on DEVICE ONLINE card
+        wait = WebDriverWait(self.driver, 15)
+        wait.until(EC.element_to_be_clickable(DVC_ONLN)).click()
+
+
+    def dvc_mngmnt_ptrl_hr(self, dvc_mngmnt_ptrl_hr):
+        # Verify words Device Management Portal are here
+        wait = WebDriverWait(self.driver, 15)
+        expected_text = dvc_mngmnt_ptrl_hr
+        actual_text = wait.until(EC.presence_of_element_located((DVC_MNGMNT_PRTL))).text
+        assert expected_text in actual_text
+        print(f'Expected {expected_text}, and got: "{actual_text}" ')
+
+    def onln_hr(self, onln_hr):
+        # Verify words Device Management Portal are here
+        wait = WebDriverWait(self.driver, 15)
+        expected_text = onln_hr
+        actual_text = wait.until(EC.presence_of_element_located((ONLN_HERE))).text
+        assert expected_text in actual_text
+        print(f'Expected {expected_text}, and got: "{actual_text}" ')
+
+        # Sleep to see what we have
+        sleep(2)
+
+        # Driver quit
+        self.driver.quit()
+
+    def vrf_qntty_is_the_same(self):
+        # Verify if the number of devices on the DEVICE ONLINE card should match the number of devices with online status on the Devices page
+        wait = WebDriverWait(self.driver, 15)
+
+        # 6. Pay attention to the number of devices on the "DEVICE ONLINE" card
+        sleep(2)
+        txt_frm_dvc_onln = wait.until(EC.presence_of_element_located(DVC_ONLN)).text
+        print(f'Number of devices from DEVICE ONLINE element: {txt_frm_dvc_onln}')
+
+        # 7. Click on DEVICE ONLINE card
+        wait.until(EC.element_to_be_clickable(DVC_ONLN)).click()
+
+        # 8. Count the number of devices with online status on the Devices page
+        len_tbl = len(wait.until(EC.presence_of_all_elements_located(DVCS_TBL)))
+        print(f'Quantity of the strings in the devices table: {len_tbl}')
+
+        # 9. Verify if the number of devices on the DEVICE ONLINE card should match the number of devices with online status on the Devices page
+        assert txt_frm_dvc_onln in str(len_tbl)
+        print(f'Expected {txt_frm_dvc_onln}, and got: "{str(len_tbl)}" ')
 
         # Sleep to see what we have
         sleep(2)
