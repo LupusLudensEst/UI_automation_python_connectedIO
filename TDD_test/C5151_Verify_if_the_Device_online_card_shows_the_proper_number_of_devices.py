@@ -3,7 +3,6 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-import re
 
 driver = webdriver.Chrome()
 driver.maximize_window()
@@ -14,10 +13,8 @@ LOGIN_PASSWORD = (By.XPATH, "//input[@placeholder='Password']")
 LOGIN_BTN = (By.CSS_SELECTOR, "button.btn.btn-primary.text-uppercase.w-100.font-weight-bold.gradient-btn.shadow-1.border-0")
 POP_UP_WNDW_OK_BTN = (By.XPATH, "//div[@class='swal2-actions']//button[@class='swal2-confirm btn btn-outline-primary btn-sm btn-custom swal2-styled']")
 DVC_ONLN = (By.CSS_SELECTOR, "div.number>span")
-# DVCS_TBL = (By.XPATH, "//div[@class='col-lg-12 has-table-controls ng-star-inserted']")
-# DVCS_TBL = (By.XPATH, "//i[@class='fa fa-circle text-success ng-star-inserted']")
+NO_DATA = (By.XPATH, "//div[@class='no-data']")
 DVCS_TBL = (By.XPATH, "//input[@name='checkbox1']")
-# DVCS_TBL = (By.CSS_SELECTOR, "table.table.table-stripped.table-space-sm.table-bordered.mb-0")
 
 # Explicit wait
 wait = WebDriverWait(driver, 15)
@@ -40,28 +37,36 @@ wait.until(EC.element_to_be_clickable(LOGIN_BTN)).click()
 wait.until(EC.element_to_be_clickable(POP_UP_WNDW_OK_BTN)).click()
 
 # 6. Pay attention to the number of devices on the "DEVICE ONLINE" card
-txt_frm_dvc_onln = wait.until(EC.element_to_be_clickable(DVC_ONLN)).text
-print(f'Number of devices from DEVICE ONLINE element: {txt_frm_dvc_onln}')
+sleep(2)
+txt_frm_dvc_onln = wait.until(EC.visibility_of_element_located(DVC_ONLN)).text
 
-# 7. Click on DEVICE ONLINE card
+# 7.1 Click on DEVICE ONLINE card
 wait.until(EC.element_to_be_clickable(DVC_ONLN)).click()
 
-# 8. Count the number of devices with online status on the Devices page
-len_tbl = len(wait.until(EC.presence_of_all_elements_located(DVCS_TBL)))
-print(f'Quantity of the strings in the devices table: {len_tbl}')
+# # 7.2 And if there are no data in Device Management Portal verify text No Data Available is here
+no_data_available = wait.until(EC.element_to_be_clickable(NO_DATA)).text
 
-# 9. Verify if the number of devices on the DEVICE ONLINE card should match the number of devices with online status on the Devices page
-assert txt_frm_dvc_onln in str(len_tbl)
-print(f'Expected {txt_frm_dvc_onln}, and got: "{str(len_tbl)}" ')
+# 7.3 If txt_frm_dvc_onln = 0 and no_data_available = 'No Data Available' stop and exit program
+if txt_frm_dvc_onln == '0' and no_data_available == 'No Data Available':
+    print(f'Number of devices from DEVICE ONLINE element: {txt_frm_dvc_onln}, type: {type(txt_frm_dvc_onln)};\nNo data avalable is here: {no_data_available}, type {type(no_data_available)}.')
+    # Driver quit
+    driver.quit()
+    # break
+else:
 
-# Sleep to see what we have
-sleep(2)
+    # 8. Count the number of devices with online status on the Devices page
+    len_tbl = len(wait.until(EC.presence_of_all_elements_located(DVCS_TBL)))
+    print(f'Quantity of the strings in the devices table: {len_tbl}')
 
-# Driver quit
-driver.quit()
+    # 9. Verify if the number of devices on the DEVICE ONLINE card should match the number of devices with online status on the Devices page
+    assert txt_frm_dvc_onln in str(len_tbl)
+    print(f'Expected {txt_frm_dvc_onln}, and got: "{str(len_tbl)}" ')
 
+    # Sleep to see what we have
+    sleep(2)
 
-
+    # Driver quit
+    driver.quit()
 
 
 
@@ -70,6 +75,7 @@ driver.quit()
 # from selenium.webdriver.common.by import By
 # from selenium.webdriver.support.wait import WebDriverWait
 # from selenium.webdriver.support import expected_conditions as EC
+# import re
 #
 # driver = webdriver.Chrome()
 # driver.maximize_window()
@@ -81,8 +87,6 @@ driver.quit()
 # POP_UP_WNDW_OK_BTN = (By.XPATH, "//div[@class='swal2-actions']//button[@class='swal2-confirm btn btn-outline-primary btn-sm btn-custom swal2-styled']")
 # DVC_ONLN = (By.CSS_SELECTOR, "div.number>span")
 # NO_DATA = (By.XPATH, "//div[@class='no-data']")
-# # DVCS_TBL = (By.XPATH, "//div[@class='col-lg-12 has-table-controls ng-star-inserted']")
-# # DVCS_TBL = (By.XPATH, "//i[@class='fa fa-circle text-success ng-star-inserted']")
 # DVCS_TBL = (By.XPATH, "//input[@name='checkbox1']")
 #
 # # Explicit wait
@@ -106,37 +110,30 @@ driver.quit()
 # wait.until(EC.element_to_be_clickable(POP_UP_WNDW_OK_BTN)).click()
 #
 # # 6. Pay attention to the number of devices on the "DEVICE ONLINE" card
-# sleep(2)
-# txt_frm_dvc_onln = wait.until(EC.visibility_of_element_located(DVC_ONLN)).text
-# print(f'Number of devices from DEVICE ONLINE element: {txt_frm_dvc_onln}, type: {type(txt_frm_dvc_onln)}')
+# txt_frm_dvc_onln = wait.until(EC.element_to_be_clickable(DVC_ONLN)).text
+# print(f'Number of devices from DEVICE ONLINE element: {txt_frm_dvc_onln}')
 #
-# # 7.1 Click on DEVICE ONLINE card
+# # 7. Click on DEVICE ONLINE card
 # wait.until(EC.element_to_be_clickable(DVC_ONLN)).click()
 #
-# # 7.2 And if there are no data in Device Management Portal verify text No Data Available is here
-# no_data_available = wait.until(EC.element_to_be_clickable(NO_DATA)).text
-# print(f'No data avalable is here: {no_data_available}, type {type(no_data_available)}')
-#
-# # 7.3 If txt_frm_dvc_onln = 0 and no_data_available = 'No Data Available' stop and exit program
-# # for i in txt_frm_dvc_onln:
-# if txt_frm_dvc_onln == 0 and no_data_available == 'No Data Available':
-#     print(f'{txt_frm_dvc_onln} devices and {no_data_available}')
-#     # Driver quit
-#     driver.quit()
-#     # break
-# else:
-#
-#     # 8. Count the number of devices with online status on the Devices page
+# # 8. Count the number of devices with online status on the Devices page
+# try:
 #     len_tbl = len(wait.until(EC.presence_of_all_elements_located(DVCS_TBL)))
 #     print(f'Quantity of the strings in the devices table: {len_tbl}')
+# except:
+#     len_tbl = 0
 #
-#     # 9. Verify if the number of devices on the DEVICE ONLINE card should match the number of devices with online status on the Devices page
-#     assert txt_frm_dvc_onln in str(len_tbl)
-#     print(f'Expected {txt_frm_dvc_onln}, and got: "{str(len_tbl)}" ')
+# # 9. Verify if the number of devices on the DEVICE ONLINE card should match the number of devices with online status on the Devices page
+# assert txt_frm_dvc_onln in str(len_tbl)
+# print(f'Expected {txt_frm_dvc_onln}, and got: "{str(len_tbl)}" ')
 #
-#     # Sleep to see what we have
-#     sleep(2)
+# # Sleep to see what we have
+# sleep(2)
 #
-#     # Driver quit
-#     driver.quit()
-#
+# # Driver quit
+# driver.quit()
+
+
+
+
+
