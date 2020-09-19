@@ -428,8 +428,7 @@ class MainPage(Page):
     def clck_on_dvc_nln(self):
         # Click on DEVICE ONLINE card
         wait = WebDriverWait(self.driver, 15)
-        wait.until(EC.element_to_be_clickable(DVC_ONLN)).click()
-
+        wait.until(EC.element_to_be_clickable(DVC_ONLN_TXT)).click()
 
     def dvc_mngmnt_ptrl_hr(self, dvc_mngmnt_ptrl_hr):
         # Verify words Device Management Portal are here
