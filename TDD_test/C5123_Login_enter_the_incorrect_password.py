@@ -23,11 +23,11 @@ driver.get( 'https://devcloud.connectedio.com' )
 
 # 2. Send valid and correct Login e-mail
 wait.until(EC.presence_of_element_located(LOGIN_EMAIL)).clear()
-wait.until(EC.presence_of_element_located(LOGIN_EMAIL)).send_keys('vadim@mailinator.com')
+wait.until(EC.presence_of_element_located(LOGIN_EMAIL)).send_keys('gurovvic@gmail.com') # vadim@mailinator.com
 
 # 3. Send valid but wrong email address in the line "Email address"
 wait.until(EC.presence_of_element_located(LOGIN_PASSWORD)).clear()
-wait.until(EC.presence_of_element_located(LOGIN_PASSWORD)).send_keys('manicpiano731_wrong')
+wait.until(EC.presence_of_element_located(LOGIN_PASSWORD)).send_keys('MyUSA2016!@_wrong') # manicpiano731_wrong
 
 # 4. Click on Login button
 wait.until(EC.element_to_be_clickable(LOGIN_BTN)).click()

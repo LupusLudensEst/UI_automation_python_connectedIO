@@ -59,6 +59,8 @@ DVC_MNGMNT_PRTL = (By.XPATH, "//h5[@class='fw-300 m-0 pl-4 text-truncate']")
 ONLN_HERE = (By.CSS_SELECTOR, "span.pr-2")
 DVCS_TBL = (By.XPATH, "//input[@name='checkbox1']")
 NO_DATA = (By.XPATH, "//div[@class='no-data']")
+DVCS_OFFLN = (By.XPATH, "//div[@class='col col2 dvice_offline']//h6[contains(text(), 'DEVICE OFFLINE')]")
+OFFLN_TXT = (By.XPATH, "//span[@class='pr-2']")
 
 class MainPage(Page):
 
@@ -67,14 +69,15 @@ class MainPage(Page):
         wait = WebDriverWait(self.driver, 10)
         # 2. Send Login e-mail
         wait.until(EC.presence_of_element_located(LOGIN_EMAIL)).clear()
-        wait.until(EC.presence_of_element_located(LOGIN_EMAIL)).send_keys('vadim@mailinator.com')
+        wait.until(EC.presence_of_element_located(LOGIN_EMAIL)).send_keys('gurovvic@gmail.com') # vadim@mailinator.com
         # 3. Send Password
         wait.until(EC.presence_of_element_located(LOGIN_PASSWORD)).clear()
-        wait.until(EC.presence_of_element_located(LOGIN_PASSWORD)).send_keys('manicpiano731')
+        wait.until(EC.presence_of_element_located(LOGIN_PASSWORD)).send_keys('MyUSA2016!@') # manicpiano731
         # 4. Click on Login button
         wait.until(EC.element_to_be_clickable(LOGIN_BTN)).click()
         # 5. Click on pop-window OK button
         wait.until(EC.element_to_be_clickable(POP_UP_WNDW_OK_BTN)).click()
+        sleep(4)
 
     def clck_usrs_btn(self):
         wait = WebDriverWait(self.driver, 10)
@@ -84,6 +87,7 @@ class MainPage(Page):
     def clck_qck_actns_btn(self):
         wait = WebDriverWait(self.driver, 10)
         # 7. Click on Quick Actions button
+        sleep(2)
         wait.until(EC.element_to_be_clickable(QUICK_ACTIONS)).click()
 
     def slct_add_drp_dwn_mn(self):
@@ -280,9 +284,9 @@ class MainPage(Page):
         actual_text = self.driver.current_url
         assert expected_text in actual_text
         if expected_text == actual_text:
-            print(f'Expected {expected_text}, and got: "{actual_text}" ')
+            print(f'Expected "{expected_text}", and got: "{actual_text}" ')
         else:
-            print(f'Expected {expected_text}, and got: "{actual_text}" ')
+            print(f'Expected "{expected_text}", and got: "{actual_text}" ')
 
         # Sleep to see what we have
         sleep(2)
@@ -298,6 +302,17 @@ class MainPage(Page):
         actions.move_to_element(target)
         actions.click(target)
         actions.perform()
+
+    def lgn_opnd_aftr_lgout(self, lgn_opnd_aftr_lgout):
+        # https://devcloud.connectedio.com/login is open after logout
+        sleep(2)
+        expected_text = lgn_opnd_aftr_lgout
+        actual_text = self.driver.current_url
+        assert expected_text in actual_text
+        if expected_text == actual_text:
+            print(f'Expected "{expected_text}", and got: "{actual_text}" ')
+        else:
+            print(f'Expected "{expected_text}", but got: "{actual_text}" ')
 
         # Sleep to see what we have
         sleep(2)
@@ -321,9 +336,20 @@ class MainPage(Page):
         # Click on the Change Password button
         wait.until(EC.element_to_be_clickable(CHNG_PSWD)).click()
 
+    def cng_pswd_url_opn(self, cng_pswd_url_opn):
+        # https://devcloud.connectedio.com/profile/change-password is open
+        expected_text = cng_pswd_url_opn
+        actual_text = self.driver.current_url
+        assert expected_text in actual_text
+        if expected_text == actual_text:
+            print(f'Expected "{expected_text}", and got: "{actual_text}" ')
+        else:
+            print(f'Expected "{expected_text}", but got: "{actual_text}" ')
+
     def ntr_old_pswd(self, old_pswd):
-        # Enter the old password in the field "New Password" manicpiano731
+        # Enter the old password in the field "New Password" MyUSA2016!@
         wait = WebDriverWait(self.driver, 15)
+        sleep(4)
         wait.until(EC.presence_of_element_located(NW_VLD_PSWD)).clear()
         wait.until(EC.presence_of_element_located(NW_VLD_PSWD)).send_keys(old_pswd)
 
@@ -337,6 +363,17 @@ class MainPage(Page):
         # Click on the button "Save"
         wait = WebDriverWait(self.driver, 15)
         wait.until(EC.element_to_be_clickable(SV_BTN)).click()
+
+    def old_new_r_nt_same(self, old_nw_r_nt_same):
+        # Verify the words Old and new password cannot be same. is on the page
+        wait = WebDriverWait(self.driver, 15)
+        expected_text = old_nw_r_nt_same
+        actual_text = wait.until(EC.element_to_be_clickable(SCSS_TXT_HR)).text
+        assert expected_text in actual_text
+        if expected_text == actual_text:
+            print(f'Expected "{expected_text}", and got: "{actual_text}" ')
+        else:
+            print(f'Expected "{expected_text}", but got: "{actual_text}" ')
 
         # Sleep to see what we have
         sleep(2)
@@ -486,7 +523,34 @@ class MainPage(Page):
             # Driver quit
             self.driver.quit()
 
+    def clk_dvcs_onlc(self):
+        # Click on DEVICE OFFLINE card
+        wait = WebDriverWait(self.driver, 15)
+        wait.until(EC.element_to_be_clickable(DVCS_OFFLN)).click()
 
+    def url_dvcs_hr(self, url_dvcs_hr):
+        # https://devcloud.connectedio.com/devices is here
+        expected_text = url_dvcs_hr
+        actual_text = self.driver.current_url
+        assert expected_text in actual_text
+        if expected_text == actual_text:
+            print(f'Expected {expected_text}, and got: "{actual_text}" ')
+        else:
+            print(f'Expected {expected_text}, but got: "{actual_text}" ')
+
+    def offln_sts_hr(self):
+        # Verify Offline status in FILTERS field is seen
+        wait = WebDriverWait(self.driver, 15)
+        expected_text = 'Offline'
+        actual_text = wait.until(EC.presence_of_element_located((OFFLN_TXT))).text
+        assert expected_text in actual_text
+        print(f'Expected "{expected_text}", and got: "{actual_text}" ')
+
+        # Sleep to see what we have
+        sleep(2)
+
+        # Driver quit
+        self.driver.quit()
 
 
 
