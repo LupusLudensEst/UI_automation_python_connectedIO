@@ -13,7 +13,8 @@ LOGIN_EMAIL = (By.XPATH, "//input[@placeholder='Email address']")
 LOGIN_PASSWORD = (By.XPATH, "//input[@placeholder='Password']")
 LOGIN_BTN = (By.CSS_SELECTOR, "button.btn.btn-primary.text-uppercase.w-100.font-weight-bold.gradient-btn.shadow-1.border-0")
 POP_UP_WNDW_OK_BTN = (By.XPATH, "//div[@class='swal2-actions']//button[@class='swal2-confirm btn btn-outline-primary btn-sm btn-custom swal2-styled']")
-USERS = (By.CSS_SELECTOR, "i.fa.fa-users")
+# USERS = (By.CSS_SELECTOR, "i.fa.fa-users")
+USERS = (By.XPATH, "(//a[@class='ng-star-inserted'])[4]")
 QUICK_ACTIONS = (By.XPATH, "//div[@class='btn-group action-button dropdown']//span[contains(text(), 'Quick actions')]")
 ADD_MENU = (By.CSS_SELECTOR, "i.fa.fa-user-plus")
 FIRST_NAME = (By.XPATH, "//input[@formcontrolname='firstName']")
@@ -35,7 +36,8 @@ THREE_DOTS = (By.ID, "dropdownBasic1")
 DELETE_BTN = (By.XPATH, "//div[@class='dropdown']//a[contains(text(), 'Delete')]")
 DELETE_OK_BTN = (By.CSS_SELECTOR, "button.swal2-confirm.btn.btn-outline-primary.btn-sm.btn-custom.swal2-styled")
 INVLD_LGN_PSWRD_HR = (By.XPATH, "//div[contains(text(), 'Invalid Login or Password')]")
-CLCK_TRNGL = (By.CSS_SELECTOR, "i.fas.fa-chevron-right")
+# CLCK_TRNGL = (By.CSS_SELECTOR, "i.fas.fa-chevron-right")
+CLCK_TRNGL = (By.XPATH, "//button[@class='d-block btn-togglr']")
 USR_NM = (By.CSS_SELECTOR, "a.dropdown-toggle.user-name")
 LGT_BTN = (By.CSS_SELECTOR, "i.fas.fa-power-off")
 CLCK_LGT = (By.CSS_SELECTOR, "a.icon-menu.d-none.d-sm-block")
@@ -59,7 +61,8 @@ DVC_MNGMNT_PRTL = (By.XPATH, "//h5[@class='fw-300 m-0 pl-4 text-truncate']")
 ONLN_HERE = (By.CSS_SELECTOR, "span.pr-2")
 DVCS_TBL = (By.XPATH, "//input[@name='checkbox1']")
 NO_DATA = (By.XPATH, "//div[@class='no-data']")
-DVCS_OFFLN = (By.XPATH, "//div[@class='col col2 dvice_offline']//h6[contains(text(), 'DEVICE OFFLINE')]")
+# DVCS_OFFLN = (By.XPATH, "//div[@class='col col2 dvice_offline']//h6[contains(text(), 'DEVICE OFFLINE')]")
+DVCS_OFFLN = (By.XPATH, "(//div[@class='card overflowhidden number-chart d-flex flex-column'])[2]")
 OFFLN_TXT = (By.XPATH, "//span[@class='pr-2']")
 
 class MainPage(Page):
@@ -173,23 +176,26 @@ class MainPage(Page):
         assert expected_text in actual_text
         print(f'Expected {expected_text}, and got: "{actual_text}" ')
         len_admins = len(wait.until(EC.presence_of_all_elements_located((ADMIN))))
-        if len_admins >= 2:
+        print(f'Admins: {len_admins}, type: {type(len_admins)}')
+        if len_admins < 2:
+            print(f'ADMINS < 2, NOT OK, there is: {len_admins} admin, add to 2 admins')
+            # Driver quit
+            self.driver.quit()
+        else:
             print(f'ADMINS >=2, OK, there are: {len_admins} admins')
-        else:
-            print(f'ADMINS !>=2, NOT OK, there are: {len_admins}')
 
-        expected_text = 'USER'
-        actual_text = wait.until(EC.presence_of_element_located((USER))).text
-        assert expected_text in actual_text
-        print(f'Expected {expected_text}, and got: "{actual_text}" ')
-        len_users = len(wait.until(EC.presence_of_all_elements_located((USER))))
-        if len_users >= 2:
-            print(f'USERS >=1, OK, there are: {len_users} users')
-        else:
-            print(f'USERS !>=1, NOT OK, there are: {len_users} users')
+            expected_text = 'USER'
+            actual_text = wait.until(EC.presence_of_element_located((USER))).text
+            assert expected_text in actual_text
+            print(f'Expected {expected_text}, and got: "{actual_text}" ')
+            len_users = len(wait.until(EC.presence_of_all_elements_located((USER))))
+            if len_users >= 2:
+                print(f'USERS >=1, OK, there are: {len_users} users')
+            else:
+                print(f'USERS !>=1, NOT OK, there are: {len_users} users')
 
-        total_users_admins_before_delete = len_admins + len_users
-        print(f'Total admins and users before delete: {total_users_admins_before_delete}')
+            total_users_admins_before_delete = len_admins + len_users
+            print(f'Total admins and users before delete: {total_users_admins_before_delete}')
 
     def take_usr_t_dlt(self):
         # 8. Choose any username with Admin or User role except yours.

@@ -15,7 +15,8 @@ LOGIN_PASSWORD = (By.XPATH, "//input[@placeholder='Password']")
 LOGIN_BTN = (By.CSS_SELECTOR, "button.btn.btn-primary.text-uppercase.w-100.font-weight-bold.gradient-btn.shadow-1.border-0")
 # POP_UP_WNDW_OK_BTN = (By.CSS_SELECTOR, "button.swal2-confirm.btn.btn-outline-primary.btn-sm.btn-custom.swal2-styled")
 POP_UP_WNDW_OK_BTN = (By.XPATH, "//div[@class='swal2-actions']//button[@class='swal2-confirm btn btn-outline-primary btn-sm btn-custom swal2-styled']")
-USERS = (By.CSS_SELECTOR, "i.fa.fa-users")
+# USERS = (By.CSS_SELECTOR, "i.fa.fa-users")
+USERS = (By.XPATH, "(//a[@class='ng-star-inserted'])[4]")
 # QUICK_ACTIONS = (By.XPATH, "//button[@class='btn btn-default btn-sm dropdown-toggle dropdown-toggle']")
 QUICK_ACTIONS = (By.XPATH, "//div[@class='btn-group action-button dropdown']//span[contains(text(), 'Quick actions')]")
 ADD_MENU =  (By.CSS_SELECTOR, "i.fa.fa-user-plus")
@@ -31,6 +32,7 @@ ZIP_CODE = (By.XPATH, "//input[@formcontrolname='zipCode']")
 COUNTRY = (By.CSS_SELECTOR, "select.form-control.ng-touched.ng-dirty.ng-valid")
 STATE = (By.XPATH, "//select[@formcontrolname='state']")
 ADD_BTN = (By.CSS_SELECTOR, "button.btn.btn-sm.btn-primary.px-4.py-2.text-uppercase")
+TEXT_HR = (By.XPATH, "//td[@style='text-align: left;']")
 USERS_VERIFY = (By.CSS_SELECTOR, "a.text-primary.ng-star-inserted")
 
 # Explicit wait
@@ -117,7 +119,8 @@ wait.until(EC.element_to_be_clickable(ADD_BTN)).click()
 
 # 20. Verify Verification Pending is here
 expected_text = 'Verification Pending'
-actual_text = wait.until(EC.presence_of_element_located((By.XPATH, "//td[@style='text-align: left;']"))).text
+actual_text = wait.until(EC.presence_of_element_located((TEXT_HR))).text
+print(f'Actual text: {actual_text}')
 assert expected_text in actual_text
 print(f'Expected {expected_text}, and got: "{actual_text}" ')
 
