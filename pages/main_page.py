@@ -48,7 +48,7 @@ SV_BTN = (By.CSS_SELECTOR, "i.fa.fa-save.mr-1")
 SCSS_TXT_HR = (By.CSS_SELECTOR, "span.alert.w-100.alert-warning")
 DVC_ONLN_TXT = (By.XPATH, "(//div[@class='card overflowhidden number-chart d-flex flex-column'])[1]")
 DVC_ONLN = (By.CSS_SELECTOR, "div.number>span")
-DVC_OFFLN = (By.XPATH, "(//div[@class='body information-card'])[2]")
+DVC_OFFLN_TAB = (By.XPATH, "(//div[@class='body information-card'])[2]")
 INVNTR = (By.XPATH, "(//div[@class='body information-card'])[3]")
 ALRT_NTFCTN = (By.XPATH, "(//div[@class='body information-card'])[4]")
 DT_USG = (By.XPATH, "//h6[@class='tile-title text-uppercase']")
@@ -64,6 +64,8 @@ NO_DATA = (By.XPATH, "//div[@class='no-data']")
 # DVCS_OFFLN = (By.XPATH, "//div[@class='col col2 dvice_offline']//h6[contains(text(), 'DEVICE OFFLINE')]")
 DVCS_OFFLN = (By.XPATH, "(//div[@class='card overflowhidden number-chart d-flex flex-column'])[2]")
 OFFLN_TXT = (By.XPATH, "//span[@class='pr-2']")
+DVC_OFFLN = (By.CSS_SELECTOR, "div.number>span")
+DVCS_TBL_EMPT = (By.XPATH, "(//div[@class='fancy-checkbox devicelist-checkbox select-all'])[2]")
 
 class MainPage(Page):
 
@@ -90,7 +92,6 @@ class MainPage(Page):
     def clck_qck_actns_btn(self):
         wait = WebDriverWait(self.driver, 10)
         # 7. Click on Quick Actions button
-        sleep(2)
         wait.until(EC.element_to_be_clickable(QUICK_ACTIONS)).click()
 
     def slct_add_drp_dwn_mn(self):
@@ -163,7 +164,7 @@ class MainPage(Page):
         print(f'Expected {text_hr}, and got "{actual_text}" ')
 
         # Sleep to see what we have
-        sleep(2)
+        # sleep(2)
 
         # Driver quit
         self.driver.quit()
@@ -231,7 +232,7 @@ class MainPage(Page):
         print(f'Total admins and users after delete: {total_admins_users_after_delete}')
 
         # Sleep to see what we have
-        sleep(2)
+        # sleep(2)
 
         # Driver quit
         self.driver.quit()
@@ -260,7 +261,7 @@ class MainPage(Page):
         print(f'Expected {expected_text}, and got: "{actual_text}" ')
 
         # Sleep to see what we have
-        sleep(2)
+        # sleep(2)
 
         # Driver quit
         self.driver.quit()
@@ -295,7 +296,7 @@ class MainPage(Page):
             print(f'Expected "{expected_text}", and got: "{actual_text}" ')
 
         # Sleep to see what we have
-        sleep(2)
+        # sleep(2)
 
         # Driver quit
         self.driver.quit()
@@ -321,7 +322,7 @@ class MainPage(Page):
             print(f'Expected "{expected_text}", but got: "{actual_text}" ')
 
         # Sleep to see what we have
-        sleep(2)
+        # sleep(2)
 
         # Driver quit
         self.driver.quit()
@@ -355,7 +356,7 @@ class MainPage(Page):
     def ntr_old_pswd(self, old_pswd):
         # Enter the old password in the field "New Password" MyUSA2016!@
         wait = WebDriverWait(self.driver, 15)
-        sleep(4)
+        sleep(2)
         wait.until(EC.presence_of_element_located(NW_VLD_PSWD)).clear()
         wait.until(EC.presence_of_element_located(NW_VLD_PSWD)).send_keys(old_pswd)
 
@@ -382,7 +383,7 @@ class MainPage(Page):
             print(f'Expected "{expected_text}", but got: "{actual_text}" ')
 
         # Sleep to see what we have
-        sleep(2)
+        # sleep(2)
 
         # Driver quit
         self.driver.quit()
@@ -399,7 +400,7 @@ class MainPage(Page):
         print(f'Expected {expected_text}, and got: "{actual_text}" ')
         # 2
         expected_text = 'DEVICE OFFLINE'
-        actual_text = wait.until(EC.presence_of_element_located((DVC_OFFLN))).text
+        actual_text = wait.until(EC.presence_of_element_located((DVC_OFFLN_TAB))).text
         assert expected_text in actual_text
         print(f'Expected {expected_text}, and got: "{actual_text}" ')
         # 3
@@ -462,7 +463,7 @@ class MainPage(Page):
         print(f'There are: {pics_on_page} images on the page')
 
         # Sleep to see what we have
-        sleep(2)
+        # sleep(2)
 
         # Driver quit
         self.driver.quit()
@@ -489,7 +490,7 @@ class MainPage(Page):
         print(f'Expected {expected_text}, and got: "{actual_text}" ')
 
         # Sleep to see what we have
-        sleep(2)
+        # sleep(2)
 
         # Driver quit
         self.driver.quit()
@@ -524,7 +525,7 @@ class MainPage(Page):
             print(f'Expected {txt_frm_dvc_onln}, and got: "{str(len_tbl)}" ')
 
             # Sleep to see what we have
-            sleep(2)
+            # sleep(2)
 
             # Driver quit
             self.driver.quit()
@@ -553,11 +554,43 @@ class MainPage(Page):
         print(f'Expected "{expected_text}", and got: "{actual_text}" ')
 
         # Sleep to see what we have
-        sleep(2)
+        # sleep(2)
 
         # Driver quit
         self.driver.quit()
 
 
+    def vrf_qntty_ofldvcs_is_the_same(self):
+        # 6. Pay attention to the number of devices on the "DEVICE OFFLINE" card
+        wait = WebDriverWait(self.driver, 15)
+        txt_frm_dvc_offln = (wait.until(EC.visibility_of_all_elements_located(DVC_OFFLN)))[1].text
+        print(f'Devices offline: {txt_frm_dvc_offln}')
 
+        # 7.1 Click on DEVICE OFFLINE card
+        (wait.until(EC.visibility_of_all_elements_located(DVC_OFFLN)))[1].click()
 
+        # # 7.2 And if there are no data in Device Management Portal verify text No Data Available is here
+        no_data_available = wait.until(EC.element_to_be_clickable(NO_DATA)).text
+
+        # 7.3 If txt_frm_dvc_offln = 0 and no_data_available = 'No Data Available' stop and exit program
+        if txt_frm_dvc_offln == '0' and no_data_available == 'No Data Available':
+            print(
+                f'Number of devices from DEVICE OFFLINE element: {txt_frm_dvc_offln}, type: {type(txt_frm_dvc_offln)};\nNo data avalable is here: {no_data_available}, type {type(no_data_available)}.')
+            # Driver quit
+            self.driver.quit()
+            # break
+        else:
+
+            # 8. Count the number of devices with offline status on the Devices page
+            len_tbl = len(wait.until(EC.presence_of_all_elements_located(DVCS_TBL_EMPT)))
+            print(f'Quantity of the strings in the devices table: {len_tbl}')
+
+            # 9. Verify if the number of devices on the DEVICE ONLINE card should match the number of devices with online status on the Devices page
+            assert txt_frm_dvc_offln in str(len_tbl)
+            print(f'Expected {txt_frm_dvc_offln}, and got: "{str(len_tbl)}" ')
+
+            # Sleep to see what we have
+            # sleep(2)
+
+            # Driver quit
+            self.driver.quit()
