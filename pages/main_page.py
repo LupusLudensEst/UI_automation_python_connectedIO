@@ -66,6 +66,8 @@ DVCS_OFFLN = (By.XPATH, "(//div[@class='card overflowhidden number-chart d-flex 
 OFFLN_TXT = (By.XPATH, "//span[@class='pr-2']")
 DVC_OFFLN = (By.CSS_SELECTOR, "div.number>span")
 DVCS_TBL_EMPT = (By.XPATH, "(//div[@class='fancy-checkbox devicelist-checkbox select-all'])[2]")
+INVNTR_ELMNT = (By.CSS_SELECTOR, "div.card.overflowhidden.number-chart.d-flex.flex-column")
+INVNTR_TXT = (By.CSS_SELECTOR, "span.pr-2")
 
 class MainPage(Page):
 
@@ -162,12 +164,9 @@ class MainPage(Page):
         actual_text = wait.until(EC.presence_of_element_located((TEXT_HR))).text
         assert expected_text in actual_text
         print(f'Expected {text_hr}, and got "{actual_text}" ')
-
-        # Sleep to see what we have
-        # sleep(2)
-
-        # Driver quit
-        self.driver.quit()
+        sleep(10)
+        # End of the above code
+        sleep(2)
 
     def admns_n_usrs(self):
         # 7. Make sure there are at list two Admins and one User role in the list of users
@@ -231,11 +230,7 @@ class MainPage(Page):
             print(f'Delete is not OK')
         print(f'Total admins and users after delete: {total_admins_users_after_delete}')
 
-        # Sleep to see what we have
-        # sleep(2)
-
-        # Driver quit
-        self.driver.quit()
+        # End of the above code
 
     def entr_vld_wrng_eml(self, email):
         # 1. Enter valid, but the incorrect email address in the line "Email address"
@@ -260,11 +255,7 @@ class MainPage(Page):
         assert expected_text in actual_text
         print(f'Expected {expected_text}, and got: "{actual_text}" ')
 
-        # Sleep to see what we have
-        # sleep(2)
-
-        # Driver quit
-        self.driver.quit()
+        # End of the above code
 
     def clck_usr_nm(self):
         # 6. Click on triangle to enter the user
@@ -295,11 +286,7 @@ class MainPage(Page):
         else:
             print(f'Expected "{expected_text}", and got: "{actual_text}" ')
 
-        # Sleep to see what we have
-        # sleep(2)
-
-        # Driver quit
-        self.driver.quit()
+        # End of the above code
 
     def clck_hdr_lgt_btn(self):
         # Hover over the "Logout" button at the right corner of the Header and click on the button "Logout"
@@ -321,11 +308,7 @@ class MainPage(Page):
         else:
             print(f'Expected "{expected_text}", but got: "{actual_text}" ')
 
-        # Sleep to see what we have
-        # sleep(2)
-
-        # Driver quit
-        self.driver.quit()
+        # End of the above code
 
     def go_to_chng_pswrd_pg(self):
         # Click on triangle to enter the user
@@ -382,11 +365,7 @@ class MainPage(Page):
         else:
             print(f'Expected "{expected_text}", but got: "{actual_text}" ')
 
-        # Sleep to see what we have
-        # sleep(2)
-
-        # Driver quit
-        self.driver.quit()
+        # End of the above code
 
     def ll_lmnts_r_prsnt(self):
         # 6. Check if all elements are present.
@@ -462,11 +441,7 @@ class MainPage(Page):
             print(image.get_attribute('src'))
         print(f'There are: {pics_on_page} images on the page')
 
-        # Sleep to see what we have
-        # sleep(2)
-
-        # Driver quit
-        self.driver.quit()
+        # End of the above code
 
     def clck_on_dvc_nln(self):
         # Click on DEVICE ONLINE card
@@ -489,11 +464,7 @@ class MainPage(Page):
         assert expected_text in actual_text
         print(f'Expected {expected_text}, and got: "{actual_text}" ')
 
-        # Sleep to see what we have
-        # sleep(2)
-
-        # Driver quit
-        self.driver.quit()
+        # End of the above code
 
     def vrf_qntty_is_the_same(self):
         # Pay attention to the number of devices on the "DEVICE ONLINE" card
@@ -524,11 +495,7 @@ class MainPage(Page):
             assert txt_frm_dvc_onln in str(len_tbl)
             print(f'Expected {txt_frm_dvc_onln}, and got: "{str(len_tbl)}" ')
 
-            # Sleep to see what we have
-            # sleep(2)
-
-            # Driver quit
-            self.driver.quit()
+            # End of the above code
 
     def clk_dvcs_onlc(self):
         # Click on DEVICE OFFLINE card
@@ -553,12 +520,7 @@ class MainPage(Page):
         assert expected_text in actual_text
         print(f'Expected "{expected_text}", and got: "{actual_text}" ')
 
-        # Sleep to see what we have
-        # sleep(2)
-
-        # Driver quit
-        self.driver.quit()
-
+        # End of the above code
 
     def vrf_qntty_ofldvcs_is_the_same(self):
         # 6. Pay attention to the number of devices on the "DEVICE OFFLINE" card
@@ -589,8 +551,20 @@ class MainPage(Page):
             assert txt_frm_dvc_offln in str(len_tbl)
             print(f'Expected {txt_frm_dvc_offln}, and got: "{str(len_tbl)}" ')
 
-            # Sleep to see what we have
-            # sleep(2)
+            # End of the above code
 
-            # Driver quit
-            self.driver.quit()
+    def clck_on_invntr_elmnt(self):
+        # Click on the INVENTORY card
+        wait = WebDriverWait(self.driver, 15)
+        invntr_elmnt = (wait.until(EC.presence_of_all_elements_located(INVNTR_ELMNT)))[2]
+        invntr_elmnt.click()
+
+    def invntr_sts_hr(self):
+        # Inventory status in FILTERS field
+        wait = WebDriverWait(self.driver, 15)
+        expected_text = 'Inventory'
+        actual_text = wait.until(EC.presence_of_element_located((INVNTR_TXT))).text
+        assert expected_text in actual_text
+        print(f'Expected "{expected_text}", and got: "{actual_text}" ')
+
+        # End of the above code
