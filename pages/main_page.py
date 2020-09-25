@@ -65,13 +65,17 @@ NO_DATA = (By.XPATH, "//div[@class='no-data']")
 DVCS_OFFLN = (By.XPATH, "(//div[@class='card overflowhidden number-chart d-flex flex-column'])[2]")
 OFFLN_TXT = (By.XPATH, "//span[@class='pr-2']")
 DVC_OFFLN = (By.CSS_SELECTOR, "div.number>span")
-DVCS_TBL_EMPT = (By.XPATH, "(//div[@class='fancy-checkbox devicelist-checkbox select-all'])[2]")
+# DVCS_TBL_EMPT = (By.XPATH, "(//div[@class='fancy-checkbox devicelist-checkbox select-all'])[2]")
+DVCS_TBL_EMPT = (By.XPATH, "//tr[@class='ng-star-inserted']")
+DVC_INVNTR = (By.CSS_SELECTOR, "div.number>span")
 INVNTR_ELMNT = (By.CSS_SELECTOR, "div.card.overflowhidden.number-chart.d-flex.flex-column")
 INVNTR_TXT = (By.CSS_SELECTOR, "span.pr-2")
+
 
 class MainPage(Page):
 
     # Add new user
+    sleep(2)
     def lgn_w_gn_crdntls(self):
         wait = WebDriverWait(self.driver, 10)
         # 2. Send Login e-mail
@@ -163,8 +167,7 @@ class MainPage(Page):
         expected_text = text_hr
         actual_text = wait.until(EC.presence_of_element_located((TEXT_HR))).text
         assert expected_text in actual_text
-        print(f'Expected {text_hr}, and got "{actual_text}" ')
-        sleep(10)
+        print(f'Expected "{text_hr}", and got "{actual_text}" ')
         # End of the above code
         sleep(2)
 
@@ -174,7 +177,7 @@ class MainPage(Page):
         expected_text = 'ADMIN'
         actual_text = wait.until(EC.presence_of_element_located((ADMIN))).text
         assert expected_text in actual_text
-        print(f'Expected {expected_text}, and got: "{actual_text}" ')
+        print(f'Expected "{expected_text}", and got: "{actual_text}" ')
         len_admins = len(wait.until(EC.presence_of_all_elements_located((ADMIN))))
         print(f'Admins: {len_admins}, type: {type(len_admins)}')
         if len_admins < 2:
@@ -187,7 +190,7 @@ class MainPage(Page):
             expected_text = 'USER'
             actual_text = wait.until(EC.presence_of_element_located((USER))).text
             assert expected_text in actual_text
-            print(f'Expected {expected_text}, and got: "{actual_text}" ')
+            print(f'Expected "{expected_text}", and got: "{actual_text}" ')
             len_users = len(wait.until(EC.presence_of_all_elements_located((USER))))
             if len_users >= 2:
                 print(f'USERS >=1, OK, there are: {len_users} users')
@@ -253,7 +256,7 @@ class MainPage(Page):
         actual_text = wait.until(EC.presence_of_element_located((INVLD_LGN_PSWRD_HR))).text
         print(actual_text)
         assert expected_text in actual_text
-        print(f'Expected {expected_text}, and got: "{actual_text}" ')
+        print(f'Expected "{expected_text}", and got: "{actual_text}" ')
 
         # End of the above code
 
@@ -276,16 +279,6 @@ class MainPage(Page):
         wait.until(EC.element_to_be_clickable(LGT_BTN)).click()
         self.driver.refresh()
 
-    def vrf_lgn_pg_opn(self, url):
-        # 9. Verify https://devcloud.connectedio.com is open
-        expected_text = url
-        actual_text = self.driver.current_url
-        assert expected_text in actual_text
-        if expected_text == actual_text:
-            print(f'Expected "{expected_text}", and got: "{actual_text}" ')
-        else:
-            print(f'Expected "{expected_text}", and got: "{actual_text}" ')
-
         # End of the above code
 
     def clck_hdr_lgt_btn(self):
@@ -296,17 +289,6 @@ class MainPage(Page):
         actions.move_to_element(target)
         actions.click(target)
         actions.perform()
-
-    def lgn_opnd_aftr_lgout(self, lgn_opnd_aftr_lgout):
-        # https://devcloud.connectedio.com/login is open after logout
-        sleep(2)
-        expected_text = lgn_opnd_aftr_lgout
-        actual_text = self.driver.current_url
-        assert expected_text in actual_text
-        if expected_text == actual_text:
-            print(f'Expected "{expected_text}", and got: "{actual_text}" ')
-        else:
-            print(f'Expected "{expected_text}", but got: "{actual_text}" ')
 
         # End of the above code
 
@@ -327,9 +309,11 @@ class MainPage(Page):
         wait.until(EC.element_to_be_clickable(CHNG_PSWD)).click()
 
     def cng_pswd_url_opn(self, cng_pswd_url_opn):
-        # https://devcloud.connectedio.com/profile/change-password is open
+        # https://devcloud.connectedio.com/* is open
+        sleep(4)
         expected_text = cng_pswd_url_opn
         actual_text = self.driver.current_url
+        assert expected_text in actual_text
         assert expected_text in actual_text
         if expected_text == actual_text:
             print(f'Expected "{expected_text}", and got: "{actual_text}" ')
@@ -376,27 +360,27 @@ class MainPage(Page):
         expected_text = 'DEVICE ONLINE'
         actual_text = wait.until(EC.presence_of_element_located((DVC_ONLN_TXT))).text
         assert expected_text in actual_text
-        print(f'Expected {expected_text}, and got: "{actual_text}" ')
+        print(f'Expected "{expected_text}", and got: "{actual_text}" ')
         # 2
         expected_text = 'DEVICE OFFLINE'
         actual_text = wait.until(EC.presence_of_element_located((DVC_OFFLN_TAB))).text
         assert expected_text in actual_text
-        print(f'Expected {expected_text}, and got: "{actual_text}" ')
+        print(f'Expected "{expected_text}", and got: "{actual_text}" ')
         # 3
         expected_text = 'INVENTORY'
         actual_text = wait.until(EC.presence_of_element_located((INVNTR))).text
         assert expected_text in actual_text
-        print(f'Expected {expected_text}, and got: "{actual_text}" ')
+        print(f'Expected "{expected_text}", and got: "{actual_text}" ')
         # 4
         expected_text = 'ALERT/NOTIFICATION'
         actual_text = wait.until(EC.presence_of_element_located((ALRT_NTFCTN))).text
         assert expected_text in actual_text
-        print(f'Expected {expected_text}, and got: "{actual_text}" ')
+        print(f'Expected "{expected_text}", and got: "{actual_text}" ')
         # 5
         expected_text = 'DATA USAGE'
         actual_text = wait.until(EC.presence_of_element_located((DT_USG))).text
         assert expected_text in actual_text
-        print(f'Expected {expected_text}, and got: "{actual_text}" ')
+        print(f'Expected "{expected_text}", and got: "{actual_text}" ')
 
     def ll_sctns_r_prsnt(self):
         # 7. Check if sections are present.
@@ -407,27 +391,27 @@ class MainPage(Page):
         expected_text = 'Data Usage Details'
         actual_text = wait.until(EC.presence_of_element_located((DT_USG_DTLS))).text
         assert expected_text in actual_text
-        print(f'Expected {expected_text}, and got: "{actual_text}" ')
+        print(f'Expected "{expected_text}", and got: "{actual_text}" ')
         # 2
         expected_text = 'Notifications / Alerts'
         actual_text = wait.until(EC.presence_of_element_located((NTFCTNS_ALRTS))).text
         assert expected_text in actual_text
-        print(f'Expected {expected_text}, and got: "{actual_text}" ')
+        print(f'Expected "{expected_text}", and got: "{actual_text}" ')
         # 3
         expected_text = 'Groups'
         actual_text = wait.until(EC.presence_of_element_located((GRPS))).text
         assert expected_text in actual_text
-        print(f'Expected {expected_text}, and got: "{actual_text}" ')
+        print(f'Expected "{expected_text}", and got: "{actual_text}" ')
         # 4
         expected_text = 'Signal Strength'
         actual_text = wait.until(EC.presence_of_element_located((SGNL_STRNTH))).text
         assert expected_text in actual_text
-        print(f'Expected {expected_text}, and got: "{actual_text}" ')
+        print(f'Expected "{expected_text}", and got: "{actual_text}" ')
         # 5
         expected_text = 'Device   Locations'
         actual_text = wait.until(EC.presence_of_element_located((DVC_LCTN))).text
         assert expected_text in actual_text
-        print(f'Expected {expected_text}, and got: "{actual_text}" ')
+        print(f'Expected "{expected_text}", and got: "{actual_text}" ')
 
         # Pictures
         options = webdriver.ChromeOptions()
@@ -454,7 +438,7 @@ class MainPage(Page):
         expected_text = dvc_mngmnt_ptrl_hr
         actual_text = wait.until(EC.presence_of_element_located((DVC_MNGMNT_PRTL))).text
         assert expected_text in actual_text
-        print(f'Expected {expected_text}, and got: "{actual_text}" ')
+        print(f'Expected "{expected_text}", and got: "{actual_text}" ')
 
     def onln_hr(self, onln_hr):
         # Verify words Device Management Portal are here
@@ -462,7 +446,7 @@ class MainPage(Page):
         expected_text = onln_hr
         actual_text = wait.until(EC.presence_of_element_located((ONLN_HERE))).text
         assert expected_text in actual_text
-        print(f'Expected {expected_text}, and got: "{actual_text}" ')
+        print(f'Expected "{expected_text}", and got: "{actual_text}" ')
 
         # End of the above code
 
@@ -484,7 +468,6 @@ class MainPage(Page):
                 f'Number of devices from DEVICE ONLINE element: {txt_frm_dvc_onln}, type: {type(txt_frm_dvc_onln)};\nNo data avalable is here: {no_data_available}, type {type(no_data_available)}.')
             # Driver quit
             self.driver.quit()
-            # break
         else:
 
             # Count the number of devices with online status on the Devices page
@@ -493,7 +476,7 @@ class MainPage(Page):
 
             # Verify if the number of devices on the DEVICE ONLINE card should match the number of devices with online status on the Devices page
             assert txt_frm_dvc_onln in str(len_tbl)
-            print(f'Expected {txt_frm_dvc_onln}, and got: "{str(len_tbl)}" ')
+            print(f'Expected "{txt_frm_dvc_onln}", and got: "{str(len_tbl)}" ')
 
             # End of the above code
 
@@ -501,16 +484,6 @@ class MainPage(Page):
         # Click on DEVICE OFFLINE card
         wait = WebDriverWait(self.driver, 15)
         wait.until(EC.element_to_be_clickable(DVCS_OFFLN)).click()
-
-    def url_dvcs_hr(self, url_dvcs_hr):
-        # https://devcloud.connectedio.com/devices is here
-        expected_text = url_dvcs_hr
-        actual_text = self.driver.current_url
-        assert expected_text in actual_text
-        if expected_text == actual_text:
-            print(f'Expected {expected_text}, and got: "{actual_text}" ')
-        else:
-            print(f'Expected {expected_text}, but got: "{actual_text}" ')
 
     def offln_sts_hr(self):
         # Verify Offline status in FILTERS field is seen
@@ -540,16 +513,15 @@ class MainPage(Page):
                 f'Number of devices from DEVICE OFFLINE element: {txt_frm_dvc_offln}, type: {type(txt_frm_dvc_offln)};\nNo data avalable is here: {no_data_available}, type {type(no_data_available)}.')
             # Driver quit
             self.driver.quit()
-            # break
         else:
 
-            # 8. Count the number of devices with offline status on the Devices page
+            # Count the number of devices with offline status on the Devices page
             len_tbl = len(wait.until(EC.presence_of_all_elements_located(DVCS_TBL_EMPT)))
             print(f'Quantity of the strings in the devices table: {len_tbl}')
 
-            # 9. Verify if the number of devices on the DEVICE ONLINE card should match the number of devices with online status on the Devices page
+            # Verify if the number of devices on the DEVICE ONLINE card should match the number of devices with online status on the Devices page
             assert txt_frm_dvc_offln in str(len_tbl)
-            print(f'Expected {txt_frm_dvc_offln}, and got: "{str(len_tbl)}" ')
+            print(f'Expected "{txt_frm_dvc_offln}", and got: "{str(len_tbl)}" ')
 
             # End of the above code
 
@@ -568,3 +540,35 @@ class MainPage(Page):
         print(f'Expected "{expected_text}", and got: "{actual_text}" ')
 
         # End of the above code
+
+    def invntr_qntty_is_the_same(self):
+        # Verify if the number of devices on the INVENTORY card should match the number of devices with online status on the Devices page
+        wait = WebDriverWait(self.driver, 15)
+        # Pay attention to the number of devices on the "INVENTORY" card
+        sleep(2)
+        txt_frm_invntr = (wait.until(EC.visibility_of_all_elements_located(DVC_INVNTR)))[2].text
+        print(f'Devices inventory: {txt_frm_invntr}')
+
+        # Click on INVENTORY card
+        (wait.until(EC.visibility_of_all_elements_located(DVC_INVNTR)))[1].click()
+
+        # And if there are no data in Device Management Portal verify text No Data Available is here
+        no_data_available = wait.until(EC.element_to_be_clickable(NO_DATA)).text
+
+        # If txt_frm_dvc_offln = 0 and no_data_available = 'No Data Available' stop and exit program
+        if txt_frm_invntr == '0' and no_data_available == 'No Data Available':
+            print(
+                f'Number of devices from INVENTORY element: {txt_frm_invntr}, type: {type(txt_frm_invntr)};\nNo data avalable is here: {no_data_available}, type {type(no_data_available)}.')
+            # Driver quit
+            self.driver.quit()
+        else:
+
+            # Count the number of devices with offline status on the Devices page
+            len_tbl = len(wait.until(EC.presence_of_all_elements_located(DVCS_TBL_EMPT)))
+            print(f'Quantity of the strings in the devices table: {len_tbl}')
+
+            # Verify if the number of devices on the DEVICE ONLINE card should match the number of devices with online status on the Devices page
+            assert txt_frm_invntr in str(len_tbl)
+            print(f'Expected "{txt_frm_invntr}", and got: "{str(len_tbl)}" ')
+
+            # End of the above code

@@ -61,8 +61,8 @@ else:
     print(f'Quantity of the strings in the devices table: {len_tbl}')
 
     # 9. Verify if the number of devices on the DEVICE ONLINE card should match the number of devices with online status on the Devices page
-    assert txt_frm_dvc_offln in str(len_tbl)
-    print(f'Expected {txt_frm_dvc_offln}, and got: "{str(len_tbl)}" ')
+    assert txt_frm_invntr in str(len_tbl)
+    print(f'Expected {txt_frm_invntr}, and got: "{str(len_tbl)}" ')
 
     # Sleep to see what we have
     sleep(2)

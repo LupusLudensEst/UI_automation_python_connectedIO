@@ -15,7 +15,7 @@ POP_UP_WNDW_OK_BTN = (By.XPATH, "//div[@class='swal2-actions']//button[@class='s
 # DVC_OFFLN = (By.XPATH, "(//div[@class='number'])[2]")
 DVC_OFFLN = (By.CSS_SELECTOR, "div.number>span")
 NO_DATA = (By.XPATH, "//div[@class='no-data']")
-DVCS_TBL_EMPT = (By.XPATH, "(//div[@class='fancy-checkbox devicelist-checkbox select-all'])[2]")
+DVCS_TBL_EMPT = (By.XPATH, "//tr[@class='ng-star-inserted']")
 
 # Explicit wait
 wait = WebDriverWait(driver, 15)

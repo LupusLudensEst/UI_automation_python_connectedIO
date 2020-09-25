@@ -11,7 +11,7 @@ def go_to_chng_pswrd_pg(context):
 @step("{cng_pswd_url_opn} is open")
 def cng_pswd_url_opn(context, cng_pswd_url_opn):
     """
-    https://devcloud.connectedio.com/profile/change-password is open
+    https://devcloud.connectedio.com/profile/* is open
     """
     context.app.main_page.cng_pswd_url_opn(cng_pswd_url_opn)
 

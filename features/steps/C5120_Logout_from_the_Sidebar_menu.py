@@ -15,10 +15,3 @@ def clck_lgt_btn(context):
     """
     context.app.main_page.clck_lgt_btn()
 
-
-@step("Verify {url} is open")
-def vrf_lgn_pg_opn(context, url):
-    """
-    Verify https://devcloud.connectedio.com is open
-    """
-    context.app.main_page.vrf_lgn_pg_opn(url)

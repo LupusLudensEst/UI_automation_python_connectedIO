@@ -6,4 +6,4 @@ Feature: # C5120 Logout from the Sidebar_menu
     Then Login with the given credentials
     Then Click on the User name in the Sidebar menu
     Then Hover over the Logout button in the dropdown menu and click on the button Logout
-    And Verify https://devcloud.connectedio.com is open
+    And https://devcloud.connectedio.com/login is open
