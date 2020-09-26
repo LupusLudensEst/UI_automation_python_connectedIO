@@ -40,7 +40,7 @@ wait.until(EC.element_to_be_clickable(POP_UP_WNDW_OK_BTN)).click()
 # 6. Pay attention to the number of devices on the "INVENTORY" card
 sleep(2)
 txt_frm_invntr = (wait.until(EC.visibility_of_all_elements_located(DVC_INVNTR)))[2].text
-print(f'Devices inventory: {txt_frm_invntr}')
+print(f'Devices inventory: "{txt_frm_invntr}"')
 
 # 7.1 Click on INVENTORY card
 (wait.until(EC.visibility_of_all_elements_located(DVC_INVNTR)))[1].click()
@@ -50,7 +50,7 @@ no_data_available = wait.until(EC.element_to_be_clickable(NO_DATA)).text
 
 # 7.3 If txt_frm_dvc_offln = 0 and no_data_available = 'No Data Available' stop and exit program
 if txt_frm_invntr == '0' and no_data_available == 'No Data Available':
-    print(f'Number of devices from INVENTORY element: {txt_frm_invntr}, type: {type(txt_frm_invntr)};\nNo data avalable is here: {no_data_available}, type {type(no_data_available)}.')
+    print(f'Number of devices from INVENTORY element: "{txt_frm_invntr}", type: "{type(txt_frm_invntr)}";\nNo data avalable is here: "{no_data_available}", type "{type(no_data_available)}".')
     # Driver quit
     driver.quit()
     # break
@@ -58,14 +58,14 @@ else:
 
     # 8. Count the number of devices with offline status on the Devices page
     len_tbl = len(wait.until(EC.presence_of_all_elements_located(DVCS_TBL_EMPT)))
-    print(f'Quantity of the strings in the devices table: {len_tbl}')
+    print(f'Quantity of the strings in the devices table: "{len_tbl}"')
 
     # 9. Verify if the number of devices on the DEVICE ONLINE card should match the number of devices with online status on the Devices page
     assert txt_frm_invntr in str(len_tbl)
-    print(f'Expected {txt_frm_invntr}, and got: "{str(len_tbl)}" ')
+    print(f'Expected "{txt_frm_invntr}", and got: "{str(len_tbl)}" ')
 
     # Sleep to see what we have
     sleep(2)
     #
-    # # Driver quit
-    # driver.quit()
+    # Driver quit
+    driver.quit()

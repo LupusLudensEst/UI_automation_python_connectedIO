@@ -36,7 +36,6 @@ THREE_DOTS = (By.ID, "dropdownBasic1")
 DELETE_BTN = (By.XPATH, "//div[@class='dropdown']//a[contains(text(), 'Delete')]")
 DELETE_OK_BTN = (By.CSS_SELECTOR, "button.swal2-confirm.btn.btn-outline-primary.btn-sm.btn-custom.swal2-styled")
 INVLD_LGN_PSWRD_HR = (By.XPATH, "//div[contains(text(), 'Invalid Login or Password')]")
-# CLCK_TRNGL = (By.CSS_SELECTOR, "i.fas.fa-chevron-right")
 CLCK_TRNGL = (By.XPATH, "//button[@class='d-block btn-togglr']")
 USR_NM = (By.CSS_SELECTOR, "a.dropdown-toggle.user-name")
 LGT_BTN = (By.CSS_SELECTOR, "i.fas.fa-power-off")
@@ -61,16 +60,15 @@ DVC_MNGMNT_PRTL = (By.XPATH, "//h5[@class='fw-300 m-0 pl-4 text-truncate']")
 ONLN_HERE = (By.CSS_SELECTOR, "span.pr-2")
 DVCS_TBL = (By.XPATH, "//input[@name='checkbox1']")
 NO_DATA = (By.XPATH, "//div[@class='no-data']")
-# DVCS_OFFLN = (By.XPATH, "//div[@class='col col2 dvice_offline']//h6[contains(text(), 'DEVICE OFFLINE')]")
 DVCS_OFFLN = (By.XPATH, "(//div[@class='card overflowhidden number-chart d-flex flex-column'])[2]")
 OFFLN_TXT = (By.XPATH, "//span[@class='pr-2']")
 DVC_OFFLN = (By.CSS_SELECTOR, "div.number>span")
-# DVCS_TBL_EMPT = (By.XPATH, "(//div[@class='fancy-checkbox devicelist-checkbox select-all'])[2]")
 DVCS_TBL_EMPT = (By.XPATH, "//tr[@class='ng-star-inserted']")
 DVC_INVNTR = (By.CSS_SELECTOR, "div.number>span")
 INVNTR_ELMNT = (By.CSS_SELECTOR, "div.card.overflowhidden.number-chart.d-flex.flex-column")
 INVNTR_TXT = (By.CSS_SELECTOR, "span.pr-2")
-
+ALRT_VRFCTN_CRT = (By.XPATH, "(//div[@class='body information-card'])[4]")
+ALRT_DSHBRD_HR = (By.CSS_SELECTOR, "div.d-inline-block.mr-4")
 
 class MainPage(Page):
 
@@ -310,10 +308,9 @@ class MainPage(Page):
 
     def cng_pswd_url_opn(self, cng_pswd_url_opn):
         # https://devcloud.connectedio.com/* is open
-        sleep(4)
+        sleep(2)
         expected_text = cng_pswd_url_opn
         actual_text = self.driver.current_url
-        assert expected_text in actual_text
         assert expected_text in actual_text
         if expected_text == actual_text:
             print(f'Expected "{expected_text}", and got: "{actual_text}" ')
@@ -572,3 +569,17 @@ class MainPage(Page):
             print(f'Expected "{txt_frm_invntr}", and got: "{str(len_tbl)}" ')
 
             # End of the above code
+
+    def clck_on_alrt_ntfctn_crd(self):
+        # Click on ALERT/NOTIFICATION card
+        wait = WebDriverWait(self.driver, 15)
+        (wait.until(EC.element_to_be_clickable(ALRT_VRFCTN_CRT))).click()
+
+    def alrt_dshbrd_wrds_on_pg(self):
+        # Verify Alert Dashboard words on the page
+        wait = WebDriverWait(self.driver, 15)
+        sleep(2)
+        txt_frm_invntr = (wait.until(EC.visibility_of_element_located(ALRT_DSHBRD_HR))).text
+        print(f'"{txt_frm_invntr}" is on the page')
+
+    # End of the above code

@@ -51,27 +51,27 @@ wait.until(EC.element_to_be_clickable(POP_UP_WNDW_OK_BTN)).click()
 expected_text = 'DEVICE ONLINE'
 actual_text = wait.until(EC.presence_of_element_located((DVC_ONLN_TXT))).text
 assert expected_text in actual_text
-print(f'Expected {expected_text}, and got: "{actual_text}" ')
+print(f'Expected "{expected_text}", and got: "{actual_text}" ')
 #2
 expected_text = 'DEVICE OFFLINE'
 actual_text = wait.until(EC.presence_of_element_located((DVC_OFFLN))).text
 assert expected_text in actual_text
-print(f'Expected {expected_text}, and got: "{actual_text}" ')
+print(f'Expected "{expected_text}", and got: "{actual_text}" ')
 #3
 expected_text = 'INVENTORY'
 actual_text = wait.until(EC.presence_of_element_located((INVNTR))).text
 assert expected_text in actual_text
-print(f'Expected {expected_text}, and got: "{actual_text}" ')
+print(f'Expected "{expected_text}", and got: "{actual_text}" ')
 #4
 expected_text = 'ALERT/NOTIFICATION'
 actual_text = wait.until(EC.presence_of_element_located((ALRT_NTFCTN))).text
 assert expected_text in actual_text
-print(f'Expected {expected_text}, and got: "{actual_text}" ')
+print(f'Expected "{expected_text}", and got: "{actual_text}" ')
 #5
 expected_text = 'DATA USAGE'
 actual_text = wait.until(EC.presence_of_element_located((DT_USG))).text
 assert expected_text in actual_text
-print(f'Expected {expected_text}, and got: "{actual_text}" ')
+print(f'Expected "{expected_text}", and got: "{actual_text}" ')
 
 # 7. Check if sections are present.
 # 7.1 "Data Usage Details", 7.2. "Notifications/Alerts",
@@ -80,27 +80,27 @@ print(f'Expected {expected_text}, and got: "{actual_text}" ')
 expected_text = 'Data Usage Details'
 actual_text = wait.until(EC.presence_of_element_located((DT_USG_DTLS))).text
 assert expected_text in actual_text
-print(f'Expected {expected_text}, and got: "{actual_text}" ')
+print(f'Expected "{expected_text}", and got: "{actual_text}" ')
 #2
 expected_text = 'Notifications / Alerts'
 actual_text = wait.until(EC.presence_of_element_located((NTFCTNS_ALRTS))).text
 assert expected_text in actual_text
-print(f'Expected {expected_text}, and got: "{actual_text}" ')
+print(f'Expected "{expected_text}", and got: "{actual_text}" ')
 #3
 expected_text = 'Groups'
 actual_text = wait.until(EC.presence_of_element_located((GRPS))).text
 assert expected_text in actual_text
-print(f'Expected {expected_text}, and got: "{actual_text}" ')
+print(f'Expected "{expected_text}", and got: "{actual_text}" ')
 #4
 expected_text = 'Signal Strength'
 actual_text = wait.until(EC.presence_of_element_located((SGNL_STRNTH))).text
 assert expected_text in actual_text
-print(f'Expected {expected_text}, and got: "{actual_text}" ')
+print(f'Expected "{expected_text}", and got: "{actual_text}" ')
 #5
 expected_text = 'Device   Locations'
 actual_text = wait.until(EC.presence_of_element_located((DVC_LCTN))).text
 assert expected_text in actual_text
-print(f'Expected {expected_text}, and got: "{actual_text}" ')
+print(f'Expected "{expected_text}", and got: "{actual_text}" ')
 
 # Pictures
 options = webdriver.ChromeOptions()
@@ -112,7 +112,7 @@ images = driver.find_elements_by_tag_name('img')
 pics_on_page = len(images)
 for image in images:
     print(image.get_attribute('src'))
-print(f'There are: {pics_on_page} images on the page')
+print(f'There are: "{pics_on_page}" images on the page')
 
 # Sleep to see what we have
 sleep(2)

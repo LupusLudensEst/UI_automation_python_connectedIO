@@ -120,9 +120,9 @@ wait.until(EC.element_to_be_clickable(ADD_BTN)).click()
 # 20. Verify Verification Pending is here
 expected_text = 'Verification Pending'
 actual_text = wait.until(EC.presence_of_element_located((TEXT_HR))).text
-print(f'Actual text: {actual_text}')
+print(f'Actual text: "{actual_text}"')
 assert expected_text in actual_text
-print(f'Expected {expected_text}, and got: "{actual_text}" ')
+print(f'Expected "{expected_text}", and got: "{actual_text}" ')
 
 # Sleep to see what we have
 sleep(2)

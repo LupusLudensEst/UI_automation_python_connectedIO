@@ -47,28 +47,28 @@ wait.until(EC.element_to_be_clickable(USERS)).click()
 expected_text = 'ADMIN'
 actual_text = wait.until(EC.presence_of_element_located((ADMIN))).text
 assert expected_text in actual_text
-print(f'Expected {expected_text}, and got: "{actual_text}" ')
+print(f'Expected "{expected_text}", and got: "{actual_text}" ')
 len_admins = len(wait.until(EC.presence_of_all_elements_located((ADMIN))))
-print(f'Admins: {len_admins}, type: {type(len_admins)}')
+print(f'Admins: "{len_admins}", type: "{type(len_admins)}"')
 if len_admins < 2:
     print(f'ADMINS < 2, NOT OK, there is: {len_admins} admin, add to 2 admins')
     # Driver quit
     driver.quit()
 else:
-    print(f'ADMINS >=2, OK, there are: {len_admins} admins')
+    print(f'ADMINS >=2, OK, there are: "{len_admins}" admins')
 
     expected_text = 'USER'
     actual_text = wait.until(EC.presence_of_element_located((USER))).text
     assert expected_text in actual_text
-    print(f'Expected {expected_text}, and got: "{actual_text}" ')
+    print(f'Expected "{expected_text}", and got: "{actual_text}" ')
     len_users = len(wait.until(EC.presence_of_all_elements_located((USER))))
     if len_users >= 2:
-        print(f'USERS >=1, OK, there are: {len_users} users')
+        print(f'USERS >=1, OK, there are: "{len_users}" users')
     else:
-        print(f'USERS < 1, NOT OK, there are: {len_users} users')
+        print(f'USERS < 1, NOT OK, there are: "{len_users}" users')
 
     total_users_admins_before_delete = len_admins + len_users
-    print(f'Total admins and users before delete: {total_users_admins_before_delete}')
+    print(f'Total admins and users before delete: "{total_users_admins_before_delete}"')
 
     # 8. Choose any username with Admin or User role except yours.
     # Click on the "Settings" (three vertical dots) from the rightmost side of the user.
@@ -86,10 +86,10 @@ else:
     len_users = len(wait.until(EC.presence_of_all_elements_located((USER))))
     total_admins_users_after_delete = len_admins + len_users
     if total_users_admins_before_delete - total_admins_users_after_delete == 1:
-        print(f'Delete is OK: {total_users_admins_before_delete} - {total_admins_users_after_delete} = {total_users_admins_before_delete - total_admins_users_after_delete}')
+        print(f'Delete is OK: "{total_users_admins_before_delete}" - "{total_admins_users_after_delete}" = "{total_users_admins_before_delete - total_admins_users_after_delete}"')
     else:
         print(f'Delete is not OK')
-    print(f'Total admins and users after delete: {total_admins_users_after_delete}')
+    print(f'Total admins and users after delete: "{total_admins_users_after_delete}"')
 
     # Sleep to see what we have
     sleep(2)

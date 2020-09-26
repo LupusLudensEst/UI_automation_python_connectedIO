@@ -44,12 +44,12 @@ wait.until(EC.element_to_be_clickable(DVC_ONLN)).click()
 expected_text = 'Device Management Portal'
 actual_text = wait.until(EC.presence_of_element_located((DVC_MNGMNT_PRTL))).text
 assert expected_text in actual_text
-print(f'Expected {expected_text}, and got: "{actual_text}" ')
+print(f'Expected "{expected_text}", and got: "{actual_text}" ')
 # 7.2 Verify words Device Management Portal are here
 expected_text = 'Online'
 actual_text = wait.until(EC.presence_of_element_located((ONLN_HERE))).text
 assert expected_text in actual_text
-print(f'Expected {expected_text}, and got: "{actual_text}" ')
+print(f'Expected "{expected_text}", and got: "{actual_text}" ')
 
 # Sleep to see what we have
 sleep(2)

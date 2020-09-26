@@ -44,9 +44,9 @@ expected_text = 'https://devcloud.connectedio.com/devices'
 actual_text = driver.current_url
 assert expected_text in actual_text
 if expected_text == actual_text:
-    print(f'Expected {expected_text}, and got: "{actual_text}" ')
+    print(f'Expected "{expected_text}", and got: "{actual_text}" ')
 else:
-    print(f'Expected {expected_text}, but got: "{actual_text}" ')
+    print(f'Expected "{expected_text}", but got: "{actual_text}" ')
 
 # 8. Verify Offline is here
 expected_text = 'Offline'

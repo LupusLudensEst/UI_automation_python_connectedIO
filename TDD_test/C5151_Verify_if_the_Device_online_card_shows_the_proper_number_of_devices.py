@@ -48,7 +48,7 @@ no_data_available = wait.until(EC.element_to_be_clickable(NO_DATA)).text
 
 # 7.3 If txt_frm_dvc_onln = 0 and no_data_available = 'No Data Available' stop and exit program
 if txt_frm_dvc_onln == '0' and no_data_available == 'No Data Available':
-    print(f'Number of devices from DEVICE ONLINE element: {txt_frm_dvc_onln}, type: {type(txt_frm_dvc_onln)};\nNo data avalable is here: {no_data_available}, type {type(no_data_available)}.')
+    print(f'Number of devices from DEVICE ONLINE element: "{txt_frm_dvc_onln}", type: {type(txt_frm_dvc_onln)};\nNo data avalable is here: {no_data_available}, type {type(no_data_available)}.')
     # Driver quit
     driver.quit()
     # break
@@ -56,11 +56,11 @@ else:
 
     # 8. Count the number of devices with online status on the Devices page
     len_tbl = len(wait.until(EC.presence_of_all_elements_located(DVCS_TBL)))
-    print(f'Quantity of the strings in the devices table: {len_tbl}')
+    print(f'Quantity of the strings in the devices table: "{len_tbl}"')
 
     # 9. Verify if the number of devices on the DEVICE ONLINE card should match the number of devices with online status on the Devices page
     assert txt_frm_dvc_onln in str(len_tbl)
-    print(f'Expected {txt_frm_dvc_onln}, and got: "{str(len_tbl)}" ')
+    print(f'Expected "{txt_frm_dvc_onln}", and got: "{str(len_tbl)}" ')
 
     # Sleep to see what we have
     sleep(2)
@@ -111,7 +111,7 @@ else:
 #
 # # 6. Pay attention to the number of devices on the "DEVICE ONLINE" card
 # txt_frm_dvc_onln = wait.until(EC.element_to_be_clickable(DVC_ONLN)).text
-# print(f'Number of devices from DEVICE ONLINE element: {txt_frm_dvc_onln}')
+# print(f'Number of devices from DEVICE ONLINE element: "{txt_frm_dvc_onln}"')
 #
 # # 7. Click on DEVICE ONLINE card
 # wait.until(EC.element_to_be_clickable(DVC_ONLN)).click()
@@ -119,13 +119,13 @@ else:
 # # 8. Count the number of devices with online status on the Devices page
 # try:
 #     len_tbl = len(wait.until(EC.presence_of_all_elements_located(DVCS_TBL)))
-#     print(f'Quantity of the strings in the devices table: {len_tbl}')
+#     print(f'Quantity of the strings in the devices table: "{len_tbl}"')
 # except:
 #     len_tbl = 0
 #
 # # 9. Verify if the number of devices on the DEVICE ONLINE card should match the number of devices with online status on the Devices page
 # assert txt_frm_dvc_onln in str(len_tbl)
-# print(f'Expected {txt_frm_dvc_onln}, and got: "{str(len_tbl)}" ')
+# print(f'Expected "{txt_frm_dvc_onln}", and got: "{str(len_tbl)}" ')
 #
 # # Sleep to see what we have
 # sleep(2)
