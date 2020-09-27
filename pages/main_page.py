@@ -69,6 +69,9 @@ INVNTR_ELMNT = (By.CSS_SELECTOR, "div.card.overflowhidden.number-chart.d-flex.fl
 INVNTR_TXT = (By.CSS_SELECTOR, "span.pr-2")
 ALRT_VRFCTN_CRT = (By.XPATH, "(//div[@class='body information-card'])[4]")
 ALRT_DSHBRD_HR = (By.CSS_SELECTOR, "div.d-inline-block.mr-4")
+DT_USG_CRD = (By.CSS_SELECTOR, "div.card.overflowhidden.number-chart.p-4")
+CLLR = (By.XPATH, "(//strong[@class='ng-tns-c6-0'])[1]")
+WAN = (By.XPATH, "(//strong[@class='ng-tns-c6-0'])[4]")
 
 class MainPage(Page):
 
@@ -581,5 +584,19 @@ class MainPage(Page):
         sleep(2)
         txt_frm_invntr = (wait.until(EC.visibility_of_element_located(ALRT_DSHBRD_HR))).text
         print(f'"{txt_frm_invntr}" is on the page')
+
+    # End of the above code
+
+    def clck_on_dt_usg(self):
+        # Click on the DATA USAGE card with Cellular data used
+        wait = WebDriverWait(self.driver, 15)
+        wait.until(EC.element_to_be_clickable(DT_USG_CRD)).click()
+
+    def cllr_or_wan_txts_hr(self):
+        # Verify that the DATA USAGE card has rotated to WAN data used and he DATA USAGE card has rotated back to Cellular data used
+        wait = WebDriverWait(self.driver, 15)
+        cllr_txt = wait.until(EC.visibility_of_element_located(CLLR)).text
+        wan_txt = wait.until(EC.visibility_of_element_located(WAN)).text
+        print(f'Text is here: "{cllr_txt}" or "{wan_txt}"')
 
     # End of the above code
