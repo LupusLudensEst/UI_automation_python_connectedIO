@@ -72,6 +72,17 @@ ALRT_DSHBRD_HR = (By.CSS_SELECTOR, "div.d-inline-block.mr-4")
 DT_USG_CRD = (By.CSS_SELECTOR, "div.card.overflowhidden.number-chart.p-4")
 CLLR = (By.XPATH, "(//strong[@class='ng-tns-c6-0'])[1]")
 WAN = (By.XPATH, "(//strong[@class='ng-tns-c6-0'])[4]")
+DT_USG_CRD = (By.CSS_SELECTOR, "div.card.overflowhidden.number-chart.p-4")
+CLLR = (By.XPATH, "(//strong[@class='ng-tns-c6-0'])[1]")
+WAN = (By.XPATH, "(//strong[@class='ng-tns-c6-0'])[4]")
+DSCH_BRD_ICN = (By.XPATH, "(//a[@class='ng-star-inserted'])[1]")
+DSCH_BRD_TXT = (By.XPATH, "//h2[@class='mb-0']")
+USG_DTLS_TXT = (By.XPATH, "(//h6[@class='tile-title text-uppercase'])[1]")
+QSTN_CRCL_MRK = (By.XPATH, "//i[@class='fa fa-question-circle']")
+TL_TIP_TXT = (By.XPATH, "//span[@tool-tip='WAN/Cellular data usage classified periodically.']")
+DT_USG_DRP_DWN_MN = (By.XPATH, "//select[@class='form-control']")
+NO_DT_ABLBL = (By.XPATH, "(//div[@class='no-data'])[1]")
+GB_INCTV_CLMN = (By.XPATH, "(//li[@class='nav-item ng-star-inserted'])[3]")
 
 class MainPage(Page):
 
@@ -600,3 +611,71 @@ class MainPage(Page):
         print(f'Text is here: "{cllr_txt}" or "{wan_txt}"')
 
     # End of the above code
+
+    def clck_on_dsch_brd_mn_icn(self, dsbrd_txt):
+        # Click Dashboard menu icon and make sure Dashboard page reloaded
+        wait = WebDriverWait(self.driver, 15)
+        wait.until(EC.element_to_be_clickable(DSCH_BRD_ICN)).click()
+        dsch_brd_txt = wait.until(EC.visibility_of_element_located(DSCH_BRD_TXT)).text
+        print(f'Text is here: "{dsch_brd_txt}"')
+        assert dsbrd_txt in dsch_brd_txt
+
+    def mk_sr_dt_usg_dtls_blck_hr(self, dt_usg_blk):
+        # Make sure Data Usage Details block DATA USAGE is present on the screen
+        wait = WebDriverWait(self.driver, 15)
+        usg_dtls_txt = wait.until(EC.visibility_of_element_located(USG_DTLS_TXT)).text
+        print(f'Text is here: "{usg_dtls_txt}"')
+        assert dt_usg_blk in usg_dtls_txt
+
+    def hvr_ovr_qstn_mrk_tl_tps_hr(self, tl_tp_txt):
+        # Hover over question mark in top right of the block and make sure tooltip WAN/Cellular data usage classified periodically. appears
+        wait = WebDriverWait(self.driver, 15)
+        target = wait.until(EC.element_to_be_clickable(TL_TIP_TXT))
+        actions = ActionChains(self.driver)
+        actions.move_to_element(target)
+        actions.click_and_hold(target)
+        actions.perform()
+        question_mark = wait.until(EC.visibility_of_element_located(TL_TIP_TXT))
+        tool_tip_text = question_mark.get_attribute('tool-tip')
+        print(f'Text is here: "{tool_tip_text}"')
+        expected_text = tl_tp_txt
+        actual_text = tool_tip_text
+        if expected_text in actual_text:
+            print(f'Expected "{expected_text}", and got: "{actual_text}" ')
+        else:
+            print(f'Expected "{expected_text}", but got: "{actual_text}" ')
+
+    def clck_on_tdy_optn_drp_mn(self):
+        # Change in drop-down changes the columns = click on Today option from drop-down menu
+        wait = WebDriverWait(self.driver, 15)
+        wait.until(EC.element_to_be_clickable(DT_USG_DRP_DWN_MN)).click()
+        wait.until(EC.presence_of_element_located(DT_USG_DRP_DWN_MN)).send_keys(' Today ')
+
+    def no_dt_avlbl_hr(self):
+        # The inscription No Data Available is in the center
+        wait = WebDriverWait(self.driver, 15)
+        usg_dtls_txt = wait.until(EC.visibility_of_element_located(NO_DT_ABLBL)).text
+        expected_text = 'No Data Available'
+        actual_text = usg_dtls_txt
+        if expected_text in actual_text:
+            print(f'Expected "{expected_text}", and got: "{actual_text}" ')
+        else:
+            print(f'Expected "{expected_text}", but got: "{actual_text}" ')
+
+    def gb_inctv_clmn_is_grey(self, clr_gr):
+        # Verify GB inactive column highlighted grey when hover over it and hold
+        wait = WebDriverWait(self.driver, 15)
+        target = wait.until(EC.element_to_be_clickable(GB_INCTV_CLMN))
+        actions = ActionChains(self.driver)
+        actions.move_to_element(target)
+        actions.click_and_hold(target)
+        actions.perform()
+        question_mark = wait.until(EC.visibility_of_element_located(GB_INCTV_CLMN))
+        gb_inctv_clmn = wait.until(EC.visibility_of_element_located(GB_INCTV_CLMN)).value_of_css_property("color")
+        assert clr_gr in gb_inctv_clmn
+        expected_text = clr_gr
+        actual_text = gb_inctv_clmn
+        if expected_text in actual_text:
+            print(f'Expected "{expected_text}", and got: "{actual_text}" ')
+        else:
+            print(f'Expected "{expected_text}", but got: "{actual_text}" ')
