@@ -19,12 +19,13 @@ CLLR = (By.XPATH, "(//strong[@class='ng-tns-c6-0'])[1]")
 WAN = (By.XPATH, "(//strong[@class='ng-tns-c6-0'])[4]")
 DSCH_BRD_ICN = (By.XPATH, "(//a[@class='ng-star-inserted'])[1]")
 DSCH_BRD_TXT = (By.XPATH, "//h2[@class='mb-0']")
-USG_DTLS_TXT = (By.XPATH, "(//h6[@class='tile-title text-uppercase'])[1]")
-QSTN_CRCL_MRK = (By.XPATH, "//i[@class='fa fa-question-circle']")
-TL_TIP_TXT = (By.XPATH, "//span[@tool-tip='WAN/Cellular data usage classified periodically.']")
-DT_USG_DRP_DWN_MN = (By.XPATH, "//select[@class='form-control']")
-NO_DT_ABLBL = (By.XPATH, "(//div[@class='no-data'])[1]")
-GB_INCTV_CLMN = (By.XPATH, "(//li[@class='nav-item ng-star-inserted'])[3]")
+NTFCTNS_ALRTS_TXT = (By.XPATH, "(//div[@class='card dashboard-card notification-card'])")
+NTFCTNS_ALRTS_TL_TIP = (By.XPATH, "//span[@tool-tip='Alerts related to device(s)/group(s).']")
+CLCK_ON_GRPS_TB = (By.XPATH, "(//a[@class='nav-link'])[5]")
+DVC_GRY = (By.XPATH, "(//li[@class='nav-item ng-star-inserted'])[4]")
+NO_DT_WHEN_GRPS = (By.XPATH, "(//div[@class='no-data'])[2]")
+CLCK_ON_DVC_TB = (By.XPATH, "(//li[@class='nav-item ng-star-inserted'])[4]")
+NO_DT_WHEN_DVC = (By.XPATH, "(//div[@class='no-data'])[2]")
 
 # Explicit wait
 wait = WebDriverWait(driver, 15)
@@ -52,48 +53,47 @@ dsch_brd_txt = wait.until(EC.visibility_of_element_located(DSCH_BRD_TXT)).text
 print(f'Text is here: "{dsch_brd_txt}"')
 assert 'Dashboard' in dsch_brd_txt
 
-# 7. Make sure Data Usage Details block is present on the screen
-usg_dtls_txt = wait.until(EC.visibility_of_element_located(USG_DTLS_TXT)).text
-print(f'Text is here: "{usg_dtls_txt}"')
-assert 'DATA USAGE' in usg_dtls_txt
+# 7. Make sure Notifications Alerts block is present on the screen
+ntfctbs_alrts_txt = wait.until(EC.visibility_of_element_located(NTFCTNS_ALRTS_TXT)).text
+print(f'Text is here: "{ntfctbs_alrts_txt}"')
+assert 'Notifications / Alerts' in ntfctbs_alrts_txt
 
 # 8. Hover over question mark in top right of the block and make sure tooltip appears
-target = wait.until(EC.element_to_be_clickable(TL_TIP_TXT))
+target = wait.until(EC.element_to_be_clickable(NTFCTNS_ALRTS_TL_TIP))
 actions = ActionChains(driver)
 actions.move_to_element(target)
 actions.click_and_hold(target)
 actions.perform()
-question_mark = wait.until(EC.visibility_of_element_located(TL_TIP_TXT))
+question_mark = wait.until(EC.visibility_of_element_located(NTFCTNS_ALRTS_TL_TIP))
 tool_tip_text = question_mark.get_attribute('tool-tip')
 print(f'Text is here: "{tool_tip_text}"')
-expected_text = 'WAN/Cellular data usage classified periodically.'
+expected_text = 'Alerts related to device(s)/group(s).'
 actual_text = tool_tip_text
 if expected_text in actual_text:
     print(f'Expected "{expected_text}", and got: "{actual_text}" ')
 else:
     print(f'Expected "{expected_text}", but got: "{actual_text}" ')
 
-# 9. Change in drop-down changes the columns = click on Today option from drop-down menu
-wait.until(EC.element_to_be_clickable(DT_USG_DRP_DWN_MN)).click()
-wait.until(EC.presence_of_element_located(DT_USG_DRP_DWN_MN)).send_keys(' Today ')
-
-# 10. The inscription No Data Available is in the center
-usg_dtls_txt = wait.until(EC.visibility_of_element_located(NO_DT_ABLBL)).text
-expected_text = 'No Data Available'
-actual_text = usg_dtls_txt
+# 9. Make sure that click on column header Groups makes it active by moving underscore sign = 0px none to it
+wait.until(EC.element_to_be_clickable(CLCK_ON_GRPS_TB)).click()
+undescore_line =  wait.until(EC.visibility_of_element_located(CLCK_ON_GRPS_TB)).value_of_css_property("border-bottom")
+print(f'Underscore symbol: "{undescore_line}"')
+assert '0px none' in undescore_line
+expected_text = '0px none'
+actual_text = undescore_line
 if expected_text in actual_text:
     print(f'Expected "{expected_text}", and got: "{actual_text}" ')
 else:
     print(f'Expected "{expected_text}", but got: "{actual_text}" ')
 
-# 11. Verify GB inactive column highlighted grey = 128, 128, 128, 1 when hover over it and hold
-target = wait.until(EC.element_to_be_clickable(GB_INCTV_CLMN))
+# 10. Verify Device inactive column highlighted grey = 128, 128, 128, 1 when hover over it and hold
+target = wait.until(EC.element_to_be_clickable(DVC_GRY))
 actions = ActionChains(driver)
 actions.move_to_element(target)
 actions.click_and_hold(target)
 actions.perform()
-question_mark = wait.until(EC.visibility_of_element_located(GB_INCTV_CLMN))
-gb_inctv_clmn =  wait.until(EC.visibility_of_element_located(GB_INCTV_CLMN)).value_of_css_property("color")
+question_mark = wait.until(EC.visibility_of_element_located(DVC_GRY))
+gb_inctv_clmn =  wait.until(EC.visibility_of_element_located(DVC_GRY)).value_of_css_property("color")
 assert '128, 128, 128, 1' in gb_inctv_clmn
 expected_text = '128, 128, 128, 1'
 actual_text = gb_inctv_clmn
@@ -101,6 +101,34 @@ if expected_text in actual_text:
     print(f'Expected "{expected_text}", and got: "{actual_text}" ')
 else:
     print(f'Expected "{expected_text}", but got: "{actual_text}" ')
+
+# 11. The inscription No Data Available is in the center and does not shift when switching columns
+# Groups is active=undescored and verify text No Data Available is here
+no_dt_when_grps = wait.until(EC.visibility_of_element_located(NO_DT_WHEN_GRPS)).text
+print(f'Text is here: "{no_dt_when_grps}"')
+assert 'No Data Available' in no_dt_when_grps
+# Click on Device and verify text No Data Available is here
+wait.until(EC.element_to_be_clickable(CLCK_ON_DVC_TB)).click()
+no_dt_when_dvc = wait.until(EC.visibility_of_element_located(NO_DT_WHEN_DVC)).text
+print(f'Text is here: "{no_dt_when_dvc}"')
+assert 'No Data Available' in no_dt_when_dvc
+# Locations of the No Data Available if Groups is active=undescored
+e_grps = wait.until(EC.visibility_of_element_located(NO_DT_WHEN_GRPS))
+location_grps = e_grps.location
+size_grps = e_grps.size
+print(f'Groups is active=undescored location: {location_grps}')
+print(f'Groups is active=undescored size: {size_grps}')
+
+# Locations of the No Data Available if Device is active=undescored
+e_dvc = wait.until(EC.visibility_of_element_located(NO_DT_WHEN_DVC))
+location_dvc = e_dvc.location
+size_dvc = e_dvc.size
+print(f'Device is active=undescored location: {location_dvc}')
+print(f'Device is active=undescored size: {size_dvc}')
+
+# Verify the inscription No Data Available is in the center and does not shift when switching columns
+if location_grps == location_dvc and size_grps == size_dvc:
+    print('Ok')
 
 # Sleep to see what we have
 sleep(2)
