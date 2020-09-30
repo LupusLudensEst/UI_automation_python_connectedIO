@@ -1,7 +1,7 @@
 # Created by rapid at 9/27/2020
-Feature: # C5159_Data_Usage_details_section
+Feature: # C5159 Data Usage details section
 
-  Scenario: # C5159_Data_Usage_details_section
+  Scenario: # C5159 Data Usage details section
     Given Loginpage
     Then Login with the given credentials
     Then Click Dashboard menu icon and make sure Dashboard page reloaded

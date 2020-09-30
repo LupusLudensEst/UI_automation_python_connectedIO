@@ -69,12 +69,9 @@ INVNTR_ELMNT = (By.CSS_SELECTOR, "div.card.overflowhidden.number-chart.d-flex.fl
 INVNTR_TXT = (By.CSS_SELECTOR, "span.pr-2")
 ALRT_VRFCTN_CRT = (By.XPATH, "(//div[@class='body information-card'])[4]")
 ALRT_DSHBRD_HR = (By.CSS_SELECTOR, "div.d-inline-block.mr-4")
-DT_USG_CRD = (By.CSS_SELECTOR, "div.card.overflowhidden.number-chart.p-4")
-CLLR = (By.XPATH, "(//strong[@class='ng-tns-c6-0'])[1]")
 WAN = (By.XPATH, "(//strong[@class='ng-tns-c6-0'])[4]")
 DT_USG_CRD = (By.CSS_SELECTOR, "div.card.overflowhidden.number-chart.p-4")
 CLLR = (By.XPATH, "(//strong[@class='ng-tns-c6-0'])[1]")
-WAN = (By.XPATH, "(//strong[@class='ng-tns-c6-0'])[4]")
 DSCH_BRD_ICN = (By.XPATH, "(//a[@class='ng-star-inserted'])[1]")
 DSCH_BRD_TXT = (By.XPATH, "//h2[@class='mb-0']")
 USG_DTLS_TXT = (By.XPATH, "(//h6[@class='tile-title text-uppercase'])[1]")
@@ -83,6 +80,13 @@ TL_TIP_TXT = (By.XPATH, "//span[@tool-tip='WAN/Cellular data usage classified pe
 DT_USG_DRP_DWN_MN = (By.XPATH, "//select[@class='form-control']")
 NO_DT_ABLBL = (By.XPATH, "(//div[@class='no-data'])[1]")
 GB_INCTV_CLMN = (By.XPATH, "(//li[@class='nav-item ng-star-inserted'])[3]")
+NTFCTNS_ALRTS_TXT = (By.XPATH, "(//div[@class='card dashboard-card notification-card'])")
+NTFCTNS_ALRTS_TL_TIP = (By.XPATH, "//span[@tool-tip='Alerts related to device(s)/group(s).']")
+CLCK_ON_GRPS_TB = (By.XPATH, "(//a[@class='nav-link'])[5]")
+DVC_GRY = (By.XPATH, "(//li[@class='nav-item ng-star-inserted'])[4]")
+NO_DT_WHEN_GRPS = (By.XPATH, "(//div[@class='no-data'])[2]")
+CLCK_ON_DVC_TB = (By.XPATH, "(//li[@class='nav-item ng-star-inserted'])[4]")
+NO_DT_WHEN_DVC = (By.XPATH, "(//div[@class='no-data'])[2]")
 
 class MainPage(Page):
 
@@ -670,7 +674,6 @@ class MainPage(Page):
         actions.move_to_element(target)
         actions.click_and_hold(target)
         actions.perform()
-        question_mark = wait.until(EC.visibility_of_element_located(GB_INCTV_CLMN))
         gb_inctv_clmn = wait.until(EC.visibility_of_element_located(GB_INCTV_CLMN)).value_of_css_property("color")
         assert clr_gr in gb_inctv_clmn
         expected_text = clr_gr
@@ -679,3 +682,107 @@ class MainPage(Page):
             print(f'Expected "{expected_text}", and got: "{actual_text}" ')
         else:
             print(f'Expected "{expected_text}", but got: "{actual_text}" ')
+
+    # End of the above code
+
+    def alrts_blk_prsnt(self, alrts_blk_txt):
+        # Make sure Notifications / Alerts block is present on the screen
+        wait = WebDriverWait(self.driver, 15)
+        ntfctbs_alrts_txt = wait.until(EC.visibility_of_element_located(NTFCTNS_ALRTS_TXT)).text
+        print(f'Notifications / Alerts is here: "{ntfctbs_alrts_txt}"\n')
+        assert alrts_blk_txt in ntfctbs_alrts_txt
+
+    def hvr_ovr_qstn_mrk(self):
+        # Hover over question mark in top right of the block and make sure tooltip appears
+        wait = WebDriverWait(self.driver, 15)
+        target = wait.until(EC.element_to_be_clickable(NTFCTNS_ALRTS_TL_TIP))
+        actions = ActionChains(self.driver)
+        actions.move_to_element(target)
+        actions.click_and_hold(target)
+        actions.perform()
+        question_mark = wait.until(EC.visibility_of_element_located(NTFCTNS_ALRTS_TL_TIP))
+        tool_tip_text = question_mark.get_attribute('tool-tip')
+        print(f'Text is here: "{tool_tip_text}"\n')
+        expected_text = 'Alerts related to device(s)/group(s).'
+        actual_text = tool_tip_text
+        if expected_text in actual_text:
+            print(f'Expected "{expected_text}", and got: "{actual_text}"\n')
+        else:
+            print(f'Expected "{expected_text}", but got: "{actual_text}"\n')
+
+    def undrscr_hr(self, undr_scr):
+        # Make sure that click on column header Groups makes it active by moving underscore sign = 0px none to it
+        wait = WebDriverWait(self.driver, 15)
+        wait.until(EC.element_to_be_clickable(CLCK_ON_GRPS_TB)).click()
+        undescore_line = wait.until(EC.visibility_of_element_located(CLCK_ON_GRPS_TB)).value_of_css_property(
+            "border-bottom")
+        print(f'Underscore symbol: "{undescore_line}"\n')
+        assert undr_scr in undescore_line
+        expected_text = undr_scr
+        actual_text = undescore_line
+        if expected_text in actual_text:
+            print(f'Expected "{expected_text}", and got: "{actual_text}"\n')
+        else:
+            print(f'Expected "{expected_text}", but got: "{actual_text}"\n')
+
+    def gry_clr_inctv_clmn_hr(self, gry_clr_inctv_clmn_hr):
+        # Verify Device inactive column highlighted grey = 128, 128, 128, 1 when hover over it and hold
+        wait = WebDriverWait(self.driver, 15)
+        target = wait.until(EC.element_to_be_clickable(DVC_GRY))
+        actions = ActionChains(self.driver)
+        actions.move_to_element(target)
+        actions.click_and_hold(target)
+        actions.perform()
+        gb_inctv_clmn = wait.until(EC.visibility_of_element_located(DVC_GRY)).value_of_css_property("color")
+        assert gry_clr_inctv_clmn_hr in gb_inctv_clmn
+        expected_text = gry_clr_inctv_clmn_hr
+        actual_text = gb_inctv_clmn
+        if expected_text in actual_text:
+            print(f'Expected "{expected_text}", and got: "{actual_text}"\n')
+        else:
+            print(f'Expected "{expected_text}", but got: "{actual_text}"\n')
+
+    def no_dt_vlbl_on_ntfctn_alrt(self, no_dt_vlbl_on_ntfctn_alrt):
+        # The inscription No Data Available is in the center and does not shift when switching columns
+        wait = WebDriverWait(self.driver, 15)
+        no_dt_when_grps = wait.until(EC.visibility_of_element_located(NO_DT_WHEN_GRPS)).text
+        print(f'Text is here: "{no_dt_when_grps}"\n')
+        assert no_dt_vlbl_on_ntfctn_alrt in no_dt_when_grps
+
+    def clck_on_dvc_no_dt_avlb(self, clck_on_dvc_no_dt_avlb):
+        # Click on Device and verify text No Data Available is here
+        wait = WebDriverWait(self.driver, 15)
+        wait.until(EC.element_to_be_clickable(CLCK_ON_DVC_TB)).click()
+        no_dt_when_dvc = wait.until(EC.visibility_of_element_located(NO_DT_WHEN_DVC)).text
+        print(f'Text is here: "{no_dt_when_dvc}"\n')
+        assert clck_on_dvc_no_dt_avlb in no_dt_when_dvc
+
+    def lctns_no_dt_avlbl_grps(self):
+        # Locations of the No Data Available if Groups is active=undescored 0px none
+        wait = WebDriverWait(self.driver, 15)
+        e_grps = wait.until(EC.visibility_of_element_located(NO_DT_WHEN_GRPS))
+        location_grps = e_grps.location
+        size_grps = e_grps.size
+        print(f'Groups is active=undescored location: "{location_grps}"\n')
+        print(f'Groups is active=undescored size: "{size_grps}"\n')
+
+    def lctns_no_dt_avlbl_dvc(self):
+        # Locations of the No Data Available if Device is active=undescored 0px none
+        wait = WebDriverWait(self.driver, 15)
+        e_dvc = wait.until(EC.visibility_of_element_located(NO_DT_WHEN_DVC))
+        location_dvc = e_dvc.location
+        size_dvc = e_dvc.size
+        print(f'Device is active=undescored location: "{location_dvc}"\n')
+        print(f'Device is active=undescored size: "{size_dvc}"\n')
+
+    def vrf_if_lctn_and_sz_of_n_dt_avlbl(self):
+        # Verify the inscription No Data Available is in the center and does not shift when switching columns
+        wait = WebDriverWait(self.driver, 15)
+        e_grps = wait.until(EC.visibility_of_element_located(NO_DT_WHEN_GRPS))
+        location_grps = e_grps.location
+        size_grps = e_grps.size
+        e_dvc = wait.until(EC.visibility_of_element_located(NO_DT_WHEN_DVC))
+        location_dvc = e_dvc.location
+        size_dvc = e_dvc.size
+        if location_grps == location_dvc and size_grps == size_dvc:
+            print(f'Ok, because "{location_grps}"="{location_dvc}" and\n "{size_grps}"="{size_dvc}"\n')
