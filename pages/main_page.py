@@ -13,7 +13,6 @@ LOGIN_EMAIL = (By.XPATH, "//input[@placeholder='Email address']")
 LOGIN_PASSWORD = (By.XPATH, "//input[@placeholder='Password']")
 LOGIN_BTN = (By.CSS_SELECTOR, "button.btn.btn-primary.text-uppercase.w-100.font-weight-bold.gradient-btn.shadow-1.border-0")
 POP_UP_WNDW_OK_BTN = (By.XPATH, "//div[@class='swal2-actions']//button[@class='swal2-confirm btn btn-outline-primary btn-sm btn-custom swal2-styled']")
-# USERS = (By.CSS_SELECTOR, "i.fa.fa-users")
 USERS = (By.XPATH, "(//a[@class='ng-star-inserted'])[4]")
 QUICK_ACTIONS = (By.XPATH, "//div[@class='btn-group action-button dropdown']//span[contains(text(), 'Quick actions')]")
 ADD_MENU = (By.CSS_SELECTOR, "i.fa.fa-user-plus")
@@ -104,7 +103,7 @@ class MainPage(Page):
         wait.until(EC.element_to_be_clickable(LOGIN_BTN)).click()
         # 5. Click on pop-window OK button
         wait.until(EC.element_to_be_clickable(POP_UP_WNDW_OK_BTN)).click()
-        sleep(4)
+        sleep(2)
 
     def clck_usrs_btn(self):
         wait = WebDriverWait(self.driver, 10)
