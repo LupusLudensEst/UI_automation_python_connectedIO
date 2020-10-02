@@ -14,7 +14,9 @@ LOGIN_PASSWORD = (By.XPATH, "//input[@placeholder='Password']")
 LOGIN_BTN = (By.CSS_SELECTOR, "button.btn.btn-primary.text-uppercase.w-100.font-weight-bold.gradient-btn.shadow-1.border-0")
 POP_UP_WNDW_OK_BTN = (By.XPATH, "//div[@class='swal2-actions']//button[@class='swal2-confirm btn btn-outline-primary btn-sm btn-custom swal2-styled']")
 # USERS = (By.CSS_SELECTOR, "i.fa.fa-users")
-USERS = (By.XPATH, "(//a[@class='ng-star-inserted'])[4]")
+# USERS = (By.XPATH, "(//a[@class='ng-star-inserted'])[4]")
+# USERS = (By.XPATH, "(//i[@class='fa fa-users'])[1]")
+USERS = (By.XPATH, "(//li[@class='ng-star-inserted'])[5]")
 QUICK_ACTIONS = (By.XPATH, "//div[@class='btn-group action-button dropdown']//span[contains(text(), 'Quick actions')]")
 ADD_MENU = (By.CSS_SELECTOR, "i.fa.fa-user-plus")
 FIRST_NAME = (By.XPATH, "//input[@formcontrolname='firstName']")
@@ -100,7 +102,7 @@ class MainPage(Page):
         # 3. Send Password
         wait.until(EC.presence_of_element_located(LOGIN_PASSWORD)).clear()
         wait.until(EC.presence_of_element_located(LOGIN_PASSWORD)).send_keys('MyUSA2016!@') # manicpiano731
-        # 4. Click on Login button
+        # 4. Click on Login buclck_usr_nmtton
         wait.until(EC.element_to_be_clickable(LOGIN_BTN)).click()
         # 5. Click on pop-window OK button
         wait.until(EC.element_to_be_clickable(POP_UP_WNDW_OK_BTN)).click()
@@ -620,7 +622,7 @@ class MainPage(Page):
         # Click Dashboard menu icon and make sure Dashboard page reloaded
         wait = WebDriverWait(self.driver, 15)
         wait.until(EC.element_to_be_clickable(DSCH_BRD_ICN)).click()
-        dsch_brd_txt = wait.until(EC.visibility_of_element_located(DSCH_BRD_TXT)).text
+        dsch_brd_txt = wait.until(EC.presence_of_element_located(DSCH_BRD_TXT)).text
         print(f'Text is here: "{dsch_brd_txt}"')
         assert dsbrd_txt in dsch_brd_txt
 
