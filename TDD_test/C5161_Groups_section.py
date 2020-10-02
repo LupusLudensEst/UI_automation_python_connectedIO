@@ -20,6 +20,9 @@ GRPS_TXT_HR = (By.XPATH, "(//h2[@class='ng-tns-c6-0'])[3]")
 QSTN_CRCL_MRK_GRPS_SCTN = (By.XPATH, "(//i[@class='fa  fa-question-circle'])[2]")
 QSTN_CRCL_TL_TP_TXT = (By.XPATH, "(//span[@class='ml-2'])[1]")
 NO_DT_IN_GRPS_BLCK = (By.XPATH, "(//div[@class='no-data'])[3]")
+GRPS_DRP_DWN_MN = (By.ID, "more") # "(//span[@class='ng-tns-c5-3'])[3]" # "//div[@class='btn-group action-button show']" # "//button[@class='btn btn-default btn-sm dropdown-toggle dropdown-toggle']"
+GRPS_DRP_DWN_MN_LST = (By.XPATH, "//div[@class='list-group']")
+GRPS_TL_TIP = (By.XPATH, "//span[@tool-tip='Device(s) status based on groups.']")
 
 # Explicit wait
 wait = WebDriverWait(driver, 15)
@@ -81,12 +84,37 @@ assert 'No Data Available' in no_dt_in_grps_blck
 e_grps = wait.until(EC.visibility_of_element_located(NO_DT_IN_GRPS_BLCK))
 location_grps = e_grps.location
 print(f'Location of "No Data Available": "{location_grps}"')
-if {'x': 900, 'y': 1168} == location_grps:
+if {'x': 90, 'y': 1168} == location_grps:
     print(f'"No Data Available" is in the center of Groups block')
 else:
     print(f'"No Data Available" is NOT in the center of Groups block')
 
 # 10. Make sure that click on Groups drop-down list is working
+# wait.until(EC.element_to_be_clickable(GRPS_DRP_DWN_MN)).click()
+target = wait.until(EC.element_to_be_clickable(GRPS_DRP_DWN_MN))
+actions = ActionChains(driver)
+actions.move_to_element(target)
+actions.click_and_hold(target)
+actions.perform()
+len_gprs_drp_dwn_mn = len(wait.until(EC.presence_of_all_elements_located(GRPS_DRP_DWN_MN_LST)))
+print(f'Elements in the Drop-down menu: "{len_gprs_drp_dwn_mn}"')
+
+# 11. Tooltip appears when mouse hover question mark in top right of the Groups block
+target = wait.until(EC.element_to_be_clickable(GRPS_TL_TIP))
+actions = ActionChains(driver)
+actions.move_to_element(target)
+actions.click_and_hold(target)
+actions.perform()
+question_mark = wait.until(EC.visibility_of_element_located(GRPS_TL_TIP))
+tool_tip_text = question_mark.get_attribute('tool-tip')
+print(f'Text is here: "{tool_tip_text}"\n')
+expected_text = 'Device(s) status based on groups.'
+actual_text = tool_tip_text
+if expected_text in actual_text:
+    print(f'Expected "{expected_text}", and got: "{actual_text}"\n')
+else:
+    print(f'Expected "{expected_text}", but got: "{actual_text}"\n')
+
 
 # Sleep to see what we have
 sleep(2)

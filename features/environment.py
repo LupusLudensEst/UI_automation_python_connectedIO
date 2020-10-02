@@ -1,5 +1,6 @@
 from selenium import webdriver
 from selenium.webdriver.support.wait import WebDriverWait
+from selenium.webdriver.firefox.options import Options
 
 from app.application import Application
 
@@ -7,10 +8,8 @@ def browser_init(context):
     """
     :param context: Behave context
     """
-
-
     options = webdriver.ChromeOptions()
-    # options.headless = False
+    options.headless = False
     options.add_argument('--disable-gpu')
     options.add_argument('--headless')
     context.driver = webdriver.Chrome(options=options)
