@@ -9,11 +9,10 @@ def browser_init(context):
     :param context: Behave context
     """
     options = webdriver.ChromeOptions()
-    options.headless = False
+    options.headless = True
     options.add_argument('--disable-gpu')
     options.add_argument('--headless')
     context.driver = webdriver.Chrome(options=options)
-    context.driver.maximize_window()
 
     # context.driver = webdriver.Chrome(desired_capabilities={"proxy": {"proxyType": "MANUAL", "httpProxy": "localhost:8888"}})
     # context.driver = webdriver.Chrome(desired_capabilities={"chromeOptions": {"args": ["--start-fullscreen"]}})

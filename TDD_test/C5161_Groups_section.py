@@ -4,7 +4,6 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.action_chains import ActionChains
-from selenium.webdriver.support.color import Color
 
 driver = webdriver.Chrome()
 driver.maximize_window()
@@ -83,21 +82,20 @@ assert 'No Data Available' in no_dt_in_grps_blck
 # is in the center of Groups block
 e_grps = wait.until(EC.visibility_of_element_located(NO_DT_IN_GRPS_BLCK))
 location_grps = e_grps.location
-print(f'Location of "No Data Available": "{location_grps}"')
+print(f'Location of "No Data Available": "{location_grps}"\n')
 if {'x': 90, 'y': 1168} == location_grps:
-    print(f'"No Data Available" is in the center of Groups block')
+    print(f'"No Data Available" is in the center of Groups block\n')
 else:
-    print(f'"No Data Available" is NOT in the center of Groups block')
+    print(f'"No Data Available" is NOT in the center of Groups block\n')
 
 # 10. Make sure that click on Groups drop-down list is working
-# wait.until(EC.element_to_be_clickable(GRPS_DRP_DWN_MN)).click()
 target = wait.until(EC.element_to_be_clickable(GRPS_DRP_DWN_MN))
 actions = ActionChains(driver)
 actions.move_to_element(target)
 actions.click_and_hold(target)
 actions.perform()
 len_gprs_drp_dwn_mn = len(wait.until(EC.presence_of_all_elements_located(GRPS_DRP_DWN_MN_LST)))
-print(f'Elements in the Drop-down menu: "{len_gprs_drp_dwn_mn}"')
+print(f'Elements in the Drop-down menu: "{len_gprs_drp_dwn_mn}"\n')
 
 # 11. Tooltip appears when mouse hover question mark in top right of the Groups block
 target = wait.until(EC.element_to_be_clickable(GRPS_TL_TIP))
@@ -119,5 +117,5 @@ else:
 # Sleep to see what we have
 sleep(2)
 
-# # Driver quit
-# driver.quit()
+# Driver quit
+driver.quit()
