@@ -8,9 +8,9 @@ def browser_init(context):
     :param context: Behave context
     """
     options = webdriver.ChromeOptions()
-    options.headless = True
     options.add_argument('--disable-gpu')
     options.add_argument('--headless')
+    options.headless = False
     context.driver = webdriver.Chrome(options=options)
 
     # context.driver = webdriver.Chrome(desired_capabilities={"proxy": {"proxyType": "MANUAL", "httpProxy": "localhost:8888"}})

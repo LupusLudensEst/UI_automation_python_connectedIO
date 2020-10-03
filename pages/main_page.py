@@ -75,6 +75,7 @@ ALRT_DSHBRD_HR = (By.CSS_SELECTOR, "div.d-inline-block.mr-4")
 WAN = (By.XPATH, "(//strong[@class='ng-tns-c6-0'])[4]")
 DT_USG_CRD = (By.CSS_SELECTOR, "div.card.overflowhidden.number-chart.p-4")
 CLLR = (By.XPATH, "(//strong[@class='ng-tns-c6-0'])[1]")
+# DSCH_BRD_ICN = (By.CSS_SELECTOR, "li.ng-star-inserted.active")
 DSCH_BRD_ICN = (By.XPATH, "(//a[@class='ng-star-inserted'])[1]")
 DSCH_BRD_TXT = (By.XPATH, "//h2[@class='mb-0']")
 USG_DTLS_TXT = (By.XPATH, "(//h6[@class='tile-title text-uppercase'])[1]")
@@ -97,6 +98,10 @@ NO_DT_IN_GRPS_BLCK = (By.XPATH, "(//div[@class='no-data'])[3]")
 GRPS_DRP_DWN_MN = (By.ID, "more") # "(//span[@class='ng-tns-c5-3'])[3]" # "//div[@class='btn-group action-button show']" # "//button[@class='btn btn-default btn-sm dropdown-toggle dropdown-toggle']"
 GRPS_DRP_DWN_MN_LST = (By.XPATH, "//div[@class='list-group']")
 GRPS_TL_TIP = (By.XPATH, "//span[@tool-tip='Device(s) status based on groups.']")
+SGNL_STRNGT_TXT_HR = (By.XPATH, "(//h2[@class='ng-tns-c6-0'])[4]")
+QSTN_CRCL_SGNL_STRNGT_SCTN = (By.XPATH, "(//i[@class='fa  fa-question-circle'])[3]")
+QSTN_CRCL_SGNL_STRNGT_TXT = (By.XPATH, "//span[@tool-tip='Overall signal strength statistics of device(s).']")
+NO_DT_IN_SGNL_STRNGT_SCTN = (By.XPATH, "(//div[@class='no-data'])[4]")
 
 
 class MainPage(Page):
@@ -631,7 +636,7 @@ class MainPage(Page):
         # Click Dashboard menu icon and make sure Dashboard page reloaded
         wait = WebDriverWait(self.driver, 15)
         wait.until(EC.element_to_be_clickable(DSCH_BRD_ICN)).click()
-        dsch_brd_txt = wait.until(EC.presence_of_element_located(DSCH_BRD_TXT)).text
+        dsch_brd_txt = wait.until(EC.visibility_of_element_located(DSCH_BRD_TXT)).text
         print(f'Text is here: "{dsch_brd_txt}"')
         assert dsbrd_txt in dsch_brd_txt
 
@@ -868,5 +873,47 @@ class MainPage(Page):
             print(f'Expected "{expected_text}", and got: "{actual_text}"\n')
         else:
             print(f'Expected "{expected_text}", but got: "{actual_text}"\n')
+
+        # End of the above code
+
+    def sgnl_strngt_txt_hr(self):
+        # Make sure Signal Strength is on the screen
+        wait = WebDriverWait(self.driver, 15)
+        sgnl_strngt_txt_hr = wait.until(EC.visibility_of_element_located(SGNL_STRNGT_TXT_HR)).text
+        print(f'Signal Strength: "{sgnl_strngt_txt_hr}"\n')
+        assert 'Signal Strength' in sgnl_strngt_txt_hr
+
+    def ms_hvr_qstn_mrk_sgnl_strngt(self):
+        # Mouse hover question mark in top right of the Signal Strength block and make sure tooltip appears
+        wait = WebDriverWait(self.driver, 15)
+        target = wait.until(EC.element_to_be_clickable(QSTN_CRCL_SGNL_STRNGT_SCTN))
+        actions = ActionChains(self.driver)
+        actions.move_to_element(target)
+        actions.click_and_hold(target)
+        actions.perform()
+        question_mark = wait.until(EC.visibility_of_element_located(QSTN_CRCL_SGNL_STRNGT_TXT))
+        tool_tip_text = question_mark.get_attribute('tool-tip')
+        print(f'Tool-tip text is here: "{tool_tip_text}"\n')
+        expected_text = 'Overall signal strength statistics of device(s).'
+        actual_text = tool_tip_text
+        if expected_text in actual_text:
+            print(f'Expected "{expected_text}", and got: "{actual_text}"\n')
+        else:
+            print(f'Expected "{expected_text}", but got: "{actual_text}"\n')
+
+    def inscrptn_no_dt_avlbl_in_sgnl_strngt(self):
+        # The inscription No Data Available is in the center of Signal Strength block
+        wait = WebDriverWait(self.driver, 15)
+        no_dt_in_grps_blck = wait.until(EC.visibility_of_element_located(NO_DT_IN_SGNL_STRNGT_SCTN)).text
+        print(f'Text is here: "{no_dt_in_grps_blck}"\n')
+        assert 'No Data Available' in no_dt_in_grps_blck
+        # is in the center of Groups block
+        e_sgnl_strngt = wait.until(EC.visibility_of_element_located(NO_DT_IN_SGNL_STRNGT_SCTN))
+        location_grps = e_sgnl_strngt.location
+        print(f'Location of "No Data Available": "{location_grps}"\n')
+        if {'x': 689, 'y': 1168} == location_grps:
+            print(f'"No Data Available" is in the center of Groups block\n')
+        else:
+            print(f'"No Data Available" is NOT in the center of Groups block\n')
 
         # End of the above code
