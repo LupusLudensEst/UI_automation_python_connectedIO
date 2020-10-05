@@ -1,6 +1,5 @@
 from behave import *
 
-
 @step("Make sure {sgnl_strngt_txt_hr} is on the screen")
 def sgnl_strngt_txt_hr(context, sgnl_strngt_txt_hr):
     """

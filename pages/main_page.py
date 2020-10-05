@@ -102,6 +102,11 @@ SGNL_STRNGT_TXT_HR = (By.XPATH, "(//h2[@class='ng-tns-c6-0'])[4]")
 QSTN_CRCL_SGNL_STRNGT_SCTN = (By.XPATH, "(//i[@class='fa  fa-question-circle'])[3]")
 QSTN_CRCL_SGNL_STRNGT_TXT = (By.XPATH, "//span[@tool-tip='Overall signal strength statistics of device(s).']")
 NO_DT_IN_SGNL_STRNGT_SCTN = (By.XPATH, "(//div[@class='no-data'])[4]")
+DVC_LCTNS_TXT_HR = (By.XPATH, "(//h2[@class='ng-tns-c6-0'])[5]")
+QSTN_CRCL_DVC_LCTNS_SCTN = (By.XPATH, "(//i[@class='fa  fa-question-circle'])[4]")
+QSTN_CRCL_DVC_LCTNS_TXT = (By.XPATH, "//span[@tool-tip='Current locations of the device(s).']")
+DVC_LCTNS_DRP_DWN_MN = (By.ID, "groups")
+DVC_LCTNS_DRP_DWN_MN_LST = (By.XPATH, "//option[@class='ng-tns-c6-0']")
 
 
 class MainPage(Page):
@@ -876,12 +881,12 @@ class MainPage(Page):
 
         # End of the above code
 
-    def sgnl_strngt_txt_hr(self):
+    def sgnl_strngt_txt_hr(self, sgnl_strngt_txt_hr):
         # Make sure Signal Strength is on the screen
         wait = WebDriverWait(self.driver, 15)
         sgnl_strngt_txt_hr = wait.until(EC.visibility_of_element_located(SGNL_STRNGT_TXT_HR)).text
         print(f'Signal Strength: "{sgnl_strngt_txt_hr}"\n')
-        assert 'Signal Strength' in sgnl_strngt_txt_hr
+        assert sgnl_strngt_txt_hr in sgnl_strngt_txt_hr
 
     def ms_hvr_qstn_mrk_sgnl_strngt(self):
         # Mouse hover question mark in top right of the Signal Strength block and make sure tooltip appears
@@ -901,12 +906,12 @@ class MainPage(Page):
         else:
             print(f'Expected "{expected_text}", but got: "{actual_text}"\n')
 
-    def inscrptn_no_dt_avlbl_in_sgnl_strngt(self):
+    def inscrptn_no_dt_avlbl_in_sgnl_strngt(self, inscrptn_no_dt_avlbl_in_sgnl_strngt):
         # The inscription No Data Available is in the center of Signal Strength block
         wait = WebDriverWait(self.driver, 15)
         no_dt_in_grps_blck = wait.until(EC.visibility_of_element_located(NO_DT_IN_SGNL_STRNGT_SCTN)).text
         print(f'Text is here: "{no_dt_in_grps_blck}"\n')
-        assert 'No Data Available' in no_dt_in_grps_blck
+        assert inscrptn_no_dt_avlbl_in_sgnl_strngt in no_dt_in_grps_blck
         # is in the center of Groups block
         e_sgnl_strngt = wait.until(EC.visibility_of_element_located(NO_DT_IN_SGNL_STRNGT_SCTN))
         location_grps = e_sgnl_strngt.location
@@ -915,5 +920,43 @@ class MainPage(Page):
             print(f'"No Data Available" is in the center of Groups block\n')
         else:
             print(f'"No Data Available" is NOT in the center of Groups block\n')
+
+        # End of the above code
+
+    def dvc_lctns_txt_hr(self, dvc_lctns_txt_hr):
+        # Make sure Device Locations words are on the screen
+        wait = WebDriverWait(self.driver, 15)
+        dvc_lctns_txt_hr = wait.until(EC.visibility_of_element_located(DVC_LCTNS_TXT_HR)).text
+        print(f'Device Locations: "{dvc_lctns_txt_hr}"\n')
+        assert dvc_lctns_txt_hr in dvc_lctns_txt_hr
+
+    def qstn_crcl_dvc_lctn_sctn(self):
+        # Mouse hover question mark in top right of the block and make sure tooltip appears
+        wait = WebDriverWait(self.driver, 15)
+        target = wait.until(EC.element_to_be_clickable(QSTN_CRCL_DVC_LCTNS_SCTN))
+        actions = ActionChains(self.driver)
+        actions.move_to_element(target)
+        actions.click_and_hold(target)
+        actions.perform()
+        question_mark = wait.until(EC.visibility_of_element_located(QSTN_CRCL_DVC_LCTNS_TXT))
+        tool_tip_text = question_mark.get_attribute('tool-tip')
+        print(f'Tool-tip text is here: "{tool_tip_text}"\n')
+        expected_text = 'Current locations of the device(s).'
+        actual_text = tool_tip_text
+        if expected_text in actual_text:
+            print(f'Expected "{expected_text}", and got: "{actual_text}"\n')
+        else:
+            print(f'Expected "{expected_text}", but got: "{actual_text}"\n')
+
+    def dvc_lctns_drp_dwn_mn(self):
+        # Make sure that click on Device Locations drop-down list is working
+        wait = WebDriverWait(self.driver, 15)
+        target = wait.until(EC.element_to_be_clickable(DVC_LCTNS_DRP_DWN_MN))
+        actions = ActionChains(self.driver)
+        actions.move_to_element(target)
+        actions.click_and_hold(target)
+        actions.perform()
+        len_gprs_drp_dwn_mn = len(wait.until(EC.presence_of_all_elements_located(DVC_LCTNS_DRP_DWN_MN_LST)))
+        print(f'Elements in the Drop-down menu: "{len_gprs_drp_dwn_mn}"\n')
 
         # End of the above code
