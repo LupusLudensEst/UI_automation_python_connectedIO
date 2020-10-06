@@ -107,7 +107,11 @@ QSTN_CRCL_DVC_LCTNS_SCTN = (By.XPATH, "(//i[@class='fa  fa-question-circle'])[4]
 QSTN_CRCL_DVC_LCTNS_TXT = (By.XPATH, "//span[@tool-tip='Current locations of the device(s).']")
 DVC_LCTNS_DRP_DWN_MN = (By.ID, "groups")
 DVC_LCTNS_DRP_DWN_MN_LST = (By.XPATH, "//option[@class='ng-tns-c6-0']")
-
+DVC_ONLN_ICN = (By.XPATH, "(//div[@class='card overflowhidden number-chart d-flex flex-column'])[1]")
+FLTR_DVC_FUNNEL = (By.XPATH, "//i[@class='fa fa-filter']")
+CHCK_BX_DVC_ONLN = (By.NAME, "checkbox1")
+CHCK_BX_DVC_OFFLN =(By.XPATH, "//span[contains(text(), 'Offline Devices')]")
+CHCK_BX_INVENTORY = (By.XPATH, "//span[contains(text(), 'Inventory')]")
 
 class MainPage(Page):
 
@@ -640,9 +644,9 @@ class MainPage(Page):
     def clck_on_dsch_brd_mn_icn(self, dsbrd_txt):
         # Click Dashboard menu icon and make sure Dashboard page reloaded
         wait = WebDriverWait(self.driver, 15)
-        wait.until(EC.element_to_be_clickable(DSCH_BRD_ICN)).click()
+        wait.until(EC.visibility_of_element_located(DSCH_BRD_ICN)).click()
         dsch_brd_txt = wait.until(EC.visibility_of_element_located(DSCH_BRD_TXT)).text
-        print(f'Text is here: "{dsch_brd_txt}"')
+        print(f'Text is here: "{dsch_brd_txt}"\n')
         assert dsbrd_txt in dsch_brd_txt
 
     def mk_sr_dt_usg_dtls_blck_hr(self, dt_usg_blk):
@@ -958,5 +962,24 @@ class MainPage(Page):
         actions.perform()
         len_gprs_drp_dwn_mn = len(wait.until(EC.presence_of_all_elements_located(DVC_LCTNS_DRP_DWN_MN_LST)))
         print(f'Elements in the Drop-down menu: "{len_gprs_drp_dwn_mn}"\n')
+
+        # End of the above code
+
+    def clck_on_fltr_dvcs(self):
+        # Click on Filter Devices and open Search page
+        wait = WebDriverWait(self.driver, 15)
+        wait.until(EC.element_to_be_clickable(FLTR_DVC_FUNNEL)).click()
+
+    def onln_dvcs_chck_box_chkd(self):
+        # Make sure that only Online Devices checkbox is checked in the Search page
+        wait = WebDriverWait(self.driver, 15)
+        onln_dvc_chck_chckd = wait.until(EC.presence_of_element_located(CHCK_BX_DVC_ONLN)).is_selected()
+        print(f'Online Devices checkbox is checked: "{onln_dvc_chck_chckd}"')
+        # Make sure Offline Devices checkbox is not checked in the Search page
+        offln_dvc_chck_chckd = wait.until(EC.presence_of_element_located(CHCK_BX_DVC_OFFLN)).is_selected()
+        print(f'Offline Devices checkbox is checked: "{offln_dvc_chck_chckd}"')
+        # Make sure Inventory checkbox is not checked in the Search page
+        inventory_chckd = wait.until(EC.presence_of_element_located(CHCK_BX_INVENTORY)).is_selected()
+        print(f'Inventory checkbox is checked: "{inventory_chckd}"')
 
         # End of the above code
