@@ -10,7 +10,7 @@ def browser_init(context):
     options = webdriver.ChromeOptions()
     options.add_argument('--disable-gpu')
     options.add_argument('--headless')
-    options.headless = True
+    options.headless = False
     context.driver = webdriver.Chrome(options=options)
 
     # context.driver = webdriver.Chrome(desired_capabilities={"proxy": {"proxyType": "MANUAL", "httpProxy": "localhost:8888"}})

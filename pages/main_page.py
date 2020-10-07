@@ -112,6 +112,18 @@ FLTR_DVC_FUNNEL = (By.XPATH, "//i[@class='fa fa-filter']")
 CHCK_BX_DVC_ONLN = (By.NAME, "checkbox1")
 CHCK_BX_DVC_OFFLN =(By.XPATH, "//span[contains(text(), 'Offline Devices')]")
 CHCK_BX_INVENTORY = (By.XPATH, "//span[contains(text(), 'Inventory')]")
+DVCS_ICN = (By. XPATH, "//i[@class='fa fa-hdd-o']")
+ADD_NW_DVC_RGHT_CRNR = (By.XPATH, "//span[contains(text(), ' Add New Device ')]")
+DVC_IMEI_FLD = (By.XPATH, "//input[@placeholder='IMEI']")
+DVC_NAME_FLD = (By.XPATH, "//input[@placeholder='Device name']")
+DVC_SRL_NMBR_FLD = (By.XPATH, "//input[@placeholder='Serial number']")
+DVC_ADD_SAVE_BTN = (By.XPATH, "(//button[@type='submit'])[1]")
+IMEI_HR = (By.XPATH, "//a[contains(text(), '356961071557824')]")
+CHCK_BX_FOR_DLT = (By.XPATH, "(//div[@class='fancy-checkbox devicelist-checkbox select-all'])[1]")
+GEAR_BTN = (By.XPATH, "//button[@class='btn btn-default btn-sm dropdown-toggle px-3 dropdown-toggle']")
+RMV_DVCS_BTN = (By.XPATH, "(//a[@class='dropdown-item ng-star-inserted'])[2]")
+DLT_BTN_DVCS = (By.XPATH, "//button[@class='btn btn-sm btn-danger']")
+SCCSS_DLT_NO_DT_AVLBL = (By.XPATH, "//div[contains(text(), 'No Data Available')]")
 
 class MainPage(Page):
 
@@ -983,3 +995,82 @@ class MainPage(Page):
         print(f'Inventory checkbox is checked: "{inventory_chckd}"')
 
         # End of the above code
+
+    def go_to_dvcs_pg(self, dvcs_url):
+        # Go to the "Devices" page https://devcloud.connectedio.com/devices
+        wait = WebDriverWait(self.driver, 15)
+        wait.until(EC.element_to_be_clickable(DVCS_ICN)).click()
+        expected_text = dvcs_url
+        actual_text = self.driver.current_url
+        assert expected_text in actual_text
+        if expected_text == actual_text:
+            print(f'Expected "{expected_text}", and got: "{actual_text}" ')
+        else:
+            print(f'Expected "{expected_text}", but got: "{actual_text}" ')
+
+    def clck_add_nw_dvc(self):
+        # Click Add new device button on the right up corner
+        wait = WebDriverWait(self.driver, 15)
+        wait.until(EC.element_to_be_clickable(ADD_NW_DVC_RGHT_CRNR)).click()
+
+    def fill_emei_fld(self, emei):
+        # Fill required Device IMEI field 356961071557824
+        wait = WebDriverWait(self.driver, 15)
+        wait.until(EC.presence_of_element_located(DVC_IMEI_FLD)).clear()
+        wait.until(EC.presence_of_element_located(DVC_IMEI_FLD)).send_keys(emei)
+
+    def fill_dvc_nm_fld(self, dvc_nm):
+        # Fill Device Name field if any
+        wait = WebDriverWait(self.driver, 15)
+        wait.until(EC.presence_of_element_located(DVC_NAME_FLD)).clear()
+        wait.until(EC.presence_of_element_located(DVC_NAME_FLD)).send_keys(dvc_nm)
+
+    def fill_srl_nmbr_fld(self, srl_nmbr):
+        # Fill required Serial Number field 1806208A0279
+        wait = WebDriverWait(self.driver, 15)
+        wait.until(EC.presence_of_element_located(DVC_SRL_NMBR_FLD)).clear()
+        wait.until(EC.presence_of_element_located(DVC_SRL_NMBR_FLD)).send_keys(srl_nmbr)
+        # Select Tags if any
+        # No tags here to select
+
+    def clck_sv_btn(self):
+        # Click Save and refresh the page
+        wait = WebDriverWait(self.driver, 15)
+        wait.until(EC.element_to_be_clickable(DVC_ADD_SAVE_BTN)).click()
+        self.driver.refresh()
+
+    def dvc_is_on_the_pg(self):
+        # Success is here - device is on the page
+        wait = WebDriverWait(self.driver, 15)
+        actual_text = wait.until(EC.visibility_of_element_located(IMEI_HR)).text
+        print(f'IMEI: {actual_text}')
+        expected_text = '356961071557824'
+        assert expected_text in actual_text
+        if expected_text == actual_text:
+            print(f'Expected "{expected_text}", and got: "{actual_text}" ')
+        else:
+            print(f'Expected "{expected_text}", but got: "{actual_text}" ')
+
+    def delt_dvc(self):
+        # Delete device
+        # Mark checkbox
+        wait = WebDriverWait(self.driver, 15)
+        wait.until(EC.element_to_be_clickable(CHCK_BX_FOR_DLT)).click()
+        # Click gearbutton
+        wait.until(EC.element_to_be_clickable(GEAR_BTN)).click()
+        # Click remove devices button
+        wait.until(EC.element_to_be_clickable(RMV_DVCS_BTN)).click()
+        # Click delete button
+        wait.until(EC.element_to_be_clickable(DLT_BTN_DVCS)).click()
+        # Verify Success after delete is here
+        actual_text = wait.until(EC.visibility_of_element_located(SCCSS_DLT_NO_DT_AVLBL)).text
+        print(f'No Data Available: "{actual_text}"')
+        expected_text = 'No Data Available'
+        assert expected_text in actual_text
+        if expected_text == actual_text:
+            print(f'Expected "{expected_text}", and got: "{actual_text}" ')
+        else:
+            print(f'Expected "{expected_text}", but got: "{actual_text}" ')
+
+
+# End of the above code
