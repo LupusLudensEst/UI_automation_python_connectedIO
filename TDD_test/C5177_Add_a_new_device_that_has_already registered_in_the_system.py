@@ -19,6 +19,8 @@ DVC_NAME_FLD = (By.XPATH, "//input[@placeholder='Device name']")
 DVC_SRL_NMBR_FLD = (By.XPATH, "//input[@placeholder='Serial number']")
 DVC_ADD_SAVE_BTN = (By.XPATH, "(//button[@type='submit'])[1]")
 IMEI_HR = (By.XPATH, "//a[contains(text(), '356961071557824')]")
+DVC_ALRD_EXSTS = (By.XPATH, "//p[contains(text(), 'Device already exists.')]") # (By.XPATH, "//p[@class='ng-tns-c7-23']") # (By.XPATH, "(//div[@class='loader-content pl-4 pr-5 pt-3'])[2]") # (By.XPATH, "//p[contains(text(), 'Device already exists.')]") # (By.CSS_SELECTOR, "p.ng-tns-c7-17") # (By.XPATH, "//p[@class='ng-tns-c7-11']")
+CROSS_TO_CLOSE = (By.XPATH, "//span[contains(text(), '×')]") # (By.XPATH, "//a[@class='close']")
 CHCK_BX_FOR_DLT = (By.XPATH, "(//div[@class='fancy-checkbox devicelist-checkbox select-all'])[1]")
 GEAR_BTN = (By.XPATH, "//button[@class='btn btn-default btn-sm dropdown-toggle px-3 dropdown-toggle']")
 RMV_DVCS_BTN = (By.XPATH, "(//a[@class='dropdown-item ng-star-inserted'])[2]")
@@ -87,7 +89,43 @@ if expected_text == actual_text:
 else:
     print(f'Expected "{expected_text}", but got: "{actual_text}" \n')
 
-# 14. Delete device
+# Add a new device that has already registered in the system
+# 14. Click Add new device button on the right up corner
+driver.refresh()
+wait.until(EC.element_to_be_clickable(ADD_NW_DVC_RGHT_CRNR)).click()
+
+# 15. Fill required Device IMEI field
+wait.until(EC.presence_of_element_located(DVC_IMEI_FLD)).clear()
+wait.until(EC.presence_of_element_located(DVC_IMEI_FLD)).send_keys('356961071557824')
+
+# 16. Fill Device Name field if any
+wait.until(EC.presence_of_element_located(DVC_NAME_FLD)).clear()
+wait.until(EC.presence_of_element_located(DVC_NAME_FLD)).send_keys('TVM Test123 jjnkjn')
+
+# 17. Fill required Serial Number field
+wait.until(EC.presence_of_element_located(DVC_SRL_NMBR_FLD)).clear()
+wait.until(EC.presence_of_element_located(DVC_SRL_NMBR_FLD)).send_keys('1806208A0279')
+
+# 18. Select Tags if any
+# No tags here to select
+
+# 19. Click Save the page
+wait.until(EC.element_to_be_clickable(DVC_ADD_SAVE_BTN)).click()
+
+# 20. The system should check if the device has already registered a prompt should appear Device already exists
+actual_text = wait.until(EC.element_to_be_clickable(DVC_ALRD_EXSTS)).text
+print(f'Text: {actual_text}\n')
+expected_text = 'Device already exists.'
+assert expected_text in actual_text
+if expected_text == actual_text:
+    print(f'Expected "{expected_text}", and got: "{actual_text}" \n')
+else:
+    print(f'Expected "{expected_text}", but got: "{actual_text}" \n')
+wait.until(EC.invisibility_of_element_located(DVC_ALRD_EXSTS))
+
+# 21. Delete device
+# Close Add Device(s) pop-up-windows
+wait.until(EC.element_to_be_clickable(CROSS_TO_CLOSE)).click()
 # Mark checkbox
 wait.until(EC.element_to_be_clickable(CHCK_BX_FOR_DLT)).click()
 # Click gearbutton
@@ -105,6 +143,7 @@ if expected_text == actual_text:
     print(f'Expected "{expected_text}", and got: "{actual_text}" \n')
 else:
     print(f'Expected "{expected_text}", but got: "{actual_text}" \n')
+
 
 # Sleep to see what we have
 sleep(2)

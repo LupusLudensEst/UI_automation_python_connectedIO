@@ -124,6 +124,8 @@ GEAR_BTN = (By.XPATH, "//button[@class='btn btn-default btn-sm dropdown-toggle p
 RMV_DVCS_BTN = (By.XPATH, "(//a[@class='dropdown-item ng-star-inserted'])[2]")
 DLT_BTN_DVCS = (By.XPATH, "//button[@class='btn btn-sm btn-danger']")
 SCCSS_DLT_NO_DT_AVLBL = (By.XPATH, "//div[contains(text(), 'No Data Available')]")
+DVC_ALRD_EXSTS = (By.XPATH, "//p[contains(text(), 'Device already exists.')]") # (By.XPATH, "//p[@class='ng-tns-c7-23']") # (By.XPATH, "(//div[@class='loader-content pl-4 pr-5 pt-3'])[2]") # (By.XPATH, "//p[contains(text(), 'Device already exists.')]") # (By.CSS_SELECTOR, "p.ng-tns-c7-17") # (By.XPATH, "//p[@class='ng-tns-c7-11']")
+CROSS_TO_CLOSE = (By.XPATH, "//span[contains(text(), '×')]") # (By.XPATH, "//a[@class='close']")
 
 class MainPage(Page):
 
@@ -986,13 +988,13 @@ class MainPage(Page):
         # Make sure that only Online Devices checkbox is checked in the Search page
         wait = WebDriverWait(self.driver, 15)
         onln_dvc_chck_chckd = wait.until(EC.presence_of_element_located(CHCK_BX_DVC_ONLN)).is_selected()
-        print(f'Online Devices checkbox is checked: "{onln_dvc_chck_chckd}"')
+        print(f'Online Devices checkbox is checked: "{onln_dvc_chck_chckd}"\n')
         # Make sure Offline Devices checkbox is not checked in the Search page
         offln_dvc_chck_chckd = wait.until(EC.presence_of_element_located(CHCK_BX_DVC_OFFLN)).is_selected()
-        print(f'Offline Devices checkbox is checked: "{offln_dvc_chck_chckd}"')
+        print(f'Offline Devices checkbox is checked: "{offln_dvc_chck_chckd}"\n')
         # Make sure Inventory checkbox is not checked in the Search page
         inventory_chckd = wait.until(EC.presence_of_element_located(CHCK_BX_INVENTORY)).is_selected()
-        print(f'Inventory checkbox is checked: "{inventory_chckd}"')
+        print(f'Inventory checkbox is checked: "{inventory_chckd}"\n')
 
         # End of the above code
 
@@ -1004,9 +1006,9 @@ class MainPage(Page):
         actual_text = self.driver.current_url
         assert expected_text in actual_text
         if expected_text == actual_text:
-            print(f'Expected "{expected_text}", and got: "{actual_text}" ')
+            print(f'Expected "{expected_text}", and got: "{actual_text}" \n')
         else:
-            print(f'Expected "{expected_text}", but got: "{actual_text}" ')
+            print(f'Expected "{expected_text}", but got: "{actual_text}" \n')
 
     def clck_add_nw_dvc(self):
         # Click Add new device button on the right up corner
@@ -1043,13 +1045,13 @@ class MainPage(Page):
         # Success is here - device is on the page
         wait = WebDriverWait(self.driver, 15)
         actual_text = wait.until(EC.visibility_of_element_located(IMEI_HR)).text
-        print(f'IMEI: {actual_text}')
+        print(f'IMEI: {actual_text}\n')
         expected_text = '356961071557824'
         assert expected_text in actual_text
         if expected_text == actual_text:
-            print(f'Expected "{expected_text}", and got: "{actual_text}" ')
+            print(f'Expected "{expected_text}", and got: "{actual_text}" \n')
         else:
-            print(f'Expected "{expected_text}", but got: "{actual_text}" ')
+            print(f'Expected "{expected_text}", but got: "{actual_text}" \n')
 
     def delt_dvc(self):
         # Delete device
@@ -1064,13 +1066,73 @@ class MainPage(Page):
         wait.until(EC.element_to_be_clickable(DLT_BTN_DVCS)).click()
         # Verify Success after delete is here
         actual_text = wait.until(EC.visibility_of_element_located(SCCSS_DLT_NO_DT_AVLBL)).text
-        print(f'No Data Available: "{actual_text}"')
+        print(f'No Data Available: "{actual_text}"\n')
         expected_text = 'No Data Available'
         assert expected_text in actual_text
         if expected_text == actual_text:
-            print(f'Expected "{expected_text}", and got: "{actual_text}" ')
+            print(f'Expected "{expected_text}", and got: "{actual_text}" \n')
         else:
-            print(f'Expected "{expected_text}", but got: "{actual_text}" ')
+            print(f'Expected "{expected_text}", but got: "{actual_text}" \n')
 
+        # End of the above code
 
-# End of the above code
+    def add_nw_dvc_alrd_rgstrd(self):
+        # Add a new device that has already registered in the system
+        # Click Add new device button on the right up corner
+        wait = WebDriverWait(self.driver, 15)
+        self.driver.refresh()
+        wait.until(EC.element_to_be_clickable(ADD_NW_DVC_RGHT_CRNR)).click()
+
+        # Fill required Device IMEI field
+        wait.until(EC.presence_of_element_located(DVC_IMEI_FLD)).clear()
+        wait.until(EC.presence_of_element_located(DVC_IMEI_FLD)).send_keys('356961071557824')
+
+        # Fill Device Name field if any
+        wait.until(EC.presence_of_element_located(DVC_NAME_FLD)).clear()
+        wait.until(EC.presence_of_element_located(DVC_NAME_FLD)).send_keys('TVM Test123 jjnkjn')
+
+        # Fill required Serial Number field
+        wait.until(EC.presence_of_element_located(DVC_SRL_NMBR_FLD)).clear()
+        wait.until(EC.presence_of_element_located(DVC_SRL_NMBR_FLD)).send_keys('1806208A0279')
+
+        # Select Tags if any
+        # No tags here to select
+
+        # Click Save the page
+        wait.until(EC.element_to_be_clickable(DVC_ADD_SAVE_BTN)).click()
+
+    def systm_vrfctn_dvc_alrd_exsts(self):
+        # The system should check if the device has already registered a prompt should appear Device already exists
+        wait = WebDriverWait(self.driver, 15)
+        actual_text = wait.until(EC.element_to_be_clickable(DVC_ALRD_EXSTS)).text
+        print(f'Text: {actual_text}\n')
+        expected_text = 'Device already exists.'
+        assert expected_text in actual_text
+        if expected_text == actual_text:
+            print(f'Expected "{expected_text}", and got: "{actual_text}" \n')
+        else:
+            print(f'Expected "{expected_text}", but got: "{actual_text}" \n')
+        wait.until(EC.invisibility_of_element_located(DVC_ALRD_EXSTS))
+
+        # Delete device
+        # Close Add Device(s) pop-up-windows
+        wait.until(EC.element_to_be_clickable(CROSS_TO_CLOSE)).click()
+        # Mark checkbox
+        wait.until(EC.element_to_be_clickable(CHCK_BX_FOR_DLT)).click()
+        # Click gearbutton
+        wait.until(EC.element_to_be_clickable(GEAR_BTN)).click()
+        # Click remove devices button
+        wait.until(EC.element_to_be_clickable(RMV_DVCS_BTN)).click()
+        # Click delete button
+        wait.until(EC.element_to_be_clickable(DLT_BTN_DVCS)).click()
+        # Verify Success after delete is here
+        actual_text = wait.until(EC.visibility_of_element_located(SCCSS_DLT_NO_DT_AVLBL)).text
+        print(f'No Data Available: "{actual_text}"\n')
+        expected_text = 'No Data Available'
+        assert expected_text in actual_text
+        if expected_text == actual_text:
+            print(f'Expected "{expected_text}", and got: "{actual_text}" \n')
+        else:
+            print(f'Expected "{expected_text}", but got: "{actual_text}" \n')
+
+        # End of the above code
