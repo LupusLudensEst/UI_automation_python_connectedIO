@@ -8,12 +8,12 @@ def go_to_chng_pswrd_pg(context):
     context.app.main_page.go_to_chng_pswrd_pg()
 
 
-@step("{cng_pswd_url_opn} is open")
-def cng_pswd_url_opn(context, cng_pswd_url_opn):
+@step("{url_is_here} is open")
+def cng_pswd_url_opn(context, url_is_here):
     """
     https://devcloud.connectedio.com/profile/* is open
     """
-    context.app.main_page.cng_pswd_url_opn(cng_pswd_url_opn)
+    context.app.main_page.cng_pswd_url_opn(url_is_here)
 
 
 @then('Enter the old password in the field "New Password" {old_pswd}')

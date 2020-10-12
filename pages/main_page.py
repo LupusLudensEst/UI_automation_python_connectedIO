@@ -126,6 +126,9 @@ DLT_BTN_DVCS = (By.XPATH, "//button[@class='btn btn-sm btn-danger']")
 SCCSS_DLT_NO_DT_AVLBL = (By.XPATH, "//div[contains(text(), 'No Data Available')]")
 DVC_ALRD_EXSTS = (By.XPATH, "//p[contains(text(), 'Device already exists.')]") # (By.XPATH, "//p[@class='ng-tns-c7-23']") # (By.XPATH, "(//div[@class='loader-content pl-4 pr-5 pt-3'])[2]") # (By.XPATH, "//p[contains(text(), 'Device already exists.')]") # (By.CSS_SELECTOR, "p.ng-tns-c7-17") # (By.XPATH, "//p[@class='ng-tns-c7-11']")
 CROSS_TO_CLOSE = (By.XPATH, "//span[contains(text(), '×')]") # (By.XPATH, "//a[@class='close']")
+EMEI_CLCK = (By.XPATH, "(//a[@class='ng-star-inserted'])[5]")
+QUICK_ACTION_BTN = (By.XPATH, "//div[@class='btn-group action-button dropdown']")
+QUICK_ACTION_ID = (By.XPATH, "//a[@class='dropdown-item']")
 
 class MainPage(Page):
 
@@ -363,10 +366,10 @@ class MainPage(Page):
         # Click on the Change Password button
         wait.until(EC.element_to_be_clickable(CHNG_PSWD)).click()
 
-    def cng_pswd_url_opn(self, cng_pswd_url_opn):
+    def cng_pswd_url_opn(self, url_is_here):
         # https://devcloud.connectedio.com/* is open
         sleep(2)
-        expected_text = cng_pswd_url_opn
+        expected_text = url_is_here
         actual_text = self.driver.current_url
         assert expected_text in actual_text
         if expected_text == actual_text:
@@ -1045,7 +1048,7 @@ class MainPage(Page):
         # Success is here - device is on the page
         wait = WebDriverWait(self.driver, 15)
         actual_text = wait.until(EC.visibility_of_element_located(IMEI_HR)).text
-        print(f'IMEI: {actual_text}\n')
+        print(f'IMEI: "{actual_text}"\n')
         expected_text = '356961071557824'
         assert expected_text in actual_text
         if expected_text == actual_text:
@@ -1117,6 +1120,80 @@ class MainPage(Page):
         # Delete device
         # Close Add Device(s) pop-up-windows
         wait.until(EC.element_to_be_clickable(CROSS_TO_CLOSE)).click()
+        # Mark checkbox
+        wait.until(EC.element_to_be_clickable(CHCK_BX_FOR_DLT)).click()
+        # Click gearbutton
+        wait.until(EC.element_to_be_clickable(GEAR_BTN)).click()
+        # Click remove devices button
+        wait.until(EC.element_to_be_clickable(RMV_DVCS_BTN)).click()
+        # Click delete button
+        wait.until(EC.element_to_be_clickable(DLT_BTN_DVCS)).click()
+        # Verify Success after delete is here
+        actual_text = wait.until(EC.visibility_of_element_located(SCCSS_DLT_NO_DT_AVLBL)).text
+        print(f'No Data Available: "{actual_text}"\n')
+        expected_text = 'No Data Available'
+        assert expected_text in actual_text
+        if expected_text == actual_text:
+            print(f'Expected "{expected_text}", and got: "{actual_text}" \n')
+        else:
+            print(f'Expected "{expected_text}", but got: "{actual_text}" \n')
+
+        # End of the above code
+
+    def bl_hlghtd_emei_choosen(self):
+        # Choose any device with IMEI number which is highlighted in blue active IMEI number and click on an active IMEI number
+        wait = WebDriverWait(self.driver, 15)
+        wait.until(EC.element_to_be_clickable(EMEI_CLCK)).click()
+
+    def dvc_dshbrd_opened(self, dvc_dshbrd_opened):
+        # Verify the Device Management Portal page has opened
+        wait = WebDriverWait(self.driver, 15)
+        actual_text = wait.until(EC.visibility_of_element_located(DVC_MNGMNT_PRTL)).text
+        print(f'Text is here: "{actual_text}"\n')
+        expected_text = dvc_dshbrd_opened
+        assert expected_text in actual_text
+        if expected_text == actual_text:
+            print(f'Expected "{expected_text}", and got: "{actual_text}" \n')
+        else:
+            print(f'Expected "{expected_text}", but got: "{actual_text}" \n')
+        sleep(2)
+
+        # Delete device
+        # Go to the Devices page https://devcloud.connectedio.com/devices
+        wait.until(EC.element_to_be_clickable(DVCS_ICN)).click()
+        sleep(2)
+        # Mark checkbox
+        wait.until(EC.element_to_be_clickable(CHCK_BX_FOR_DLT)).click()
+        # Click gearbutton
+        wait.until(EC.element_to_be_clickable(GEAR_BTN)).click()
+        # Click remove devices button
+        wait.until(EC.element_to_be_clickable(RMV_DVCS_BTN)).click()
+        # Click delete button
+        wait.until(EC.element_to_be_clickable(DLT_BTN_DVCS)).click()
+        # Verify Success after delete is here
+        actual_text = wait.until(EC.visibility_of_element_located(SCCSS_DLT_NO_DT_AVLBL)).text
+        print(f'No Data Available: "{actual_text}"\n')
+        expected_text = 'No Data Available'
+        assert expected_text in actual_text
+        if expected_text == actual_text:
+            print(f'Expected "{expected_text}", and got: "{actual_text}" \n')
+        else:
+            print(f'Expected "{expected_text}", but got: "{actual_text}" \n')
+
+        # End of the above code
+
+    def clck_on_quick_actns_consqncs_hr(self):
+        # Click on Quick Action button and verify it has consequences
+        wait = WebDriverWait(self.driver, 15)
+        wait.until(EC.element_to_be_clickable(QUICK_ACTION_BTN)).click()
+        select_box = wait.until(EC.element_to_be_clickable(QUICK_ACTION_ID)).text
+        print(
+            f'Element name in the drop-down menu: "{select_box}", Quantity of elements in the drop-down menu: "{len(select_box)}"\n')
+
+        # 16. Delete device
+        # Go to the Devices page https://devcloud.connectedio.com/devices
+        wait.until(EC.element_to_be_clickable(DVCS_ICN)).click()
+        sleep(2)
         # Mark checkbox
         wait.until(EC.element_to_be_clickable(CHCK_BX_FOR_DLT)).click()
         # Click gearbutton
