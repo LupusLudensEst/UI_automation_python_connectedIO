@@ -13,10 +13,6 @@ LOGIN_EMAIL = (By.XPATH, "//input[@placeholder='Email address']")
 LOGIN_PASSWORD = (By.XPATH, "//input[@placeholder='Password']")
 LOGIN_BTN = (By.CSS_SELECTOR, "button.btn.btn-primary.text-uppercase.w-100.font-weight-bold.gradient-btn.shadow-1.border-0")
 POP_UP_WNDW_OK_BTN = (By.XPATH, "//div[@class='swal2-actions']//button[@class='swal2-confirm btn btn-outline-primary btn-sm btn-custom swal2-styled']")
-# USERS = (By.CSS_SELECTOR, "i.fa.fa-users")
-# USERS = (By.XPATH, "(//a[@class='ng-star-inserted'])[4]")
-# USERS = (By.XPATH, "(//i[@class='fa fa-users'])[1]")
-# USERS = (By.XPATH, "(//a[@class='ng-star-inserted'])[4]")
 USERS = (By.XPATH, "(//li[@class='ng-star-inserted'])[5]")
 QUICK_ACTIONS = (By.XPATH, "//div[@class='btn-group action-button dropdown']//span[contains(text(), 'Quick actions')]")
 ADD_MENU = (By.CSS_SELECTOR, "i.fa.fa-user-plus")
@@ -75,7 +71,6 @@ ALRT_DSHBRD_HR = (By.CSS_SELECTOR, "div.d-inline-block.mr-4")
 WAN = (By.XPATH, "(//strong[@class='ng-tns-c6-0'])[4]")
 DT_USG_CRD = (By.CSS_SELECTOR, "div.card.overflowhidden.number-chart.p-4")
 CLLR = (By.XPATH, "(//strong[@class='ng-tns-c6-0'])[1]")
-# DSCH_BRD_ICN = (By.CSS_SELECTOR, "li.ng-star-inserted.active")
 DSCH_BRD_ICN = (By.XPATH, "(//a[@class='ng-star-inserted'])[1]")
 DSCH_BRD_TXT = (By.XPATH, "//h2[@class='mb-0']")
 USG_DTLS_TXT = (By.XPATH, "(//h6[@class='tile-title text-uppercase'])[1]")
@@ -128,7 +123,9 @@ DVC_ALRD_EXSTS = (By.XPATH, "//p[contains(text(), 'Device already exists.')]") #
 CROSS_TO_CLOSE = (By.XPATH, "//span[contains(text(), '×')]") # (By.XPATH, "//a[@class='close']")
 EMEI_CLCK = (By.XPATH, "(//a[@class='ng-star-inserted'])[5]")
 QUICK_ACTION_BTN = (By.XPATH, "//div[@class='btn-group action-button dropdown']")
-QUICK_ACTION_ID = (By.XPATH, "//a[@class='dropdown-item']")
+QUICK_ACTION_ID = (By.XPATH, "(//a[@class='dropdown-item'])[1]")
+STNGS_BTN = (By.XPATH, "(//button[@class='btn btn-default btn-sm dropdown-toggle dropdown-toggle'])[2]")
+REBOOT_ELMNT_HR = (By.XPATH, "(//a[@class='dropdown-item'])[2]")
 
 class MainPage(Page):
 
@@ -1186,11 +1183,12 @@ class MainPage(Page):
         # Click on Quick Action button and verify it has consequences
         wait = WebDriverWait(self.driver, 15)
         wait.until(EC.element_to_be_clickable(QUICK_ACTION_BTN)).click()
-        select_box = wait.until(EC.element_to_be_clickable(QUICK_ACTION_ID)).text
-        print(
-            f'Element name in the drop-down menu: "{select_box}", Quantity of elements in the drop-down menu: "{len(select_box)}"\n')
+        content = wait.until(EC.presence_of_all_elements_located(QUICK_ACTION_ID))
+        for element in content:
+            print(
+                f'Elements names in the drop-down menu: "{element.text}", Quantity of elements in the drop-down menu: "{len(content)}"\n')
 
-        # 16. Delete device
+        # Delete device
         # Go to the Devices page https://devcloud.connectedio.com/devices
         wait.until(EC.element_to_be_clickable(DVCS_ICN)).click()
         sleep(2)
@@ -1211,5 +1209,38 @@ class MainPage(Page):
             print(f'Expected "{expected_text}", and got: "{actual_text}" \n')
         else:
             print(f'Expected "{expected_text}", but got: "{actual_text}" \n')
+
+        # End of the above code
+
+    def clck_on_sttngs_it_hs_reboot(self):
+        # Click on Settings button in right up corner and verify it has Reboot item in the drop-down menu
+        wait = WebDriverWait(self.driver, 15)
+        wait.until(EC.element_to_be_clickable(STNGS_BTN)).click()
+        actual_text = wait.until(EC.visibility_of_element_located(REBOOT_ELMNT_HR)).text
+        assert 'Reboot' in actual_text
+        print(f'Text is here: "{actual_text}"')
+
+        # Delete device
+        # Go to the Devices page https://devcloud.connectedio.com/devices
+        wait.until(EC.element_to_be_clickable(DVCS_ICN)).click()
+        sleep(2)
+        # Mark checkbox
+        wait.until(EC.element_to_be_clickable(CHCK_BX_FOR_DLT)).click()
+        # Click gearbutton
+        wait.until(EC.element_to_be_clickable(GEAR_BTN)).click()
+        # Click remove devices button
+        wait.until(EC.element_to_be_clickable(RMV_DVCS_BTN)).click()
+        # Click delete button
+        wait.until(EC.element_to_be_clickable(DLT_BTN_DVCS)).click()
+        # Verify Success after delete is here
+        actual_text = wait.until(EC.visibility_of_element_located(SCCSS_DLT_NO_DT_AVLBL)).text
+        print(f'No Data Available: "{actual_text}"\n')
+        expected_text = 'No Data Available'
+        assert expected_text in actual_text
+        if expected_text == actual_text:
+            print(f'Expected "{expected_text}", and got: "{actual_text}" \n')
+        else:
+            print(f'Expected "{expected_text}", but got: "{actual_text}" \n')
+
 
         # End of the above code

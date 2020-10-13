@@ -20,8 +20,8 @@ DVC_SRL_NMBR_FLD = (By.XPATH, "//input[@placeholder='Serial number']")
 DVC_ADD_SAVE_BTN = (By.XPATH, "(//button[@type='submit'])[1]")
 IMEI_HR = (By.XPATH, "//a[contains(text(), '356961071557824')]")
 EMEI_CLCK = (By.XPATH, "(//a[@class='ng-star-inserted'])[5]")
-QUICK_ACTION_BTN = (By.XPATH, "//div[@class='btn-group action-button dropdown']")
-QUICK_ACTION_ID = (By.XPATH, "(//a[@class='dropdown-item'])[1]")
+STNGS_BTN = (By.XPATH, "(//button[@class='btn btn-default btn-sm dropdown-toggle dropdown-toggle'])[2]")
+REBOOT_ELMNT_HR = (By.XPATH, "(//a[@class='dropdown-item'])[2]")
 DVC_MNGMNT_PRTL = (By.XPATH, "//h5[@class='fw-300 m-0 pl-4 text-truncate']")
 CHCK_BX_FOR_DLT = (By.XPATH, "(//div[@class='fancy-checkbox devicelist-checkbox select-all'])[1]")
 GEAR_BTN = (By.XPATH, "//button[@class='btn btn-default btn-sm dropdown-toggle px-3 dropdown-toggle']")
@@ -94,11 +94,11 @@ else:
 #  14. Choose any device with IMEI number which is highlighted in blue active IMEI number and click on an active IMEI number
 wait.until(EC.element_to_be_clickable(EMEI_CLCK)).click()
 
-# 15. Click on Quick Action button and verify it has consequences
-wait.until(EC.element_to_be_clickable(QUICK_ACTION_BTN)).click()
-content = wait.until(EC.presence_of_all_elements_located(QUICK_ACTION_ID))
-for element in content:
-   print(f'Elements names in the drop-down menu: "{element.text}", Quantity of elements in the drop-down menu: "{len(content)}"\n')
+# 15. Click on Settings button in right up corner and verify it has Reboot item in the drop-down menu
+wait.until(EC.element_to_be_clickable(STNGS_BTN)).click()
+actual_text = wait.until(EC.visibility_of_element_located(REBOOT_ELMNT_HR)).text
+assert 'Reboot' in actual_text
+print(f'Text is here: "{actual_text}"')
 
 # 16. Delete device
 # Go to the Devices page https://devcloud.connectedio.com/devices
@@ -127,3 +127,5 @@ sleep(2)
 
 # Driver quit
 driver.quit()
+
+
