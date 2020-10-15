@@ -31,6 +31,8 @@ GEAR_BTN = (By.XPATH, "//button[@class='btn btn-default btn-sm dropdown-toggle p
 RMV_DVCS_BTN = (By.XPATH, "(//a[@class='dropdown-item ng-star-inserted'])[2]")
 DLT_BTN_DVCS = (By.XPATH, "//button[@class='btn btn-sm btn-danger']")
 SCCSS_DLT_NO_DT_AVLBL = (By.XPATH, "//div[contains(text(), 'No Data Available')]")
+# DVC_PCTR = (By.XPATH, "//img[@class='img-fluid']")
+DVC_PCTR = (By.XPATH, "//img[@src='https://connectedio.s3-us-west-1.amazonaws.com/l/products/ER2000T1.png']")
 
 # Explicit wait
 wait = WebDriverWait(driver, 15)
@@ -107,9 +109,39 @@ if expected_text == actual_text:
 else:
     print(f'Expected "{expected_text}", but got: "{actual_text}" \n')
 
+# 17. Device image should be present with the correct layout at the top left corner of page
+dvc_pctr = wait.until(EC.visibility_of_element_located(DVC_PCTR))
+actual_text = str(dvc_pctr.location)
+print(f'Location of the device picture: "{actual_text}"\n')
+expected_text = "{'x': 299, 'y': 253}"
+assert expected_text in actual_text
+if expected_text == actual_text:
+    print(f'Expected "{expected_text}", and got: "{actual_text}" \n')
+else:
+    print(f'Expected "{expected_text}", but got: "{actual_text}" \n')
+# Pictures
+options = webdriver.ChromeOptions()
+options.add_argument('--ignore-certificate-errors')
+options.add_argument("--test-type")
+options.binary_location = "/usr/bin/chromium"
+images = driver.find_elements_by_tag_name('img')
+pics_on_page = len(images)
+for image in images:
+    print((image.get_attribute('src')))
+print(f'There are: "{pics_on_page}" images on the page\n')
+
+# The image of the device should correspond to the model in the description ER2000T1
+actual_text = str(wait.until(EC.visibility_of_element_located(DVC_PCTR)).get_property('src'))
+print(f'Name of the src property: "{actual_text}"\n')
+expected_text = 'ER2000T1'
+assert expected_text in actual_text
+if expected_text in actual_text:
+    print(f'Expected "{expected_text}" in the: "{actual_text}" \n')
+else:
+    print(f'Expected "{expected_text}", but got: "{actual_text}" \n')
 
 # Sleep to see what we have
 sleep(2)
 
-# # Driver quit
-# driver.quit()
+# Driver quit
+driver.quit()

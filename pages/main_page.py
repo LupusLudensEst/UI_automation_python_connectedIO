@@ -90,7 +90,7 @@ GRPS_TXT_HR = (By.XPATH, "(//h2[@class='ng-tns-c6-0'])[3]")
 QSTN_CRCL_MRK_GRPS_SCTN = (By.XPATH, "(//i[@class='fa  fa-question-circle'])[2]")
 QSTN_CRCL_TL_TP_TXT = (By.XPATH, "(//span[@class='ml-2'])[1]")
 NO_DT_IN_GRPS_BLCK = (By.XPATH, "(//div[@class='no-data'])[3]")
-GRPS_DRP_DWN_MN = (By.ID, "more") # "(//span[@class='ng-tns-c5-3'])[3]" # "//div[@class='btn-group action-button show']" # "//button[@class='btn btn-default btn-sm dropdown-toggle dropdown-toggle']"
+GRPS_DRP_DWN_MN = (By.ID, "more")
 GRPS_DRP_DWN_MN_LST = (By.XPATH, "//div[@class='list-group']")
 GRPS_TL_TIP = (By.XPATH, "//span[@tool-tip='Device(s) status based on groups.']")
 SGNL_STRNGT_TXT_HR = (By.XPATH, "(//h2[@class='ng-tns-c6-0'])[4]")
@@ -119,13 +119,15 @@ GEAR_BTN = (By.XPATH, "//button[@class='btn btn-default btn-sm dropdown-toggle p
 RMV_DVCS_BTN = (By.XPATH, "(//a[@class='dropdown-item ng-star-inserted'])[2]")
 DLT_BTN_DVCS = (By.XPATH, "//button[@class='btn btn-sm btn-danger']")
 SCCSS_DLT_NO_DT_AVLBL = (By.XPATH, "//div[contains(text(), 'No Data Available')]")
-DVC_ALRD_EXSTS = (By.XPATH, "//p[contains(text(), 'Device already exists.')]") # (By.XPATH, "//p[@class='ng-tns-c7-23']") # (By.XPATH, "(//div[@class='loader-content pl-4 pr-5 pt-3'])[2]") # (By.XPATH, "//p[contains(text(), 'Device already exists.')]") # (By.CSS_SELECTOR, "p.ng-tns-c7-17") # (By.XPATH, "//p[@class='ng-tns-c7-11']")
-CROSS_TO_CLOSE = (By.XPATH, "//span[contains(text(), '×')]") # (By.XPATH, "//a[@class='close']")
+DVC_ALRD_EXSTS = (By.XPATH, "//p[contains(text(), 'Device already exists.')]")
+CROSS_TO_CLOSE = (By.XPATH, "//span[contains(text(), '×')]")
 EMEI_CLCK = (By.XPATH, "(//a[@class='ng-star-inserted'])[5]")
 QUICK_ACTION_BTN = (By.XPATH, "//div[@class='btn-group action-button dropdown']")
 QUICK_ACTION_ID = (By.XPATH, "(//a[@class='dropdown-item'])[1]")
 STNGS_BTN = (By.XPATH, "(//button[@class='btn btn-default btn-sm dropdown-toggle dropdown-toggle'])[2]")
 REBOOT_ELMNT_HR = (By.XPATH, "(//a[@class='dropdown-item'])[2]")
+MODEL_TYPE = (By.XPATH, "//*[contains(text(), 'ER2000T-NA-CAT1')]")
+DVC_PCTR = (By.XPATH, "//img[@src='https://connectedio.s3-us-west-1.amazonaws.com/l/products/ER2000T1.png']")
 
 class MainPage(Page):
 
@@ -1242,5 +1244,53 @@ class MainPage(Page):
         else:
             print(f'Expected "{expected_text}", but got: "{actual_text}" \n')
 
+        # End of the above code
+
+    def vrf_mdl_of_dvc(self, vrf_mdl_of_dvc):
+        # Verify that model of device is ER2000T-NA-CAT1
+        wait = WebDriverWait(self.driver, 15)
+        actual_text = wait.until(EC.visibility_of_element_located(MODEL_TYPE)).text
+        print(f'Model: "{actual_text}"\n')
+        expected_text = vrf_mdl_of_dvc
+        assert expected_text in actual_text
+        if expected_text == actual_text:
+            print(f'Expected "{expected_text}", and got: "{actual_text}" \n')
+        else:
+            print(f'Expected "{expected_text}", but got: "{actual_text}" \n')
+
+    def dvc_rgth_lctn(self, dvc_rgth_lctn):
+        # Device image should be present with the correct layout at the top left corner of page {'x': 299, 'y': 253}
+        wait = WebDriverWait(self.driver, 15)
+        dvc_pctr = wait.until(EC.visibility_of_element_located(DVC_PCTR))
+        actual_text = str(dvc_pctr.location)
+        print(f'Location of the device picture: "{actual_text}"\n')
+        expected_text = dvc_rgth_lctn
+        assert expected_text in actual_text
+        if expected_text == actual_text:
+            print(f'Expected "{expected_text}", and got: "{actual_text}" \n')
+        else:
+            print(f'Expected "{expected_text}", but got: "{actual_text}" \n')
+        # Pictures
+        options = webdriver.ChromeOptions()
+        options.add_argument('--ignore-certificate-errors')
+        options.add_argument("--test-type")
+        options.binary_location = "/usr/bin/chromium"
+        images = self.driver.find_elements_by_tag_name('img')
+        pics_on_page = len(images)
+        for image in images:
+            print((image.get_attribute('src')))
+        print(f'There are: "{pics_on_page}" images on the page\n')
+
+    def dvc_nm_crrlts_pic(self, dvc_nm_crrlts_pic):
+        # The image of the device should correspond to the model in the description ER2000T1
+        wait = WebDriverWait(self.driver, 15)
+        actual_text = str(wait.until(EC.visibility_of_element_located(DVC_PCTR)).get_property('src'))
+        print(f'Name of the src property: "{actual_text}"\n')
+        expected_text = dvc_nm_crrlts_pic
+        assert expected_text in actual_text
+        if expected_text in actual_text:
+            print(f'Expected "{expected_text}" in the: "{actual_text}" \n')
+        else:
+            print(f'Expected "{expected_text}", but got: "{actual_text}" \n')
 
         # End of the above code
