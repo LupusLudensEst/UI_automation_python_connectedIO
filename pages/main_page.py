@@ -132,6 +132,11 @@ FRM_VRSN = (By.XPATH, "(//span[@class='ng-tns-c8-1'])[11]")
 MDM_FRM = (By.XPATH, "(//span[@class='ng-tns-c8-1'])[12]")
 LAST_HEARD = (By.XPATH, "(//strong[@class='d-block mb-1'])[5]")
 UPTIME = (By.XPATH, "(//strong[@class='d-block mb-1'])[6]")
+IP_ADDRESS = (By.XPATH, "(//div[@class='dvc-ip flex-grow-1 w-100 text-truncate small ng-star-inserted'])[1]")
+TX_DATA_FRM_LST_RBT = (By.XPATH, "(//i[@class='far fa-arrow-alt-circle-up'])[1]")
+RX_DATA_FRM_LST_RBT = (By.XPATH, "(//i[@class='far fa-arrow-alt-circle-down'])[1]")
+MAC_ADDRESS = (By.XPATH, "(//span[@class='text-truncate small d-block w-100'])[1]")
+PIE_CHART = (By.XPATH, "(//div[@class='pieChart'])[1]")
 
 class MainPage(Page):
 
@@ -1160,7 +1165,6 @@ class MainPage(Page):
         else:
             print(f'Expected "{expected_text}", but got: "{actual_text}" \n')
         sleep(2)
-
         # Delete device
         # Go to the Devices page https://devcloud.connectedio.com/devices
         wait.until(EC.element_to_be_clickable(DVCS_ICN)).click()
@@ -1193,7 +1197,6 @@ class MainPage(Page):
         for element in content:
             print(
                 f'Elements names in the drop-down menu: "{element.text}", Quantity of elements in the drop-down menu: "{len(content)}"\n')
-
         # Delete device
         # Go to the Devices page https://devcloud.connectedio.com/devices
         wait.until(EC.element_to_be_clickable(DVCS_ICN)).click()
@@ -1417,5 +1420,54 @@ class MainPage(Page):
         else:
             print(f'Expected "{expected_text}", but got: "{actual_text}" \n')
 
+        # End of the above code
+
+    def ip_tx_rx_mac_pie_chrt(self):
+        # Pay attention to the WAN section.
+        # Verify that the following details displayed: IP address, TX data from last reboot (KB), RX data from last reboot (KB), MAC address and Pie Chart.
+        # IP address
+        wait = WebDriverWait(self.driver, 15)
+        wait.until(EC.element_to_be_clickable(EMEI_CLCK)).click()
+        actual_text = wait.until(EC.visibility_of_element_located(IP_ADDRESS)).text
+        if len(actual_text) >= 0:
+            print(f'IP Address: "{actual_text}"\n')
+        # TX data from last reboot (KB)
+        actual_text = wait.until(EC.visibility_of_element_located(TX_DATA_FRM_LST_RBT)).text
+        if len(actual_text) >= 0:
+            print(f'TX data from last reboot (KB): "{actual_text}"\n')
+        # RX data from last reboot (KB)
+        actual_text = wait.until(EC.visibility_of_element_located(RX_DATA_FRM_LST_RBT)).text
+        if len(actual_text) >= 0:
+            print(f'RX data from last reboot (KB): "{actual_text}"\n')
+        # MAC address
+        actual_text = wait.until(EC.visibility_of_element_located(MAC_ADDRESS)).text
+        if len(actual_text) >= 0:
+            print(f'MAC address: "{actual_text}"\n')
+        # Pie Chart
+        actual_text = str(wait.until(EC.visibility_of_element_located(PIE_CHART)).get_property('src'))
+        if len(actual_text) >= 0:
+            print(f'Pie Chart: "{actual_text}"\n')
+
+        # 16. Delete device
+        # Go to the Devices page https://devcloud.connectedio.com/devices
+        wait.until(EC.element_to_be_clickable(DVCS_ICN)).click()
+        sleep(2)
+        # Mark checkbox
+        wait.until(EC.element_to_be_clickable(CHCK_BX_FOR_DLT)).click()
+        # Click gearbutton
+        wait.until(EC.element_to_be_clickable(GEAR_BTN)).click()
+        # Click remove devices button
+        wait.until(EC.element_to_be_clickable(RMV_DVCS_BTN)).click()
+        # Click delete button
+        wait.until(EC.element_to_be_clickable(DLT_BTN_DVCS)).click()
+        # Verify Success after delete is here
+        actual_text = wait.until(EC.visibility_of_element_located(SCCSS_DLT_NO_DT_AVLBL)).text
+        print(f'No Data Available: "{actual_text}"\n')
+        expected_text = 'No Data Available'
+        assert expected_text in actual_text
+        if expected_text == actual_text:
+            print(f'Expected "{expected_text}", and got: "{actual_text}" \n')
+        else:
+            print(f'Expected "{expected_text}", but got: "{actual_text}" \n')
 
         # End of the above code
