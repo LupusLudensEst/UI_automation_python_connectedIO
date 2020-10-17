@@ -25,14 +25,15 @@ EMEI_CLCK = (By.XPATH, "(//a[@class='ng-star-inserted'])[5]")
 # MODEL_TYPE = (By.XPATH, "(//span[@class='ng-tns-c11-17'])[10]")
 # MODEL_TYPE = (By.XPATH, "(//span[@class='ng-tns-c11-24'])[10]")
 MODEL_TYPE = (By.XPATH, "//*[contains(text(), 'ER2000T-NA-CAT1')]")
-DVC_MNGMNT_PRTL = (By.XPATH, "//h5[@class='fw-300 m-0 pl-4 text-truncate']")
+FRM_VRSN = (By.XPATH, "(//span[@class='ng-tns-c8-1'])[11]")
+MDM_FRM = (By.XPATH, "(//span[@class='ng-tns-c8-1'])[12]")
+LAST_HEARD = (By.XPATH, "(//strong[@class='d-block mb-1'])[5]")
+UPTIME = (By.XPATH, "(//strong[@class='d-block mb-1'])[6]")
 CHCK_BX_FOR_DLT = (By.XPATH, "(//div[@class='fancy-checkbox devicelist-checkbox select-all'])[1]")
 GEAR_BTN = (By.XPATH, "//button[@class='btn btn-default btn-sm dropdown-toggle px-3 dropdown-toggle']")
 RMV_DVCS_BTN = (By.XPATH, "(//a[@class='dropdown-item ng-star-inserted'])[2]")
 DLT_BTN_DVCS = (By.XPATH, "//button[@class='btn btn-sm btn-danger']")
 SCCSS_DLT_NO_DT_AVLBL = (By.XPATH, "//div[contains(text(), 'No Data Available')]")
-# DVC_PCTR = (By.XPATH, "//img[@class='img-fluid']")
-DVC_PCTR = (By.XPATH, "//img[@src='https://connectedio.s3-us-west-1.amazonaws.com/l/products/ER2000T1.png']")
 
 # Explicit wait
 wait = WebDriverWait(driver, 15)
@@ -86,7 +87,9 @@ wait.until(EC.presence_of_element_located(DVC_SRL_NMBR_FLD)).send_keys('1806208A
 wait.until(EC.element_to_be_clickable(DVC_ADD_SAVE_BTN)).click()
 driver.refresh()
 
-# 13. Success is here - device is on the page
+# 13.
+# Pay attention to the following device details: IMEI, Model, Firmware version, Modem firmware, Last heard, Uptime.
+# Success is here - device is on the page
 actual_text = wait.until(EC.visibility_of_element_located(IMEI_HR)).text
 print(f'IMEI: "{actual_text}"\n')
 expected_text = '356961071557824'
@@ -109,38 +112,47 @@ if expected_text == actual_text:
 else:
     print(f'Expected "{expected_text}", but got: "{actual_text}" \n')
 
-# 17. Device image should be present with the correct layout at the top left corner of page
-dvc_pctr = wait.until(EC.visibility_of_element_located(DVC_PCTR))
-actual_text = str(dvc_pctr.location)
-print(f'Location of the device picture: "{actual_text}"\n')
-expected_text = "{'x': 299, 'y': 262}" # "{'x': 299, 'y': 257}" # "{'x': 299, 'y': 262}" # "{'x': 299, 'y': 253}"
+# 16. Verify that Firmware version is VR2 4.0
+actual_text = wait.until(EC.visibility_of_element_located(FRM_VRSN)).text
+print(f'Firmware version: "{actual_text}"\n')
+expected_text = 'VR2 4.0'
 assert expected_text in actual_text
 if expected_text == actual_text:
     print(f'Expected "{expected_text}", and got: "{actual_text}" \n')
 else:
     print(f'Expected "{expected_text}", but got: "{actual_text}" \n')
-# Pictures
-options = webdriver.ChromeOptions()
-options.add_argument('--ignore-certificate-errors')
-options.add_argument("--test-type")
-options.binary_location = "/usr/bin/chromium"
-images = driver.find_elements_by_tag_name('img')
-pics_on_page = len(images)
-for image in images:
-    print((image.get_attribute('src')))
-print(f'There are: "{pics_on_page}" images on the page\n')
 
-# The image of the device should correspond to the model in the description ER2000T1
-actual_text = str(wait.until(EC.visibility_of_element_located(DVC_PCTR)).get_property('src'))
-print(f'Name of the src property: "{actual_text}"\n')
-expected_text = 'ER2000T1'
+# 17. Verify that Modem firmware is 20.00.524
+actual_text = wait.until(EC.visibility_of_element_located(MDM_FRM)).text
+print(f'Modem firmware: "{actual_text}"\n')
+expected_text = '20.00.524'
 assert expected_text in actual_text
-if expected_text in actual_text:
-    print(f'Expected "{expected_text}" in the: "{actual_text}" \n')
+if expected_text == actual_text:
+    print(f'Expected "{expected_text}", and got: "{actual_text}" \n')
 else:
     print(f'Expected "{expected_text}", but got: "{actual_text}" \n')
 
-# 18. Delete device
+# 18. Verify that Last heard is here
+actual_text = wait.until(EC.visibility_of_element_located(LAST_HEARD)).text
+print(f'Last heard is here: "{actual_text}"\n')
+expected_text = 'Last heard'
+assert expected_text in actual_text
+if expected_text == actual_text:
+    print(f'Expected "{expected_text}", and got: "{actual_text}" \n')
+else:
+    print(f'Expected "{expected_text}", but got: "{actual_text}" \n')
+
+# 19. Verify that Uptime is here
+actual_text = wait.until(EC.visibility_of_element_located(UPTIME)).text
+print(f'Uptime is here: "{actual_text}"\n')
+expected_text = 'Uptime'
+assert expected_text in actual_text
+if expected_text == actual_text:
+    print(f'Expected "{expected_text}", and got: "{actual_text}" \n')
+else:
+    print(f'Expected "{expected_text}", but got: "{actual_text}" \n')
+
+# 20. Delete device
 # Go to the Devices page https://devcloud.connectedio.com/devices
 wait.until(EC.element_to_be_clickable(DVCS_ICN)).click()
 sleep(2)

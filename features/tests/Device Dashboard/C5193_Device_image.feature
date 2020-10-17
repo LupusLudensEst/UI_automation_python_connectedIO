@@ -13,5 +13,5 @@ Feature: # C5193 Device image
     Then Success is here - device is on the page
     Then Choose any device with IMEI number which is highlighted in blue active IMEI number and click on an active IMEI number
     Then Verify that model of device is ER2000T-NA-CAT1
-    And Device image should be present with the correct layout at the top left corner of page {'x': 299, 'y': 253}
+    And Device image should be present with the correct layout at the top left corner of page {'x': 299, 'y': 262}
     And The image of the device should correspond to the model in the description ER2000T1

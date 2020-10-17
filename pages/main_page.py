@@ -128,6 +128,10 @@ STNGS_BTN = (By.XPATH, "(//button[@class='btn btn-default btn-sm dropdown-toggle
 REBOOT_ELMNT_HR = (By.XPATH, "(//a[@class='dropdown-item'])[2]")
 MODEL_TYPE = (By.XPATH, "//*[contains(text(), 'ER2000T-NA-CAT1')]")
 DVC_PCTR = (By.XPATH, "//img[@src='https://connectedio.s3-us-west-1.amazonaws.com/l/products/ER2000T1.png']")
+FRM_VRSN = (By.XPATH, "(//span[@class='ng-tns-c8-1'])[11]")
+MDM_FRM = (By.XPATH, "(//span[@class='ng-tns-c8-1'])[12]")
+LAST_HEARD = (By.XPATH, "(//strong[@class='d-block mb-1'])[5]")
+UPTIME = (By.XPATH, "(//strong[@class='d-block mb-1'])[6]")
 
 class MainPage(Page):
 
@@ -1259,7 +1263,7 @@ class MainPage(Page):
             print(f'Expected "{expected_text}", but got: "{actual_text}" \n')
 
     def dvc_rgth_lctn(self, dvc_rgth_lctn):
-        # Device image should be present with the correct layout at the top left corner of page {'x': 299, 'y': 253}
+        # Device image should be present with the correct layout at the top left corner of page {'x': 299, 'y': 262}
         wait = WebDriverWait(self.driver, 15)
         dvc_pctr = wait.until(EC.visibility_of_element_located(DVC_PCTR))
         actual_text = str(dvc_pctr.location)
@@ -1292,5 +1296,126 @@ class MainPage(Page):
             print(f'Expected "{expected_text}" in the: "{actual_text}" \n')
         else:
             print(f'Expected "{expected_text}", but got: "{actual_text}" \n')
+
+        # Delete device
+        # Go to the Devices page https://devcloud.connectedio.com/devices
+        wait.until(EC.element_to_be_clickable(DVCS_ICN)).click()
+        sleep(2)
+        # Mark checkbox
+        wait.until(EC.element_to_be_clickable(CHCK_BX_FOR_DLT)).click()
+        # Click gearbutton
+        wait.until(EC.element_to_be_clickable(GEAR_BTN)).click()
+        # Click remove devices button
+        wait.until(EC.element_to_be_clickable(RMV_DVCS_BTN)).click()
+        # Click delete button
+        wait.until(EC.element_to_be_clickable(DLT_BTN_DVCS)).click()
+        # Verify Success after delete is here
+        actual_text = wait.until(EC.visibility_of_element_located(SCCSS_DLT_NO_DT_AVLBL)).text
+        print(f'No Data Available: "{actual_text}"\n')
+        expected_text = 'No Data Available'
+        assert expected_text in actual_text
+        if expected_text == actual_text:
+            print(f'Expected "{expected_text}", and got: "{actual_text}" \n')
+        else:
+            print(f'Expected "{expected_text}", but got: "{actual_text}" \n')
+
+        # End of the above code
+
+    def imei_is_here(self, imei_is_here):
+    # IMEI 356961071557824 is here
+        wait = WebDriverWait(self.driver, 15)
+        actual_text = wait.until(EC.visibility_of_element_located(IMEI_HR)).text
+        print(f'IMEI: "{actual_text}"\n')
+        expected_text = imei_is_here
+        assert expected_text in actual_text
+        if expected_text == actual_text:
+            print(f'Expected "{expected_text}", and got: "{actual_text}" \n')
+        else:
+            print(f'Expected "{expected_text}", but got: "{actual_text}" \n')
+
+    def mdl_is_here(self, mdl_is_here):
+        # Model ER2000T-NA-CAT1 is here
+        wait = WebDriverWait(self.driver, 15)
+        # Choose any device with IMEI number which is highlighted in blue active IMEI number and click on an active IMEI number
+        wait.until(EC.element_to_be_clickable(EMEI_CLCK)).click()
+        actual_text = wait.until(EC.visibility_of_element_located(MODEL_TYPE)).text
+        print(f'Model: "{actual_text}"\n')
+        expected_text = mdl_is_here
+        assert expected_text in actual_text
+        if expected_text == actual_text:
+            print(f'Expected "{expected_text}", and got: "{actual_text}" \n')
+        else:
+            print(f'Expected "{expected_text}", but got: "{actual_text}" \n')
+
+    def frmwr_is_here(self, frmwr_is_here):
+        # Firmware version VR2 4.0 is here
+        wait = WebDriverWait(self.driver, 15)
+        actual_text = wait.until(EC.visibility_of_element_located(FRM_VRSN)).text
+        print(f'Firmware version: "{actual_text}"\n')
+        expected_text = frmwr_is_here
+        assert expected_text in actual_text
+        if expected_text == actual_text:
+            print(f'Expected "{expected_text}", and got: "{actual_text}" \n')
+        else:
+            print(f'Expected "{expected_text}", but got: "{actual_text}" \n')
+
+    def mdm_frmwr_is_here(self, mdm_frmwr_is_here):
+        # Modem firmware 20.00.524 is here
+        wait = WebDriverWait(self.driver, 15)
+        actual_text = wait.until(EC.visibility_of_element_located(MDM_FRM)).text
+        print(f'Modem firmware: "{actual_text}"\n')
+        expected_text = mdm_frmwr_is_here
+        assert expected_text in actual_text
+        if expected_text == actual_text:
+            print(f'Expected "{expected_text}", and got: "{actual_text}" \n')
+        else:
+            print(f'Expected "{expected_text}", but got: "{actual_text}" \n')
+
+    def lst_hrd_is_here(self, lst_hrd_is_here):
+        # Last heard is here
+        wait = WebDriverWait(self.driver, 15)
+        actual_text = wait.until(EC.visibility_of_element_located(LAST_HEARD)).text
+        print(f'Last heard is here: "{actual_text}"\n')
+        expected_text = lst_hrd_is_here
+        assert expected_text in actual_text
+        if expected_text == actual_text:
+            print(f'Expected "{expected_text}", and got: "{actual_text}" \n')
+        else:
+            print(f'Expected "{expected_text}", but got: "{actual_text}" \n')
+
+    def uptm_is_here(self, uptm_is_here):
+        # Section Uptime is here
+        wait = WebDriverWait(self.driver, 15)
+        actual_text = wait.until(EC.visibility_of_element_located(UPTIME)).text
+        print(f'Uptime is here: "{actual_text}"\n')
+        expected_text = uptm_is_here
+        assert expected_text in actual_text
+        if expected_text == actual_text:
+            print(f'Expected "{expected_text}", and got: "{actual_text}" \n')
+        else:
+            print(f'Expected "{expected_text}", but got: "{actual_text}" \n')
+
+        # Delete device
+        # Go to the Devices page https://devcloud.connectedio.com/devices
+        wait.until(EC.element_to_be_clickable(DVCS_ICN)).click()
+        sleep(2)
+        # Mark checkbox
+        wait.until(EC.element_to_be_clickable(CHCK_BX_FOR_DLT)).click()
+        # Click gearbutton
+        wait.until(EC.element_to_be_clickable(GEAR_BTN)).click()
+        # Click remove devices button
+        wait.until(EC.element_to_be_clickable(RMV_DVCS_BTN)).click()
+        # Click delete button
+        wait.until(EC.element_to_be_clickable(DLT_BTN_DVCS)).click()
+        # Verify Success after delete is here
+        actual_text = wait.until(EC.visibility_of_element_located(SCCSS_DLT_NO_DT_AVLBL)).text
+        print(f'No Data Available: "{actual_text}"\n')
+        expected_text = 'No Data Available'
+        assert expected_text in actual_text
+        if expected_text == actual_text:
+            print(f'Expected "{expected_text}", and got: "{actual_text}" \n')
+        else:
+            print(f'Expected "{expected_text}", but got: "{actual_text}" \n')
+
 
         # End of the above code
