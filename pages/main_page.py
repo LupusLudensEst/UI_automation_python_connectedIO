@@ -137,12 +137,6 @@ TX_DATA_FRM_LST_RBT = (By.XPATH, "(//i[@class='far fa-arrow-alt-circle-up'])[1]"
 RX_DATA_FRM_LST_RBT = (By.XPATH, "(//i[@class='far fa-arrow-alt-circle-down'])[1]")
 MAC_ADDRESS = (By.XPATH, "(//span[@class='text-truncate small d-block w-100'])[1]")
 PIE_CHART = (By.XPATH, "(//div[@class='pieChart'])[1]")
-SIM_IP_ADDRESS = (By.XPATH, "(//div[@class='dvc-ip flex-grow-1 w-100 text-truncate small ng-star-inserted'])[2]")
-SIM_TX_DATA_FRM_LST_RBT = (By.XPATH, "(//i[@class='far fa-arrow-alt-circle-up'])[2]")
-SIM_RX_DATA_FRM_LST_RBT = (By.XPATH, "(//i[@class='far fa-arrow-alt-circle-down'])[2]")
-ICC_NUMBER = (By.XPATH, "(//li[@class='ng-star-inserted'])[24]")
-APN = (By.XPATH, "(//li[@class='ng-star-inserted'])[25]")
-SIM_PIE_CHART = (By.XPATH, "(//div[@class='pieChart'])[2]")
 
 class MainPage(Page):
 
@@ -1454,60 +1448,7 @@ class MainPage(Page):
         if len(actual_text) >= 0:
             print(f'Pie Chart: "{actual_text}"\n')
 
-        # Delete device
-        # Go to the Devices page https://devcloud.connectedio.com/devices
-        wait.until(EC.element_to_be_clickable(DVCS_ICN)).click()
-        sleep(2)
-        # Mark checkbox
-        wait.until(EC.element_to_be_clickable(CHCK_BX_FOR_DLT)).click()
-        # Click gearbutton
-        wait.until(EC.element_to_be_clickable(GEAR_BTN)).click()
-        # Click remove devices button
-        wait.until(EC.element_to_be_clickable(RMV_DVCS_BTN)).click()
-        # Click delete button
-        wait.until(EC.element_to_be_clickable(DLT_BTN_DVCS)).click()
-        # Verify Success after delete is here
-        actual_text = wait.until(EC.visibility_of_element_located(SCCSS_DLT_NO_DT_AVLBL)).text
-        print(f'No Data Available: "{actual_text}"\n')
-        expected_text = 'No Data Available'
-        assert expected_text in actual_text
-        if expected_text == actual_text:
-            print(f'Expected "{expected_text}", and got: "{actual_text}" \n')
-        else:
-            print(f'Expected "{expected_text}", but got: "{actual_text}" \n')
-
-        # End of the above code
-    def sim_ip_tx_rx_mac_pie_chrt(self):
-        #Pay attention to the SIM section.
-        # Verify that the following details displayed: IP address, TX data from last reboot (KB), RX data from last reboot (KB), ICC number, APN and Pie Chart.
-        # SIM IP address
-        wait = WebDriverWait(self.driver, 15)
-        wait.until(EC.element_to_be_clickable(EMEI_CLCK)).click()
-        actual_text = wait.until(EC.visibility_of_element_located(SIM_IP_ADDRESS)).text
-        if len(actual_text) >= 0:
-            print(f'SIM IP Address: "{actual_text}"\n')
-        # SIM TX data from last reboot (KB)
-        actual_text = wait.until(EC.visibility_of_element_located(SIM_TX_DATA_FRM_LST_RBT)).text
-        if len(actual_text) >= 0:
-            print(f'SIM TX data from last reboot (KB): "{actual_text}"\n')
-        # SIM RX data from last reboot (KB)
-        actual_text = wait.until(EC.visibility_of_element_located(SIM_RX_DATA_FRM_LST_RBT)).text
-        if len(actual_text) >= 0:
-            print(f'SIM RX data from last reboot (KB): "{actual_text}"\n')
-        # SIM ICC number
-        actual_text = wait.until(EC.visibility_of_element_located(ICC_NUMBER)).text
-        if len(actual_text) >= 0:
-            print(f'SIM MAC address: "{actual_text}"\n')
-        # SIM APN
-        actual_text = wait.until(EC.visibility_of_element_located(APN)).text
-        if len(actual_text) >= 0:
-            print(f'SIM MAC address: "{actual_text}"\n')
-        # SIM Pie Chart
-        actual_text = str(wait.until(EC.visibility_of_element_located(SIM_PIE_CHART)).get_property('src'))
-        if len(actual_text) >= 0:
-            print(f'SIM Pie Chart: "{actual_text}"\n')
-
-        # Delete device
+        # 16. Delete device
         # Go to the Devices page https://devcloud.connectedio.com/devices
         wait.until(EC.element_to_be_clickable(DVCS_ICN)).click()
         sleep(2)
