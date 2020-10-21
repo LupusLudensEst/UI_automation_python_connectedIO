@@ -5,4 +5,4 @@ Feature: # C5121 Logout from_the_Header
     Given Loginpage
     Then Login with the given credentials
     Then Hover over the Logout button at the right corner of the Header and click on the button Logout
-    And https://devcloud.connectedio.com/login is open
+    And https://devcloud.connectedio.com/ is open

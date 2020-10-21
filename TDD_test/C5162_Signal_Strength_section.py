@@ -18,7 +18,7 @@ DSCH_BRD_TXT = (By.XPATH, "//h2[@class='mb-0']")
 SGNL_STRNGT_TXT_HR = (By.XPATH, "(//h2[@class='ng-tns-c6-0'])[4]")
 QSTN_CRCL_SGNL_STRNGT_SCTN = (By.XPATH, "(//i[@class='fa  fa-question-circle'])[3]")
 QSTN_CRCL_SGNL_STRNGT_TXT = (By.XPATH, "//span[@tool-tip='Overall signal strength statistics of device(s).']")
-NO_DT_IN_SGNL_STRNGT_SCTN = (By.XPATH, "(//div[@class='no-data'])[4]")
+NO_DT_IN_SGNL_STRNGT_SCTN = (By.XPATH, "(//div[@class='no-data'])")
 
 
 # Explicit wait

@@ -96,7 +96,7 @@ GRPS_TL_TIP = (By.XPATH, "//span[@tool-tip='Device(s) status based on groups.']"
 SGNL_STRNGT_TXT_HR = (By.XPATH, "(//h2[@class='ng-tns-c6-0'])[4]")
 QSTN_CRCL_SGNL_STRNGT_SCTN = (By.XPATH, "(//i[@class='fa  fa-question-circle'])[3]")
 QSTN_CRCL_SGNL_STRNGT_TXT = (By.XPATH, "//span[@tool-tip='Overall signal strength statistics of device(s).']")
-NO_DT_IN_SGNL_STRNGT_SCTN = (By.XPATH, "(//div[@class='no-data'])[4]")
+NO_DT_IN_SGNL_STRNGT_SCTN = (By.XPATH, "(//div[@class='no-data'])")
 DVC_LCTNS_TXT_HR = (By.XPATH, "(//h2[@class='ng-tns-c6-0'])[5]")
 QSTN_CRCL_DVC_LCTNS_SCTN = (By.XPATH, "(//i[@class='fa  fa-question-circle'])[4]")
 QSTN_CRCL_DVC_LCTNS_TXT = (By.XPATH, "//span[@tool-tip='Current locations of the device(s).']")
@@ -137,6 +137,12 @@ TX_DATA_FRM_LST_RBT = (By.XPATH, "(//i[@class='far fa-arrow-alt-circle-up'])[1]"
 RX_DATA_FRM_LST_RBT = (By.XPATH, "(//i[@class='far fa-arrow-alt-circle-down'])[1]")
 MAC_ADDRESS = (By.XPATH, "(//span[@class='text-truncate small d-block w-100'])[1]")
 PIE_CHART = (By.XPATH, "(//div[@class='pieChart'])[1]")
+SIM_IP_ADDRESS = (By.XPATH, "(//div[@class='dvc-ip flex-grow-1 w-100 text-truncate small ng-star-inserted'])[2]")
+SIM_TX_DATA_FRM_LST_RBT = (By.XPATH, "(//i[@class='far fa-arrow-alt-circle-up'])[2]")
+SIM_RX_DATA_FRM_LST_RBT = (By.XPATH, "(//i[@class='far fa-arrow-alt-circle-down'])[2]")
+ICC_NUMBER = (By.XPATH, "(//li[@class='ng-star-inserted'])[24]")
+APN = (By.XPATH, "(//li[@class='ng-star-inserted'])[25]")
+SIM_PIE_CHART = (By.XPATH, "(//div[@class='pieChart'])[2]")
 LAN_IP_ADDRESS = (By.XPATH, "(//div[@class='dvc-ip flex-grow-1 w-100 text-truncate small ng-star-inserted'])[3]")
 LAN_TX_DATA_FRM_LST_RBT = (By.XPATH, "(//i[@class='far fa-arrow-alt-circle-up'])[3]")
 LAN_RX_DATA_FRM_LST_RBT = (By.XPATH, "(//i[@class='far fa-arrow-alt-circle-down'])[3]")
@@ -347,6 +353,7 @@ class MainPage(Page):
     def clck_lgt_btn(self):
         # 8. Hover over the "Logout" button in the dropdown menu and click on the button "Logout"
         wait = WebDriverWait(self.driver, 15)
+        sleep(2)
         wait.until(EC.element_to_be_clickable(LGT_BTN)).click()
         self.driver.refresh()
 
@@ -381,7 +388,6 @@ class MainPage(Page):
 
     def cng_pswd_url_opn(self, url_is_here):
         # https://devcloud.connectedio.com/* is open
-        sleep(2)
         expected_text = url_is_here
         actual_text = self.driver.current_url
         assert expected_text in actual_text
@@ -1476,6 +1482,60 @@ class MainPage(Page):
             print(f'Expected "{expected_text}", but got: "{actual_text}" \n')
 
         # End of the above code
+    def sim_ip_tx_rx_mac_pie_chrt(self):
+        # Pay attention to the SIM section.
+        # # Verify that the following details displayed: IP address, TX data from last reboot (KB), RX data from last reboot (KB), ICC number, APN and Pie Chart.
+        # # SIM IP address
+        wait = WebDriverWait(self.driver, 15)
+        wait.until(EC.element_to_be_clickable(EMEI_CLCK)).click()
+        actual_text = wait.until(EC.visibility_of_element_located(SIM_IP_ADDRESS)).text
+        if len(actual_text) >= 0:
+            print(f'SIM IP Address: "{actual_text}"\n')
+        # SIM TX data from last reboot (KB)
+        actual_text = wait.until(EC.visibility_of_element_located(SIM_TX_DATA_FRM_LST_RBT)).text
+        if len(actual_text) >= 0:
+            print(f'SIM TX data from last reboot (KB): "{actual_text}"\n')
+        # SIM RX data from last reboot (KB)
+        actual_text = wait.until(EC.visibility_of_element_located(SIM_RX_DATA_FRM_LST_RBT)).text
+        if len(actual_text) >= 0:
+            print(f'SIM RX data from last reboot (KB): "{actual_text}"\n')
+        # SIM ICC number
+        actual_text = wait.until(EC.visibility_of_element_located(ICC_NUMBER)).text
+        if len(actual_text) >= 0:
+            print(f'SIM MAC address: "{actual_text}"\n')
+        # SIM APN
+        actual_text = wait.until(EC.visibility_of_element_located(APN)).text
+        if len(actual_text) >= 0:
+            print(f'SIM MAC address: "{actual_text}"\n')
+        # SIM Pie Chart
+        actual_text = str(wait.until(EC.visibility_of_element_located(SIM_PIE_CHART)).get_property('src'))
+        if len(actual_text) >= 0:
+            print(f'SIM Pie Chart: "{actual_text}"\n')
+
+        # 16. Delete device
+        # Go to the Devices page https://devcloud.connectedio.com/devices
+        wait.until(EC.element_to_be_clickable(DVCS_ICN)).click()
+        sleep(2)
+        # Mark checkbox
+        wait.until(EC.element_to_be_clickable(CHCK_BX_FOR_DLT)).click()
+        # Click gearbutton
+        wait.until(EC.element_to_be_clickable(GEAR_BTN)).click()
+        # Click remove devices button
+        wait.until(EC.element_to_be_clickable(RMV_DVCS_BTN)).click()
+        # Click delete button
+        wait.until(EC.element_to_be_clickable(DLT_BTN_DVCS)).click()
+        # Verify Success after delete is here
+        actual_text = wait.until(EC.visibility_of_element_located(SCCSS_DLT_NO_DT_AVLBL)).text
+        print(f'No Data Available: "{actual_text}"\n')
+        expected_text = 'No Data Available'
+        assert expected_text in actual_text
+        if expected_text == actual_text:
+            print(f'Expected "{expected_text}", and got: "{actual_text}" \n')
+        else:
+            print(f'Expected "{expected_text}", but got: "{actual_text}" \n')
+
+        # End of the above code
+
     def lan_ip_tx_rx_mac_pie_chrt(self):
         # Pay attention to the LAN section.
         # Verify that the following details displayed: IP address, TX data from last reboot KB, RX data from last reboot KB, MAC address and Pie Chart.

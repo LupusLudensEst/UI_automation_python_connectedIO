@@ -44,7 +44,7 @@ actions.click(target)
 actions.perform()
 
 # 7. Verify https://devcloud.connectedio.com is open
-expected_text = 'https://devcloud.connectedio.com'
+expected_text = 'https://devcloud.connectedio.com/'
 actual_text = driver.current_url
 assert expected_text in actual_text
 if expected_text == actual_text:

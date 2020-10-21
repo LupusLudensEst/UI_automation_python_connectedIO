@@ -37,6 +37,7 @@ wait.until(EC.element_to_be_clickable(LOGIN_BTN)).click()
 
 # 5. Click on pop-window OK button
 wait.until(EC.element_to_be_clickable(POP_UP_WNDW_OK_BTN)).click()
+sleep(2)
 
 # 6. Click on triangle to enter the user
 target = wait.until(EC.element_to_be_clickable(CLCK_TRNGL))
@@ -54,8 +55,9 @@ wait.until(EC.element_to_be_clickable(LGT_BTN)).click()
 driver.refresh()
 
 # 9. Verify https://devcloud.connectedio.com is open
-expected_text = 'https://devcloud.connectedio.com'
+expected_text = 'https://devcloud.connectedio.com/'
 actual_text = driver.current_url
+sleep(2)
 assert expected_text in actual_text
 if expected_text == actual_text:
     print(f'Expected "{expected_text}", and got: "{actual_text}" ')
