@@ -13,3 +13,4 @@ Feature: # C5191 Quick action button is active
     Then Success is here - device is on the page
     Then Choose any device with IMEI number which is highlighted in blue active IMEI number and click on an active IMEI number
     Then Click on Quick Action button and verify it has consequences
+    And Delete device

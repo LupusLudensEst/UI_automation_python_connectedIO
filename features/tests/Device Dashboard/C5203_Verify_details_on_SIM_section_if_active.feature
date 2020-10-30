@@ -12,3 +12,4 @@ Feature: # C5203 Verify details on SIM section if active
     And Click Save and refresh the page
     Then Success is here - device is on the page
     Then Verify that the following details displayed: SIM IP address, SIM TX data from last reboot KB, SIM RX data from last reboot KB, SIM ICC number, SIM APN and SIM Pie Chart
+    And Delete device

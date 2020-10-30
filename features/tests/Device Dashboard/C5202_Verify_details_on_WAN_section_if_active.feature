@@ -12,3 +12,4 @@ Feature: # C5202 Verify details on WAN section if active
     And Click Save and refresh the page
     Then Success is here - device is on the page
     Then Verify that the following details displayed: IP address, TX data from last reboot KB, RX data from last reboot KB, MAC address and Pie Chart
+    And Delete device

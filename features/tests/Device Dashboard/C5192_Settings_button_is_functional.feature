@@ -13,3 +13,4 @@ Feature: # C5192 Settings button is functional
     Then Success is here - device is on the page
     Then Choose any device with IMEI number which is highlighted in blue active IMEI number and click on an active IMEI number
     Then Click on Settings button in right up corner and verify it has Reboot item in the drop-down menu
+    And Delete device

@@ -17,4 +17,5 @@ Feature: # C5194_Device_details
     And Modem firmware 20.00.524 is here
     Then Words Last heard is here
     And Section Uptime is here
+    Then Delete device
 

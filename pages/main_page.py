@@ -148,6 +148,8 @@ LAN_TX_DATA_FRM_LST_RBT = (By.XPATH, "(//i[@class='far fa-arrow-alt-circle-up'])
 LAN_RX_DATA_FRM_LST_RBT = (By.XPATH, "(//i[@class='far fa-arrow-alt-circle-down'])[3]")
 LAN_MAC_ADDRESS = (By.XPATH, "(//li[@class='ng-star-inserted'])[26]")
 LAN_PIE_CHART = (By.XPATH, "(//div[@class='pieChart'])[3]")
+REFRESH_BTN = (By.XPATH, "//i[@class='fa fa-refresh']")
+FTCHNG_DT_FRM_DVC = (By.XPATH, "//p[contains(text(),'Fetching data from device...')]")
 
 class MainPage(Page):
 
@@ -1077,6 +1079,14 @@ class MainPage(Page):
 
     def delt_dvc(self):
         # Delete device
+
+        self.driver.refresh()
+
+        # Go to the Devices page https://devcloud.connectedio.com/devices
+        self.driver.refresh()
+        wait = WebDriverWait(self.driver, 15)
+        wait.until(EC.element_to_be_clickable(DVCS_ICN)).click()
+        sleep(2)
         # Mark checkbox
         wait = WebDriverWait(self.driver, 15)
         wait.until(EC.element_to_be_clickable(CHCK_BX_FOR_DLT)).click()
@@ -1141,7 +1151,7 @@ class MainPage(Page):
         wait.until(EC.element_to_be_clickable(CROSS_TO_CLOSE)).click()
         # Mark checkbox
         wait.until(EC.element_to_be_clickable(CHCK_BX_FOR_DLT)).click()
-        # Click gearbutton
+        # Click gear button
         wait.until(EC.element_to_be_clickable(GEAR_BTN)).click()
         # Click remove devices button
         wait.until(EC.element_to_be_clickable(RMV_DVCS_BTN)).click()
@@ -1176,27 +1186,6 @@ class MainPage(Page):
         else:
             print(f'Expected "{expected_text}", but got: "{actual_text}" \n')
         sleep(2)
-        # Delete device
-        # Go to the Devices page https://devcloud.connectedio.com/devices
-        wait.until(EC.element_to_be_clickable(DVCS_ICN)).click()
-        sleep(2)
-        # Mark checkbox
-        wait.until(EC.element_to_be_clickable(CHCK_BX_FOR_DLT)).click()
-        # Click gearbutton
-        wait.until(EC.element_to_be_clickable(GEAR_BTN)).click()
-        # Click remove devices button
-        wait.until(EC.element_to_be_clickable(RMV_DVCS_BTN)).click()
-        # Click delete button
-        wait.until(EC.element_to_be_clickable(DLT_BTN_DVCS)).click()
-        # Verify Success after delete is here
-        actual_text = wait.until(EC.visibility_of_element_located(SCCSS_DLT_NO_DT_AVLBL)).text
-        print(f'No Data Available: "{actual_text}"\n')
-        expected_text = 'No Data Available'
-        assert expected_text in actual_text
-        if expected_text == actual_text:
-            print(f'Expected "{expected_text}", and got: "{actual_text}" \n')
-        else:
-            print(f'Expected "{expected_text}", but got: "{actual_text}" \n')
 
         # End of the above code
 
@@ -1208,27 +1197,6 @@ class MainPage(Page):
         for element in content:
             print(
                 f'Elements names in the drop-down menu: "{element.text}", Quantity of elements in the drop-down menu: "{len(content)}"\n')
-        # Delete device
-        # Go to the Devices page https://devcloud.connectedio.com/devices
-        wait.until(EC.element_to_be_clickable(DVCS_ICN)).click()
-        sleep(2)
-        # Mark checkbox
-        wait.until(EC.element_to_be_clickable(CHCK_BX_FOR_DLT)).click()
-        # Click gearbutton
-        wait.until(EC.element_to_be_clickable(GEAR_BTN)).click()
-        # Click remove devices button
-        wait.until(EC.element_to_be_clickable(RMV_DVCS_BTN)).click()
-        # Click delete button
-        wait.until(EC.element_to_be_clickable(DLT_BTN_DVCS)).click()
-        # Verify Success after delete is here
-        actual_text = wait.until(EC.visibility_of_element_located(SCCSS_DLT_NO_DT_AVLBL)).text
-        print(f'No Data Available: "{actual_text}"\n')
-        expected_text = 'No Data Available'
-        assert expected_text in actual_text
-        if expected_text == actual_text:
-            print(f'Expected "{expected_text}", and got: "{actual_text}" \n')
-        else:
-            print(f'Expected "{expected_text}", but got: "{actual_text}" \n')
 
         # End of the above code
 
@@ -1239,28 +1207,6 @@ class MainPage(Page):
         actual_text = wait.until(EC.visibility_of_element_located(REBOOT_ELMNT_HR)).text
         assert 'Reboot' in actual_text
         print(f'Text is here: "{actual_text}"')
-
-        # Delete device
-        # Go to the Devices page https://devcloud.connectedio.com/devices
-        wait.until(EC.element_to_be_clickable(DVCS_ICN)).click()
-        sleep(2)
-        # Mark checkbox
-        wait.until(EC.element_to_be_clickable(CHCK_BX_FOR_DLT)).click()
-        # Click gearbutton
-        wait.until(EC.element_to_be_clickable(GEAR_BTN)).click()
-        # Click remove devices button
-        wait.until(EC.element_to_be_clickable(RMV_DVCS_BTN)).click()
-        # Click delete button
-        wait.until(EC.element_to_be_clickable(DLT_BTN_DVCS)).click()
-        # Verify Success after delete is here
-        actual_text = wait.until(EC.visibility_of_element_located(SCCSS_DLT_NO_DT_AVLBL)).text
-        print(f'No Data Available: "{actual_text}"\n')
-        expected_text = 'No Data Available'
-        assert expected_text in actual_text
-        if expected_text == actual_text:
-            print(f'Expected "{expected_text}", and got: "{actual_text}" \n')
-        else:
-            print(f'Expected "{expected_text}", but got: "{actual_text}" \n')
 
         # End of the above code
 
@@ -1308,28 +1254,6 @@ class MainPage(Page):
         assert expected_text in actual_text
         if expected_text in actual_text:
             print(f'Expected "{expected_text}" in the: "{actual_text}" \n')
-        else:
-            print(f'Expected "{expected_text}", but got: "{actual_text}" \n')
-
-        # Delete device
-        # Go to the Devices page https://devcloud.connectedio.com/devices
-        wait.until(EC.element_to_be_clickable(DVCS_ICN)).click()
-        sleep(2)
-        # Mark checkbox
-        wait.until(EC.element_to_be_clickable(CHCK_BX_FOR_DLT)).click()
-        # Click gearbutton
-        wait.until(EC.element_to_be_clickable(GEAR_BTN)).click()
-        # Click remove devices button
-        wait.until(EC.element_to_be_clickable(RMV_DVCS_BTN)).click()
-        # Click delete button
-        wait.until(EC.element_to_be_clickable(DLT_BTN_DVCS)).click()
-        # Verify Success after delete is here
-        actual_text = wait.until(EC.visibility_of_element_located(SCCSS_DLT_NO_DT_AVLBL)).text
-        print(f'No Data Available: "{actual_text}"\n')
-        expected_text = 'No Data Available'
-        assert expected_text in actual_text
-        if expected_text == actual_text:
-            print(f'Expected "{expected_text}", and got: "{actual_text}" \n')
         else:
             print(f'Expected "{expected_text}", but got: "{actual_text}" \n')
 
@@ -1409,28 +1333,6 @@ class MainPage(Page):
         else:
             print(f'Expected "{expected_text}", but got: "{actual_text}" \n')
 
-        # Delete device
-        # Go to the Devices page https://devcloud.connectedio.com/devices
-        wait.until(EC.element_to_be_clickable(DVCS_ICN)).click()
-        sleep(2)
-        # Mark checkbox
-        wait.until(EC.element_to_be_clickable(CHCK_BX_FOR_DLT)).click()
-        # Click gearbutton
-        wait.until(EC.element_to_be_clickable(GEAR_BTN)).click()
-        # Click remove devices button
-        wait.until(EC.element_to_be_clickable(RMV_DVCS_BTN)).click()
-        # Click delete button
-        wait.until(EC.element_to_be_clickable(DLT_BTN_DVCS)).click()
-        # Verify Success after delete is here
-        actual_text = wait.until(EC.visibility_of_element_located(SCCSS_DLT_NO_DT_AVLBL)).text
-        print(f'No Data Available: "{actual_text}"\n')
-        expected_text = 'No Data Available'
-        assert expected_text in actual_text
-        if expected_text == actual_text:
-            print(f'Expected "{expected_text}", and got: "{actual_text}" \n')
-        else:
-            print(f'Expected "{expected_text}", but got: "{actual_text}" \n')
-
         # End of the above code
 
     def ip_tx_rx_mac_pie_chrt(self):
@@ -1459,29 +1361,8 @@ class MainPage(Page):
         if len(actual_text) >= 0:
             print(f'Pie Chart: "{actual_text}"\n')
 
-        # Delete device
-        # Go to the Devices page https://devcloud.connectedio.com/devices
-        wait.until(EC.element_to_be_clickable(DVCS_ICN)).click()
-        sleep(2)
-        # Mark checkbox
-        wait.until(EC.element_to_be_clickable(CHCK_BX_FOR_DLT)).click()
-        # Click gearbutton
-        wait.until(EC.element_to_be_clickable(GEAR_BTN)).click()
-        # Click remove devices button
-        wait.until(EC.element_to_be_clickable(RMV_DVCS_BTN)).click()
-        # Click delete button
-        wait.until(EC.element_to_be_clickable(DLT_BTN_DVCS)).click()
-        # Verify Success after delete is here
-        actual_text = wait.until(EC.visibility_of_element_located(SCCSS_DLT_NO_DT_AVLBL)).text
-        print(f'No Data Available: "{actual_text}"\n')
-        expected_text = 'No Data Available'
-        assert expected_text in actual_text
-        if expected_text == actual_text:
-            print(f'Expected "{expected_text}", and got: "{actual_text}" \n')
-        else:
-            print(f'Expected "{expected_text}", but got: "{actual_text}" \n')
-
         # End of the above code
+
     def sim_ip_tx_rx_mac_pie_chrt(self):
         # Pay attention to the SIM section.
         # # Verify that the following details displayed: IP address, TX data from last reboot (KB), RX data from last reboot (KB), ICC number, APN and Pie Chart.
@@ -1512,28 +1393,6 @@ class MainPage(Page):
         if len(actual_text) >= 0:
             print(f'SIM Pie Chart: "{actual_text}"\n')
 
-        # 16. Delete device
-        # Go to the Devices page https://devcloud.connectedio.com/devices
-        wait.until(EC.element_to_be_clickable(DVCS_ICN)).click()
-        sleep(2)
-        # Mark checkbox
-        wait.until(EC.element_to_be_clickable(CHCK_BX_FOR_DLT)).click()
-        # Click gearbutton
-        wait.until(EC.element_to_be_clickable(GEAR_BTN)).click()
-        # Click remove devices button
-        wait.until(EC.element_to_be_clickable(RMV_DVCS_BTN)).click()
-        # Click delete button
-        wait.until(EC.element_to_be_clickable(DLT_BTN_DVCS)).click()
-        # Verify Success after delete is here
-        actual_text = wait.until(EC.visibility_of_element_located(SCCSS_DLT_NO_DT_AVLBL)).text
-        print(f'No Data Available: "{actual_text}"\n')
-        expected_text = 'No Data Available'
-        assert expected_text in actual_text
-        if expected_text == actual_text:
-            print(f'Expected "{expected_text}", and got: "{actual_text}" \n')
-        else:
-            print(f'Expected "{expected_text}", but got: "{actual_text}" \n')
-
         # End of the above code
 
     def lan_ip_tx_rx_mac_pie_chrt(self):
@@ -1562,26 +1421,26 @@ class MainPage(Page):
         if len(actual_text) >= 0:
             print(f'LAN Pie Chart: "{actual_text}"\n')
 
-        # Delete device
-        # Go to the Devices page https://devcloud.connectedio.com/devices
-        wait.until(EC.element_to_be_clickable(DVCS_ICN)).click()
-        sleep(2)
-        # Mark checkbox
-        wait.until(EC.element_to_be_clickable(CHCK_BX_FOR_DLT)).click()
-        # Click gearbutton
-        wait.until(EC.element_to_be_clickable(GEAR_BTN)).click()
-        # Click remove devices button
-        wait.until(EC.element_to_be_clickable(RMV_DVCS_BTN)).click()
-        # Click delete button
-        wait.until(EC.element_to_be_clickable(DLT_BTN_DVCS)).click()
-        # Verify Success after delete is here
-        actual_text = wait.until(EC.visibility_of_element_located(SCCSS_DLT_NO_DT_AVLBL)).text
-        print(f'No Data Available: "{actual_text}"\n')
-        expected_text = 'No Data Available'
+        # End of the above code
+
+    def clck_on_quick_actions_in_rght_up_crnr(self):
+        # Click on Quick action button
+        wait = WebDriverWait(self.driver, 15)
+        wait.until(EC.element_to_be_clickable(QUICK_ACTION_BTN)).click()
+
+    def clck_on_rfrsh_sbsctn(self):
+        # Click Refresh subsection
+        wait = WebDriverWait(self.driver, 15)
+        wait.until(EC.element_to_be_clickable(REFRESH_BTN)).click()
+
+    def rfrsh_sbsctn_actv(self, text):
+        # Verify Refresh subsection is active and Fetching data from device... appeares
+        wait = WebDriverWait(self.driver, 15)
+        expected_text = text
+        actual_text = wait.until(EC.presence_of_element_located((FTCHNG_DT_FRM_DVC))).text
         assert expected_text in actual_text
-        if expected_text == actual_text:
-            print(f'Expected "{expected_text}", and got: "{actual_text}" \n')
-        else:
-            print(f'Expected "{expected_text}", but got: "{actual_text}" \n')
+        print(f'Expected "{expected_text}", and got: "{actual_text}" ')
 
         # End of the above code
+
+
