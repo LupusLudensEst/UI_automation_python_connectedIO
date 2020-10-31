@@ -150,6 +150,7 @@ LAN_MAC_ADDRESS = (By.XPATH, "(//li[@class='ng-star-inserted'])[26]")
 LAN_PIE_CHART = (By.XPATH, "(//div[@class='pieChart'])[3]")
 REFRESH_BTN = (By.XPATH, "//i[@class='fa fa-refresh']")
 FTCHNG_DT_FRM_DVC = (By.XPATH, "//p[contains(text(),'Fetching data from device...')]")
+SYSTEM_LOG = (By.XPATH, "//i[@class='fa fa-history']")
 
 class MainPage(Page):
 
@@ -1440,6 +1441,13 @@ class MainPage(Page):
         actual_text = wait.until(EC.presence_of_element_located((FTCHNG_DT_FRM_DVC))).text
         assert expected_text in actual_text
         print(f'Expected "{expected_text}", and got: "{actual_text}" ')
+
+        # End of the above code
+
+    def clck_systemlog(self):
+        # Click System log subsection
+        wait = WebDriverWait(self.driver, 15)
+        wait.until(EC.element_to_be_clickable(SYSTEM_LOG)).click()
 
         # End of the above code
 
