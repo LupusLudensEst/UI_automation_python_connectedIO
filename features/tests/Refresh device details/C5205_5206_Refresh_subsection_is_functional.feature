@@ -1,7 +1,7 @@
 # Created by rapid at 10/29/2020
-Feature: # C5205 Refresh subsection is functional
+Feature: # C5205 5206 Refresh subsection is functional
 
-  Scenario: # C5205 Refresh subsection is functional
+  Scenario: # C5205 5206 Refresh subsection is functional
     Given Loginpage
     Then Login with the given credentials
     And Go to the Devices page https://devcloud.connectedio.com/devices

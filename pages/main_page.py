@@ -150,7 +150,10 @@ LAN_MAC_ADDRESS = (By.XPATH, "(//li[@class='ng-star-inserted'])[26]")
 LAN_PIE_CHART = (By.XPATH, "(//div[@class='pieChart'])[3]")
 REFRESH_BTN = (By.XPATH, "//i[@class='fa fa-refresh']")
 FTCHNG_DT_FRM_DVC = (By.XPATH, "//p[contains(text(),'Fetching data from device...')]")
+ADD_NEW_DVC_ONLN = (By.XPATH, "//button[@class='btn btn-default btn-sm ng-star-inserted']")
 SYSTEM_LOG = (By.XPATH, "//i[@class='fa fa-history']")
+SYSTEM_LOG_TXT_HR = (By.XPATH, "//h5[@class='modal-title']")
+CLOSE_SYSTEM_LOG = (By.XPATH, "//a[@class='close']")
 
 class MainPage(Page):
 
@@ -1223,18 +1226,14 @@ class MainPage(Page):
         else:
             print(f'Expected "{expected_text}", but got: "{actual_text}" \n')
 
-    def dvc_rgth_lctn(self, dvc_rgth_lctn):
-        # Device image should be present with the correct layout at the top left corner of page {'x': 299, 'y': 262}
+    def dvc_rgth_lctn(self):
+        # Device image should be present with the correct layout at the top left corner of page
         wait = WebDriverWait(self.driver, 15)
         dvc_pctr = wait.until(EC.visibility_of_element_located(DVC_PCTR))
         actual_text = str(dvc_pctr.location)
         print(f'Location of the device picture: "{actual_text}"\n')
-        expected_text = dvc_rgth_lctn
-        assert expected_text in actual_text
-        if expected_text == actual_text:
-            print(f'Expected "{expected_text}", and got: "{actual_text}" \n')
-        else:
-            print(f'Expected "{expected_text}", but got: "{actual_text}" \n')
+        print(f'Got text: "{actual_text}" \n')
+
         # Pictures
         options = webdriver.ChromeOptions()
         options.add_argument('--ignore-certificate-errors')
@@ -1451,4 +1450,43 @@ class MainPage(Page):
 
         # End of the above code
 
+    def add_new_dvc_onln(self):
+        # Add a new device to the Device online
+        wait = WebDriverWait(self.driver, 10)
+        wait.until(EC.element_to_be_clickable(ADD_NEW_DVC_ONLN)).click()
 
+        # Fill required Device IMEI field
+        wait.until(EC.presence_of_element_located(DVC_IMEI_FLD)).clear()
+        wait.until(EC.presence_of_element_located(DVC_IMEI_FLD)).send_keys('358148062783217')
+
+        # Fill Device Name field if any
+        wait.until(EC.presence_of_element_located(DVC_NAME_FLD)).clear()
+        wait.until(EC.presence_of_element_located(DVC_NAME_FLD)).send_keys('Device Name 1')
+
+        # Fill required Serial Number field
+        wait.until(EC.presence_of_element_located(DVC_SRL_NMBR_FLD)).clear()
+        wait.until(EC.presence_of_element_located(DVC_SRL_NMBR_FLD)).send_keys('1933215B2356')
+
+        # Select Tags if any
+        # No tags here to select
+
+        # Click Save the page
+        wait.until(EC.element_to_be_clickable(DVC_ADD_SAVE_BTN)).click()
+        self.driver.refresh()
+
+    def system_log_txt_hr(self, text_hr):
+        # Verify the device system log is displayed
+        wait = WebDriverWait(self.driver, 10)
+        expected_text = text_hr
+        actual_text = wait.until(EC.presence_of_element_located((SYSTEM_LOG_TXT_HR))).text
+        assert expected_text in actual_text
+        print(f'Expected "{text_hr}", and got "{actual_text}" ')
+        # End of the above code
+        sleep(2)
+
+    def clck_close_systemlog(self):
+        # Click on the Close icon at the top right corner of the system log
+        wait = WebDriverWait(self.driver, 15)
+        wait.until(EC.element_to_be_clickable(CLOSE_SYSTEM_LOG)).click()
+
+    # End of the above code
