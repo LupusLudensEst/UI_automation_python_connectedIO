@@ -1,7 +1,7 @@
 # Created by rapid at 10/31/2020
-Feature: # C5208_System_log_subsection _s_functional
+Feature: # C5208_System_log_subsection_is_functional
 
-  Scenario: # C5208_System_log_subsection _s_functional
+  Scenario: # C5208_System_log_subsection_is_functional
    Given Loginpage
    Then Login with the given credentials
    And Go to the Devices page https://devcloud.connectedio.com/devices

@@ -27,7 +27,7 @@ wait.until(EC.presence_of_element_located(LOGIN_EMAIL)).send_keys('gurovvic_wron
 
 # 3. Send Correct Password
 wait.until(EC.presence_of_element_located(LOGIN_PASSWORD)).clear()
-wait.until(EC.presence_of_element_located(LOGIN_PASSWORD)).send_keys('') # manicpiano731
+wait.until(EC.presence_of_element_located(LOGIN_PASSWORD)).send_keys('MyUSA2016!@') # manicpiano731
 
 # 4. Click on Login button
 wait.until(EC.element_to_be_clickable(LOGIN_BTN)).click()
