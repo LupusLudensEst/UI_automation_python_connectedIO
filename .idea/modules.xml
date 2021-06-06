@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/UIautomation_python.iml" filepath="$PROJECT_DIR$/.idea/UIautomation_python.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/UI_automation_python_connectedIO.iml" filepath="$PROJECT_DIR$/.idea/UI_automation_python_connectedIO.iml" />
     </modules>
   </component>
 </project>
