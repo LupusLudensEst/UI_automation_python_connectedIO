@@ -43,4 +43,4 @@ print(f'Expected "{expected_text}", but got: "{actual_text}" ')
 sleep(2)
 
 # Driver quit
-driver.quit()
+# driver.quit()
